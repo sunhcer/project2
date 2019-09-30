@@ -11,6 +11,8 @@ public class GoodsPage {
     private int limit;
     private String addTime;
     private String desc;
+    private String name;
+    private String goodsSn;
 
     @Override
     public String toString() {
@@ -19,7 +21,25 @@ public class GoodsPage {
                 ", limit=" + limit +
                 ", addTime='" + addTime + '\'' +
                 ", desc='" + desc + '\'' +
+                ", name='" + name + '\'' +
+                ", goodsSn='" + goodsSn + '\'' +
                 '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGoodsSn() {
+        return goodsSn;
+    }
+
+    public void setGoodsSn(String goodsSn) {
+        this.goodsSn = goodsSn;
     }
 
     public int getPage() {

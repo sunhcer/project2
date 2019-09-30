@@ -7,6 +7,7 @@ import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,7 +54,7 @@ public class ProductServiceImpl implements  ProductService {
     @Override
     public GoodsList findGoodsByPage(GoodsPage page) {
         PageHelper.startPage(page.getPage(),page.getLimit(),page.getDesc());
-        List<Goods> goods=goodsMapper.findAllGoods();
+        List<Goods> goods=goodsMapper.findGoodsByNameAndGoodsSn( page.getName(),page.getGoodsSn());
         PageInfo<Goods> goodsPageInfo=new PageInfo<>(goods);
         long total=goodsPageInfo.getTotal();
         GoodsList goodsList=new GoodsList();

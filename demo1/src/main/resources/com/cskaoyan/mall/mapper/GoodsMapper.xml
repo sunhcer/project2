@@ -42,6 +42,14 @@
     from cskaoyan_mall_goods
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findGoodsByNameAndGoodsSn" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cskaoyan_mall_goods
+    where `name` = #{name} and goods_sn =#{goodsSn}
+  </select>
   <select id="findAllGoods" resultMap="ResultMapWithBLOBs">
     select
     <include refid="Base_Column_List" />
