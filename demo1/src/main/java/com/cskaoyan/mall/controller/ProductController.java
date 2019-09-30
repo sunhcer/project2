@@ -26,11 +26,19 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
-
+    /**
+     * 处理请求：显示商品类别和商家
+     * 方法用途：返回商品类别和商家列表
+     * 操作简介：将返回值封装到CatAndBrandVo类中
+     *
+     * @author EGGE
+     * @date 2019-09-30 16:17:23
+     * @return
+     **/
     @RequestMapping("/admin/goods/catAndBrand")
     public BaseRespVo catAndBrand(){
-        List<CatAndBrandVo> brands=productService.findAllBrand();
-        List<CatAndBrandVo> categories=productService.findAllCategories();
+        List<CatAndBrandVo> brands=productService.findAllBrandToVo();
+        List<CatAndBrandVo> categories=productService.findAllCategoriesToVo();
 /*        无法自动封装为date.brands和date.categories
         List<List> dateList=new ArrayList<List>();
         dateList.add(brands);
@@ -42,6 +50,8 @@ public class ProductController {
         date.put("categoryList",categories);
         return BaseRespVo.success(date);
     }
+    @RequestMapping("admin/goods/list")
+    public BaseRespVo productList(){
 
-
+    }
 }

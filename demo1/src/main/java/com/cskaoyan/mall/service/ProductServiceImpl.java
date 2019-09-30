@@ -25,12 +25,12 @@ public class ProductServiceImpl implements  ProductService {
     @Autowired
     CategoryMapper categoryMapper;
     @Override
-    public List<CatAndBrandVo> findAllBrand() {
-        return brandMapper.findAllBrand();
+    public List<CatAndBrandVo> findAllBrandToVo() {
+        return brandMapper.findAllBrandToVo();
     }
 
     @Override
-    public List<CatAndBrandVo> findAllCategories() {
-        return categoryMapper.findAllCategories();
+    public List<CatAndBrandVo> findAllCategoriesToVo() {
+        return categoryMapper.findAllCategoriesToVo();
     }
 }
