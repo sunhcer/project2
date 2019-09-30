@@ -50,7 +50,7 @@
         from cskaoyan_mall_goods
         <where>
                 <if test="name !=null and name !=''">
-                    `name` = #{name}
+                    `name` like #{name}
                 </if>
                 <if test="goodsSn!=null and goodsSn!=''">
                    and goods_sn =#{goodsSn}

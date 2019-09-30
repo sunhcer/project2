@@ -64,4 +64,24 @@ public class ProductController {
         GoodsList data=productService.findGoodsByPage(page);
         return BaseRespVo.success(data);
     }
+    @RequestMapping("admin/comment/list")
+    public BaseRespVo productList(CommentsPage page) {
+        int i;
+        if(page.getUserId()!=null) {
+            try {//尝试将userId转化成int，失败则返回error信息
+                i = Integer.parseInt(page.getUserId());
+            } catch (Exception e) {
+                return BaseRespVo.error(null, 402, "参数错误");
+            }
+        }
+        if(page.getValueId()!=null){
+            try {//尝试将valueId转化成int，失败则返回error信息
+                i = Integer.parseInt(page.getValueId());
+            } catch (Exception e) {
+                return BaseRespVo.error(null, 402, "参数错误");
+            }
+        }
+        CommentsList data=productService.findCommentsByPage(page);
+        return BaseRespVo.success(data);
+    }
 }
