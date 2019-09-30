@@ -37,6 +37,7 @@ public class BaseRespVo<T> {
     }
     public static BaseRespVo success(Object data){
         BaseRespVo<Object> respVo=new BaseRespVo<>();
+
         respVo.setData(data);
         respVo.setErrmsg("成功");
         respVo.setErrno(0);

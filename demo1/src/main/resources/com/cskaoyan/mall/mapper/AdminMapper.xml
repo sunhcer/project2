@@ -32,7 +32,7 @@
       last_login_ip, last_login_time, avatar,
       add_time, update_time, deleted,
       role_ids)
-    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+    values (#{id,jdbcType=NULL}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
       #{lastLoginIp,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{avatar,jdbcType=VARCHAR},
       #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT},
       #{roleIds,jdbcType=VARCHAR})
@@ -150,4 +150,33 @@
       role_ids = #{roleIds,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <insert id="insertAdmin">
+    <selectKey resultType="int" order="AFTER" keyColumn="id" keyProperty="id">
+      select last_insert_id()
+    </selectKey>
+      insert into cskaoyan_mall_admin
+      <trim prefix="(" suffix=")" suffixOverrides=",">
+          <if test="username != null">
+              username,
+          </if>
+          <if test="password != null">
+              password,
+          </if>
+          <if test="roleIds.size != 0">
+              role_ids,
+          </if>
+      </trim>
+      <trim prefix="values (" suffix=")" suffixOverrides=",">
+          <if test="username != null">
+              #{username,jdbcType=VARCHAR},
+          </if>
+          <if test="password != null">
+              #{password,jdbcType=VARCHAR},
+          </if>
+          <if test="roleIds.size != 0">
+              #{roleIds},
+          </if>
+      </trim>
+  </insert>
 </mapper>
