@@ -7,6 +7,7 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="code" jdbcType="INTEGER" property="code" />
+    <collection property="children" column="id" select="com.cskaoyan.mall.mapper.RegionMapper.selectByParentKey"/>
   </resultMap>
   <sql id="Base_Column_List">
     id, pid, name, type, code
@@ -90,4 +91,20 @@
       code = #{code,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+   <!--根据pid寻找子结点-->
+  <select id="selectByParentKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_region
+    where pid = #{id,jdbcType=INTEGER}
+  </select>
+
+  <!--寻找所有的region 地区及其字表-->
+  <select id="selectAllRegion" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_region
+  </select>
+
+  <!--根据type寻找-->
 </mapper>
