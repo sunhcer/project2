@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.BrandMapper;
 import com.cskaoyan.mall.mapper.CategoryMapper;
+import com.cskaoyan.mall.mapper.CommentMapper;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import com.github.pagehelper.PageHelper;
@@ -29,6 +30,9 @@ public class ProductServiceImpl implements  ProductService {
     CategoryMapper categoryMapper;
 
     @Autowired
+    CommentMapper commentMapper;
+
+    @Autowired
     GoodsMapper goodsMapper;
 
     @Override
@@ -53,10 +57,11 @@ public class ProductServiceImpl implements  ProductService {
 
     @Override
     public GoodsList findGoodsByPage(GoodsPage page) {
-        PageHelper.startPage(page.getPage(),page.getLimit(),page.getDesc());
+        PageHelper.startPage(page.getPage(),page.getLimit(),page.getSort()+" "+page.getOrder());
+        //sort代表要查的子列，order代表排序规则，二者之间需要空格
         List<Goods> goods;
         if(page.getName()!=null||page.getGoodsSn()!=null) {//改进版：去除前后空格
-            goods = goodsMapper.findGoodsByNameAndGoodsSn(page.getName().trim(), page.getGoodsSn().trim());
+            goods = goodsMapper.findGoodsByNameAndGoodsSn("%"+page.getName().trim()+"%", page.getGoodsSn().trim());
         }else{
             goods=goodsMapper.findAllGoods();
         }
@@ -66,5 +71,23 @@ public class ProductServiceImpl implements  ProductService {
         goodsList.setItems(goods);
         goodsList.setTotal(total);
         return goodsList;
+    }
+
+    @Override
+    public CommentsList findCommentsByPage(CommentsPage page) {
+        PageHelper.startPage(page.getPage(),page.getLimit(),page.getSort()+" "+page.getOrder());
+        //sort代表要查的子列，order代表排序规则，二者之间需要空格
+        List<Comment> comments;
+        if(page.getValueId()!=null||page.getUserId()!=null) {//改进版：去除前后空格
+            comments = commentMapper.findCommentsByValueIdAndUserId(page.getValueId().trim(), page.getValueId().trim());
+        }else{
+            comments=commentMapper.findAllComments();
+        }
+        PageInfo<Comment> commentsPageInfo=new PageInfo<>(comments);
+        long total=commentsPageInfo.getTotal();
+       CommentsList commentsList=new CommentsList();
+        commentsList.setItems(comments);
+        commentsList.setTotal(total);
+        return commentsList;
     }
 }

@@ -22,4 +22,6 @@ public interface ProductService {
     Integer findAmountOfGoods();
 
     GoodsList findGoodsByPage(GoodsPage page);
+
+    CommentsList findCommentsByPage(CommentsPage page);
 }
