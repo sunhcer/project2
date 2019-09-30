@@ -24,15 +24,15 @@ public class BrandServiceImpl implements BrandService {
     @Autowired
     BrandMapper brandMapper;
 
-    /*@Override
+    @Override
     public BrandList getBrandList(BrandPage page) {
         PageHelper.startPage(page.getPage(), page.getLimit(), page.getDesc());
-        brandMapper.
+        List<Brand> brands = brandMapper.findAllBrandDetail();
         PageInfo<Brand> brandPageInfo = new PageInfo<>(brands);
         long total = brandPageInfo.getTotal();
         BrandList brandList = new BrandList();
         brandList.setTotal(total);
         brandList.setItems(brands);
         return brandList;
-    }*/
+    }
 }
