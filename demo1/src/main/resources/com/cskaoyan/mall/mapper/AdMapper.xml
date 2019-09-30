@@ -174,4 +174,42 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="queryAllAd" resultType="com.cskaoyan.mall.bean.Ad">
+    select id,name,link,url,position,content,enabled,add_time,update_time,deleted
+    from cskaoyan_mall_ad
+  </select>
+  <select id="queryCurrentPageAdByPageAndLimit" resultType="com.cskaoyan.mall.bean.Ad">
+    select id,name,link,url,position,content,enabled,add_time,update_time,deleted
+    from cskaoyan_mall_ad limit #{limit} offset #{offsetNum}
+  </select>
+
+  <insert id="insertAdImage">
+    <selectKey resultType="int" keyProperty="storage.id" keyColumn="id" order="AFTER">
+      select last_insert_id() as id
+    </selectKey>
+    insert into cskaoyan_mall_storage (id,`key`,name,type,size,url,add_time,update_time) values(
+    null,#{storage.key},
+    #{storage.name},
+    #{storage.type},
+    #{storage.size},#{storage.url},
+    #{storage.addTime},
+    #{storage.updateTime}
+    )
+  </insert>
+    <!--addAd-->
+    <insert id="addAd">
+        <selectKey resultType="int" keyProperty="ad.id" keyColumn="id" order="AFTER">
+            select last_insert_id() as id
+        </selectKey>
+        insert into cskaoyan_mall_ad (id,name,link,enabled,url,position,content,add_time,update_time) values(
+        null,#{ad.name},
+        #{ad.link},
+        #{ad.enabled},
+        #{ad.url},
+        #{ad.position},
+        #{ad.content},
+        #{ad.addTime},
+        #{ad.updateTime}
+        )
+    </insert>
 </mapper>
