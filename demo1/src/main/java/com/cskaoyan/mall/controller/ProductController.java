@@ -34,7 +34,7 @@ public class ProductController {
      *
      * @author EGGE
      * @date 2019-09-30 16:17:23
-     * @return
+     * @return 返回给前端的数据
      **/
     @RequestMapping("/admin/goods/catAndBrand")
     public BaseRespVo catAndBrand(){
@@ -68,10 +68,15 @@ public class ProductController {
     }
 
     /**
+     * 处理请求：显示留言列表/搜索留言
+     * 方法用途：返回留言列表
+     * 操作简介：根据传入参数搜索留言
      *
-     * @param page
-     * @return
-     */
+     * @author EGGE
+     * @date 2019-10-01 00:24:55
+     * @param page 留言分页信息
+     * @return  返回给前端的数据
+     **/
     @RequestMapping("admin/comment/list")
     public BaseRespVo productList(CommentsPage page) {
         int i;
@@ -92,6 +97,16 @@ public class ProductController {
         CommentsList data=productService.findCommentsByPage(page);
         return BaseRespVo.success(data);
     }
+    /**
+     * 处理请求：留言回复
+     * 方法用途：回复留言
+     * 操作简介：对留言进行合法性判断并回复
+     *
+     * @author EGGE
+     * @date 2019-10-01 00:24:48
+     * @param commitReplyRequest  回复的留言和id
+     * @return 返回给前端的数据
+     **/
     @RequestMapping("admin/order/reply")
     public BaseRespVo replyComment(@RequestBody CommitReplyRequest commitReplyRequest) {
         Integer commentId=commitReplyRequest.getCommentId();
@@ -108,4 +123,11 @@ public class ProductController {
         return BaseRespVo.success(null);
 
     }
-}
+
+    @RequestMapping("admin/comment/delete")
+    public BaseRespVo replyComment(@RequestBody Comment comment) {
+        productService.deleteCommentById(comment);
+        return BaseRespVo.success(null);
+    }
+
+    }

@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -99,5 +100,10 @@ public class ProductServiceImpl implements  ProductService {
     @Override
     public int updateComment(Comment comment) {
         return commentMapper.updateByPrimaryKeySelective(comment);
+    }
+
+    @Override
+    public int deleteCommentById(@RequestBody Comment comment) {
+        return commentMapper.deleteByPrimaryKey(comment.getId());
     }
 }

@@ -28,4 +28,6 @@ public interface ProductService {
     Comment findCommentById(Integer commentId);
 
     int updateComment(Comment comment);
+
+    int deleteCommentById(Comment comment);
 }
