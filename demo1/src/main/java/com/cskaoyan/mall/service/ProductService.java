@@ -22,4 +22,12 @@ public interface ProductService {
     Integer findAmountOfGoods();
 
     GoodsList findGoodsByPage(GoodsPage page);
+
+    CommentsList findCommentsByPage(CommentsPage page);
+
+    Comment findCommentById(Integer commentId);
+
+    int updateComment(Comment comment);
+
+    int deleteCommentById(Comment comment);
 }

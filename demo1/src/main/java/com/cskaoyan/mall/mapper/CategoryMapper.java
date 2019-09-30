@@ -20,4 +20,7 @@ public interface CategoryMapper {
 
     List<CatAndBrandVo> findAllCategoriesToVo();
 
+    List<CatAndBrandVo> findLevel1Categories();
+
+    List<Category> findAllCateGoriesByLevel(String level);
 }

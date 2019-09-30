@@ -35,6 +35,12 @@ public class BaseRespVo<T> {
     public void setErrno(int errno) {
         this.errno = errno;
     }
+
+    /**
+     * 返回给前端数据 成功时
+     * @param data 封装的数据
+     * @return 返回给前端的数据
+     */
     public static BaseRespVo success(Object data){
         BaseRespVo<Object> respVo=new BaseRespVo<>();
 
@@ -44,11 +50,28 @@ public class BaseRespVo<T> {
         return respVo;
     }
 
+<<<<<<< HEAD
     public static BaseRespVo fail(int errno, String errmsg) {
         BaseRespVo<Object> respVo = new BaseRespVo<>();
 
         respVo.setErrno(errno);
         respVo.setErrmsg(errmsg);
+=======
+    /**
+     * 返回给前端数据 失败时
+     * @param data 封装的数据
+     * @param errno 错误代码
+     * @param errmsg 错误信息
+     * @return 返回给前端的数据
+     */
+    public static BaseRespVo error(Object data,int errno,String errmsg){
+        BaseRespVo<Object> respVo=new BaseRespVo<>();
+
+        respVo.setData(data);
+        respVo.setErrmsg(errmsg);
+        respVo.setErrno(errno);
+>>>>>>> 8e1ea5417ba9c7e7457ea536fad04510d9f26cbd
         return respVo;
     }
+
 }

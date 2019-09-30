@@ -3,8 +3,7 @@ package com.cskaoyan.mall.bean;
 import java.util.List;
 
 /**
- * 类简介：
- * 当前方法：
+ * 类简介：商品页面显示参数
  * 创建时间: 2019-09-30 17:20
  *
  * @author EGGE

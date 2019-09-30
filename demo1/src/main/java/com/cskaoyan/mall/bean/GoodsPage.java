@@ -7,20 +7,36 @@ package com.cskaoyan.mall.bean;
  * @author EGGE
  */
 public class GoodsPage {
-    private int page;
-    private int limit;
-    private String addTime;
-    private String desc;
-    private String name;
-    private String goodsSn;
+    private int page;//当前页数
+    private int limit;//每页限制
+    private String sort;//排序的子列
+    private String order;//排序规则
+    private String name;//商品名称
+    private String goodsSn;//商品编号
+
+    public String getSort() {
+        return sort;
+    }
+
+    public void setSort(String sort) {
+        this.sort = sort;
+    }
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
 
     @Override
     public String toString() {
         return "GoodsPage{" +
                 "page=" + page +
                 ", limit=" + limit +
-                ", addTime='" + addTime + '\'' +
-                ", desc='" + desc + '\'' +
+                ", sort='" + sort + '\'' +
+                ", order='" + order + '\'' +
                 ", name='" + name + '\'' +
                 ", goodsSn='" + goodsSn + '\'' +
                 '}';
@@ -58,19 +74,4 @@ public class GoodsPage {
         this.limit = limit;
     }
 
-    public String getAddTime() {
-        return addTime;
-    }
-
-    public void setAddTime(String addTime) {
-        this.addTime = addTime;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    public void setDesc(String desc) {
-        this.desc = desc;
-    }
 }
