@@ -52,6 +52,6 @@ public class ProductController {
     }
     @RequestMapping("admin/goods/list")
     public BaseRespVo productList(){
-
+        return null;
     }
 }
