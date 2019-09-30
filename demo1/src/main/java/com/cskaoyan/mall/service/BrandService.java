@@ -10,5 +10,5 @@ import com.cskaoyan.mall.bean.BrandPage;
  * @Time 14:50
  */
 public interface BrandService {
-//    BrandList getBrandList(BrandPage page);
+    BrandList getBrandList(BrandPage page);
 }

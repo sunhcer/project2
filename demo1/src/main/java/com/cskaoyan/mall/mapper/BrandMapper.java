@@ -20,4 +20,6 @@ public interface BrandMapper {
 
     List<CatAndBrandVo> findAllBrand();
 
+    List<Brand> findAllBrandDetail();
+
 }
