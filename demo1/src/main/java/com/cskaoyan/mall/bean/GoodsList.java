@@ -1,0 +1,39 @@
+package com.cskaoyan.mall.bean;
+
+import java.util.List;
+
+/**
+ * 类简介：
+ * 当前方法：
+ * 创建时间: 2019-09-30 17:20
+ *
+ * @author EGGE
+ */
+public class GoodsList {
+    long total;
+    List<Goods> items;
+
+    @Override
+    public String toString() {
+        return "GoodsList{" +
+                "total=" + total +
+                ", items=" + items +
+                '}';
+    }
+
+    public long getTotal() {
+        return total;
+    }
+
+    public void setTotal(long total) {
+        this.total = total;
+    }
+
+    public List<Goods> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Goods> items) {
+        this.items = items;
+    }
+}

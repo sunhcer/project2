@@ -99,11 +99,12 @@
     where pid = #{id,jdbcType=INTEGER}
   </select>
 
-  <!--寻找所有的region 地区及其字表-->
-  <select id="selectAllRegion" resultMap="BaseResultMap">
+  <!--寻找所有的省 及其子信息-->
+  <select id="selectAllProvince" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from cskaoyan_mall_region
+    where type = 1
   </select>
 
   <!--根据type寻找-->

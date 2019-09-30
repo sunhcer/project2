@@ -27,7 +27,7 @@
     <result column="detail" jdbcType="LONGVARCHAR" property="detail" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, goods_sn, name, category_id, brand_id, gallery, keywords, brief, is_on_sale,
+    id, goods_sn, `name`, category_id, brand_id, gallery, keywords, brief, is_on_sale,
     sort_order, pic_url, share_url, is_new, is_hot, unit, counter_price, retail_price,
     add_time, update_time, deleted
   </sql>
@@ -41,6 +41,26 @@
     <include refid="Blob_Column_List" />
     from cskaoyan_mall_goods
     where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="findGoodsByNameAndGoodsSn" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cskaoyan_mall_goods
+    where `name` = #{name} and goods_sn =#{goodsSn}
+  </select>
+  <select id="findAllGoods" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from cskaoyan_mall_goods
+  </select>
+  <select id="findAmountOfGoods" resultType="Integer">
+    select
+    count(*)
+    from cskaoyan_mall_goods
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_goods
