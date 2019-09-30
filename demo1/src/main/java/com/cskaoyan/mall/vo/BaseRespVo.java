@@ -42,6 +42,13 @@ public class BaseRespVo<T> {
         respVo.setErrmsg("成功");
         respVo.setErrno(0);
         return respVo;
+    }
 
+    public static BaseRespVo fail(int errno, String errmsg) {
+        BaseRespVo<Object> respVo = new BaseRespVo<>();
+
+        respVo.setErrno(errno);
+        respVo.setErrmsg(errmsg);
+        return respVo;
     }
 }
