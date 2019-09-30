@@ -90,4 +90,14 @@ public class ProductServiceImpl implements  ProductService {
         commentsList.setTotal(total);
         return commentsList;
     }
+
+    @Override
+    public Comment findCommentById(Integer commentId) {
+        return commentMapper.selectByPrimaryKey(commentId);
+    }
+
+    @Override
+    public int updateComment(Comment comment) {
+        return commentMapper.updateByPrimaryKeySelective(comment);
+    }
 }

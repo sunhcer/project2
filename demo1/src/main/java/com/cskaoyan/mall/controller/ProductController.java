@@ -5,7 +5,9 @@ import com.cskaoyan.mall.service.ProductService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -64,6 +66,12 @@ public class ProductController {
         GoodsList data=productService.findGoodsByPage(page);
         return BaseRespVo.success(data);
     }
+
+    /**
+     *
+     * @param page
+     * @return
+     */
     @RequestMapping("admin/comment/list")
     public BaseRespVo productList(CommentsPage page) {
         int i;
@@ -83,5 +91,21 @@ public class ProductController {
         }
         CommentsList data=productService.findCommentsByPage(page);
         return BaseRespVo.success(data);
+    }
+    @RequestMapping("admin/order/reply")
+    public BaseRespVo replyComment(@RequestBody CommitReplyRequest commitReplyRequest) {
+        Integer commentId=commitReplyRequest.getCommentId();
+        String content=commitReplyRequest.getContent();
+        if(commentId==null||content==null)
+            return BaseRespVo.error(null, 402, "参数错误");
+        Comment comment=productService.findCommentById(commentId);
+        if(comment==null||comment.getDeleted())//deleted代表逻辑删除
+            return BaseRespVo.error(null, 404, "未能找到该留言，请检查参数");
+        if(comment.getContent()!=null)
+            return BaseRespVo.error(null, 622, "订单商品已回复!");
+        productService.updateComment(comment);
+        //未能获取成功时数据，后考虑修改
+        return BaseRespVo.success(null);
+
     }
 }
