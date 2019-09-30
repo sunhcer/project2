@@ -21,6 +21,6 @@ public class MarkServiceImpl implements MarkService {
 
     @Override
     public List<Region> getAllRegion() {
-        return regionMapper.selectAllRegion();
+        return regionMapper.selectAllProvince();
     }
 }
