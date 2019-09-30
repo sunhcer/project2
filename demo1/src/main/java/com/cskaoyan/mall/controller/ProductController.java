@@ -1,7 +1,6 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.Category;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.service.ProductService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
@@ -51,7 +50,18 @@ public class ProductController {
         return BaseRespVo.success(date);
     }
     @RequestMapping("admin/goods/list")
-    public BaseRespVo productList(){
-        return null;
+    public BaseRespVo productList(GoodsPage page){
+       /* 使用心得分页插件会更简单
+        List<Goods> items=productService.findGoodsByPage(page);
+        Integer total=productService.findAmountOfGoods();
+        if(total==null){
+            total=0;
+        }
+        Map data=new HashMap();
+        data.put("total",total);
+        data.put("items",items);
+        return BaseRespVo.success(data);*/
+        GoodsList data=productService.findGoodsByPage(page);
+        return BaseRespVo.success(data);
     }
 }

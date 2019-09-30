@@ -1,7 +1,6 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Brand;
-import com.cskaoyan.mall.bean.Category;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 
 import java.util.List;
@@ -17,4 +16,10 @@ public interface ProductService {
     List<CatAndBrandVo> findAllBrandToVo();
 
     List<CatAndBrandVo> findAllCategoriesToVo();
+
+    List<Goods> findAllGoods();
+
+    Integer findAmountOfGoods();
+
+    GoodsList findGoodsByPage(GoodsPage page);
 }
