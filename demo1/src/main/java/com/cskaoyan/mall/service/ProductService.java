@@ -14,7 +14,7 @@ import java.util.List;
  * @author EGGE
  */
 public interface ProductService {
-    List<CatAndBrandVo> findAllBrand();
+    List<CatAndBrandVo> findAllBrandToVo();
 
-    List<CatAndBrandVo> findAllCategories();
+    List<CatAndBrandVo> findAllCategoriesToVo();
 }

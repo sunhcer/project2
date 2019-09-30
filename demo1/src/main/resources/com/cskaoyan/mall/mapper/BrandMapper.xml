@@ -25,7 +25,7 @@
     <sql id="CatAndBrandVo">
         id as `value`,`name` as label
     </sql>
-    <select id="findAllBrand" resultType="com.cskaoyan.mall.vo.CatAndBrandVo">
+    <select id="findAllBrandToVo" resultType="com.cskaoyan.mall.vo.CatAndBrandVo">
         select
         <include refid="CatAndBrandVo"/>
         from cskaoyan_mall_brand

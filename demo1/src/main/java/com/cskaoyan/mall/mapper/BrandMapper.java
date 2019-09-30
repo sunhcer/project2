@@ -18,6 +18,6 @@ public interface BrandMapper {
 
     int updateByPrimaryKey(Brand record);
 
-    List<CatAndBrandVo> findAllBrand();
+    List<CatAndBrandVo> findAllBrandToVo();
 
 }
