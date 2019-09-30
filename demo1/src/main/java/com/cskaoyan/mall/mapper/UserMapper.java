@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.mapper;
 
+import com.cskaoyan.mall.bean.StatUser;
 import com.cskaoyan.mall.bean.User;
 
 public interface UserMapper {
@@ -14,4 +15,6 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    StatUser[] getStatUsers();
 }
