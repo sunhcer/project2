@@ -1,4 +1,4 @@
-package com.cskaoyan.vo;
+package com.cskaoyan.mall.vo;
 
 /**
  * 类简介：
