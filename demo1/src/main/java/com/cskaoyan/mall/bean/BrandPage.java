@@ -6,7 +6,7 @@ package com.cskaoyan.mall.bean;
  * @Date: 2019/9/30
  * @Time 14:41
  */
-public class Page {
+public class BrandPage {
     private int page;
     private int limit;
     private String sort_time;
@@ -46,7 +46,7 @@ public class Page {
 
     @Override
     public String toString() {
-        return "Page{" +
+        return "BrandPage{" +
                 "page=" + page +
                 ", limit=" + limit +
                 ", sort_time='" + sort_time + '\'' +
