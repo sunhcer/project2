@@ -2,6 +2,7 @@ package com.cskaoyan.mall.controller;
 
 
 import com.cskaoyan.mall.vo.BaseRespVo;
+import com.cskaoyan.mall.vo.DashBoard;
 import com.cskaoyan.mall.vo.LoginVo;
 import com.cskaoyan.mall.vo.UserInfo;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,5 +40,20 @@ public class AuthController {
         BaseRespVo respVo=BaseRespVo.success(userInfo);
         return respVo;
 
+    }
+
+    /**
+     * 登录后首页的 没有新建 直接用的这个
+     * @return
+     */
+    @RequestMapping("/admin/dashboard")
+    public BaseRespVo dashboard(){
+        DashBoard dashBoard = new DashBoard();
+        dashBoard.setGoodsTotal(253);
+        dashBoard.setUserTotal(22);
+        dashBoard.setProductsTotal(258);
+        dashBoard.setOrderTotal(207);
+        BaseRespVo respVo = BaseRespVo.success(dashBoard);
+        return respVo;
     }
 }

@@ -5,12 +5,12 @@ import com.cskaoyan.mall.bean.StatGood;
 import com.cskaoyan.mall.bean.StatOrder;
 import com.cskaoyan.mall.bean.StatUser;
 import com.cskaoyan.mall.vo.BaseRespVo;
-import com.cskaoyan.mall.vo.ResultVo;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 
 @RestController
 @RequestMapping("/admin/stat/")
