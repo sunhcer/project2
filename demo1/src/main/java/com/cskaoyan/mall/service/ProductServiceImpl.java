@@ -54,7 +54,12 @@ public class ProductServiceImpl implements  ProductService {
     @Override
     public GoodsList findGoodsByPage(GoodsPage page) {
         PageHelper.startPage(page.getPage(),page.getLimit(),page.getDesc());
-        List<Goods> goods=goodsMapper.findGoodsByNameAndGoodsSn( page.getName(),page.getGoodsSn());
+        List<Goods> goods;
+        if(page.getName()!=null||page.getGoodsSn()!=null) {//改进版：去除前后空格
+            goods = goodsMapper.findGoodsByNameAndGoodsSn(page.getName().trim(), page.getGoodsSn().trim());
+        }else{
+            goods=goodsMapper.findAllGoods();
+        }
         PageInfo<Goods> goodsPageInfo=new PageInfo<>(goods);
         long total=goodsPageInfo.getTotal();
         GoodsList goodsList=new GoodsList();
