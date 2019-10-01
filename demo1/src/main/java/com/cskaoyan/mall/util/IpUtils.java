@@ -5,4 +5,8 @@ public class IpUtils {
          s="http://localhost/"+s;
          return  s;
     }
+    public static String SplicePreIp(String url){
+        String urlWithoutPre=url.substring(url.indexOf("w")-1,url.length());
+        return urlWithoutPre;
+    }
 }

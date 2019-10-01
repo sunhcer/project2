@@ -1,7 +1,6 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Ad;
-import com.cskaoyan.mall.bean.Storage;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.AdMapper;
 import com.cskaoyan.mall.util.IpUtils;
 import com.cskaoyan.mall.vo.BaseRespVo;
@@ -13,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.System;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -30,8 +30,8 @@ public class AdServiceImpl implements AdService {
     public List<Ad> refAdPageList(int page, int limit) {
         //这个分页比之前的简单一点,暂时不用总数目和总页数
         //查询总数目
-//        List<Ad> list=adMapper.queryAllAd();
-//        int totalAd=list.size();
+//        List<Ad> list1=adMapper.queryAllAd();
+//        int totalAd=list1.size();
         //查询总页数
 //        int totalPages=0;
 //        if (totalAd%limit==0){
@@ -40,9 +40,23 @@ public class AdServiceImpl implements AdService {
 //            totalPages=totalAd/limit+1;
 //        }
         //每页显示的条目 products集合  limit page_size offset (currentPage-1)*page_size
-        int offsetNum=(page-1)*20;
+        int offsetNum=(page-1)*limit;
         List<Ad> list=adMapper.queryCurrentPageAdByPageAndLimit(limit,offsetNum);
+        //遍历list,拼接ip前缀
+        for (Ad ad : list) {
+            String url=ad.getUrl();
+            url=IpUtils.appendIp(url);
+            ad.setUrl(url);
+        }
         return list;
+    }
+
+    @Override
+    public int findTotalOfAllPage() {
+        //查询总数目
+        List<Ad> list1=adMapper.queryAllAd();
+        int totalAd=list1.size();
+        return totalAd;
     }
 
     @Override
@@ -103,10 +117,115 @@ public class AdServiceImpl implements AdService {
         BaseRespVo<Ad> adBaseRespVo = new BaseRespVo<>();
         adBaseRespVo.setErrmsg("成功");
         Date date = new Date();
+        String url=ad.getUrl();
+        //剪切url前缀,存到数据库
+        url=IpUtils.SplicePreIp(url);
+        ad.setUrl(url);
         ad.setAddTime(date);
         ad.setUpdateTime(date);
-        int ref= adMapper.addAd(ad);
+        //判断前端传来的link是否为null,这个和修改传的link默认空串不一样,是null
+        int ref=0;
+        if (ad.getLink()!=null) {
+             ref = adMapper.addAd(ad);
+        }else{
+           ref=adMapper.addAdWithoutLink(ad);
+        }
+        //拼接url返回
+        url=IpUtils.appendIp(url);
+        ad.setUrl(url);
         adBaseRespVo.setData(ad);
         return adBaseRespVo;
+    }
+
+    @Override
+    public List<Ad> queryAdPageList(AdReceive adReceive) {
+        int page=adReceive.getPage();
+        int limit=adReceive.getLimit();
+        int offsetNum=(page-1)*limit;
+        String name=adReceive.getName();
+        String content=adReceive.getContent();
+        if (name!=null) {
+           name  = "%" + name + "%";
+        }
+        if (content!=null) {
+         content = "%" + content + "%";
+        }
+        List<Ad> list=adMapper.queryPageListAdByPageAndLimit(limit,offsetNum,name,content);
+        for (Ad ad : list) {
+            String url=ad.getUrl();
+            url=IpUtils.appendIp(url);
+            ad.setUrl(url);
+        }
+        return list;
+    }
+
+    @Override
+    public int findTotalOfLikePage(AdReceive adReceive) {
+        int page=adReceive.getPage();
+        int limit=adReceive.getLimit();
+        int offsetNum=(page-1)*limit;
+        String name=adReceive.getName();
+        String content=adReceive.getContent();
+        if (name!=null) {
+            name  = "%" + name + "%";
+        }
+        if (content!=null) {
+            content = "%" + content + "%";
+        }
+        List<Ad> list=adMapper.queryAllPageListAdByPageAndLimit(name,content);
+        int total=list.size();
+        return total;
+    }
+
+    @Override
+    public BaseRespVo<Ad> updateAd(Ad ad) {
+        //这里name和content前端设置不可以为空,link可以为空串,link: "",这样不影响插入
+        String preUrl=ad.getUrl();
+        String url=IpUtils.SplicePreIp(preUrl);
+        ad.setUrl(url);
+        adMapper.updateAdById(ad);
+        //返回带前缀的url
+        ad.setUrl(preUrl);
+        BaseRespVo success = BaseRespVo.success(ad);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo<Ad> deleteAd(Integer id) {
+        adMapper.deleteByPrimaryKey(id);
+        BaseRespVo<Ad> baseRespVo = new BaseRespVo<>();
+        baseRespVo.setErrmsg("成功");
+        return baseRespVo;
+    }
+
+    @Override
+    public BaseRespVo findAllCoupon(int page, int limit) {
+        int total=adMapper.selectCouponAmount();
+        //分页
+        int offsetNum=(page-1)*limit;
+        List<Coupon> list=adMapper.queryCurrentPageCouponByPageAndLimit(limit,offsetNum);
+        CouponRef couponRef = new CouponRef(list, total);
+        BaseRespVo success = BaseRespVo.success(couponRef);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo findLikeCouponByReceive(CouponReceive receive) {
+        //找到模糊查询总数目,
+        String name=receive.getName();
+        int type1=receive.getType();
+        int status1=receive.getStatus();
+        if (name!=null) {
+            name="%"+name+"%";
+        }
+       int total = adMapper.selectLikeCouponAmount(name,type1,status1);
+        //分页
+        int page = receive.getPage();
+        int limit = receive.getLimit();
+        int offsetNum=(page-1)*limit;
+        List<Coupon> list=adMapper.selectLikeCouponPage(name,type1,status1,limit,offsetNum);
+        CouponRef couponRef = new CouponRef(list, total);
+        BaseRespVo success = BaseRespVo.success(couponRef);
+        return success;
     }
 }
