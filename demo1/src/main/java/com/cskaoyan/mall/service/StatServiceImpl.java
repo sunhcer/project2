@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.Stat;
 import com.cskaoyan.mall.bean.StatGood;
 import com.cskaoyan.mall.bean.StatOrder;
 import com.cskaoyan.mall.bean.StatUser;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -21,20 +22,26 @@ public class StatServiceImpl implements StatService {
     //这里需要Autowired各个模块的service
     //调用各个模块的service方法获取数据复制
 
+    @Autowired
+    UserService userService;
+
     @Override
     public Stat statUser() {
         Stat stat = new Stat();
         String columns[] = {"day","users"};
         stat.setColumns(columns);
-        StatUser statUser = new StatUser();
+//        StatUser statUser = new StatUser();
         //user模块提供给我user人数
-        statUser.setUsers(20);
+//        statUser.setUsers(20);
         //user模块提供给我user创建时间
-        String format = simpleDateFormat.format(new Date());
-        statUser.setDay(format);
+//        String format = simpleDateFormat.format(new Date());
+//        statUser.setDay(format);
         //user模块把所有数据封装成statUser数组
-        StatUser rows[] = {statUser};
-        stat.setRows(rows);
+//        StatUser rows[] = {statUser};
+//        stat.setRows(rows);
+
+        StatUser[] statUsers = userService.getStatUsers();
+        stat.setRows(statUsers);
         return stat;
     }
 

@@ -36,7 +36,7 @@
         where id = #{id,jdbcType=INTEGER}
     </delete>
     <insert id="insert" parameterType="com.cskaoyan.mall.bean.Brand">
-        insert into cskaoyan_mall_brand (id, name, desc,
+        insert into cskaoyan_mall_brand (id, name, `desc`,
                                          pic_url, sort_order, floor_price,
                                          add_time, update_time, deleted)
         values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR},
@@ -53,7 +53,7 @@
                 name,
             </if>
             <if test="desc != null">
-                desc,
+                `desc`,
             </if>
             <if test="picUrl != null">
                 pic_url,
@@ -111,7 +111,7 @@
                 name = #{name,jdbcType=VARCHAR},
             </if>
             <if test="desc != null">
-                desc = #{desc,jdbcType=VARCHAR},
+                `desc` = #{desc,jdbcType=VARCHAR},
             </if>
             <if test="picUrl != null">
                 pic_url = #{picUrl,jdbcType=VARCHAR},
@@ -137,7 +137,7 @@
     <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.Brand">
         update cskaoyan_mall_brand
         set name        = #{name,jdbcType=VARCHAR},
-            desc        = #{desc,jdbcType=VARCHAR},
+            `desc`        = #{desc,jdbcType=VARCHAR},
             pic_url     = #{picUrl,jdbcType=VARCHAR},
             sort_order  = #{sortOrder,jdbcType=TINYINT},
             floor_price = #{floorPrice,jdbcType=DECIMAL},
@@ -147,9 +147,16 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <!--当deleted状态为0时才取出-->
     <select id="findAllBrandDetail" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from cskaoyan_mall_brand
+        from cskaoyan_mall_brand where deleted = 0
     </select>
+
+    <!--假删除 状态为1代表删除-->
+    <update id="deleteById">
+        update cskaoyan_mall_brand
+        set deleted = 1 where id = #{id}
+    </update>
 </mapper>

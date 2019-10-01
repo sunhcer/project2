@@ -78,6 +78,9 @@
     from cskaoyan_mall_user
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getStatUsers" resultType="com.cskaoyan.mall.bean.StatUser">
+    SELECT birthday as day,count(*) as users FROM cskaoyan_mall_user group by birthday
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_user
     where id = #{id,jdbcType=INTEGER}

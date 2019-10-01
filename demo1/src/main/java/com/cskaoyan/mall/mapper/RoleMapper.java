@@ -1,6 +1,9 @@
 package com.cskaoyan.mall.mapper;
 
+import com.cskaoyan.mall.bean.Options;
 import com.cskaoyan.mall.bean.Role;
+
+import java.util.List;
 
 public interface RoleMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,10 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    List<Options> selectAllOptions();
+
+    List<Role> selectAllOptionsDesc();
+
+    List<Role> selectOptionByName(String name);
 }
