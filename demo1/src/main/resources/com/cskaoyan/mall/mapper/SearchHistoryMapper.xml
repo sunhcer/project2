@@ -11,8 +11,25 @@
     <result column="deleted" jdbcType="BIT" property="deleted" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, user_id, keyword, from, add_time, update_time, deleted
+    id, user_id, keyword, `from`, add_time, update_time, deleted
   </sql>
+
+  <select id="queryAllHistory" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from cskaoyan_mall_search_history
+    <where>
+      <if test="userId != null">
+        and user_id like '%' #{userId} '%'
+      </if>
+      <if test="keyword != null">
+        and  keyword like '%' #{keyword} '%'
+      </if>
+    </where>
+  </select>
+
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
