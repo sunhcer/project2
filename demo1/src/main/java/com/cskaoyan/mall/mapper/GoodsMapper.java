@@ -1,6 +1,9 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Goods;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface GoodsMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,4 +19,10 @@ public interface GoodsMapper {
     int updateByPrimaryKeyWithBLOBs(Goods record);
 
     int updateByPrimaryKey(Goods record);
+
+    List<Goods> findAllGoods();
+
+    Integer findAmountOfGoods();
+
+    List<Goods> findGoodsByNameAndGoodsSn(@Param("name")String name, @Param("goodsSn") String goodsSn);
 }

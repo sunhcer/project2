@@ -1,22 +1,17 @@
-#数据库配置 采用默认数据库
 spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mall2_project2?useUnicode=true&characterEncoding=utf-8&useSSL=false
-    username: root
-    password: 123456
-  resources:
-    static-locations: file:${my.file.path}, file:E:\
-my:
-  file:
-    path: E:\wx\storage\fetch\
+  profiles:
+    active: dev
 #配置日志级别和日志路径 只将mapper包下的级别调整为debug的
 logging:
   path: d:/log
   level:
     com:
       cskaoyan:
-        mapper: debug
+        mall:
+          mapper: debug
 server:
   port: 80
+my:
+  file:
+    path: E:\wx\storage\fetch\
 

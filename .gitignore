@@ -3,6 +3,9 @@
 
 # Log file
 *.log
+#每个人配置一个application.yml文件，把mysql的数据放进去
+demo1/src/main/resources/application-dev.yml
+
 
 # BlueJ files
 *.ctxt
@@ -25,7 +28,6 @@ hs_err_pid*
 
 demo1/target/
 !.mvn/wrapper/maven-wrapper.jar
-demo1/src/main/resources/application-dev.yml
 
 ### STS ###
 .apt_generated
