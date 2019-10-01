@@ -25,6 +25,7 @@ hs_err_pid*
 
 demo1/target/
 !.mvn/wrapper/maven-wrapper.jar
+demo1/src/main/resources/application-dev.yml
 
 ### STS ###
 .apt_generated
