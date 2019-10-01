@@ -11,3 +11,7 @@ logging:
           mapper: debug
 server:
   port: 80
+my:
+  file:
+    path: E:\wx\storage\fetch\
+
