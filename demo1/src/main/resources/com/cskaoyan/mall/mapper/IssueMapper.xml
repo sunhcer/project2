@@ -103,4 +103,14 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <select id="selectByCondition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_issue
+    <where>
+      <if test="question != null">question like #{question}</if>
+    </where>
+  </select>
 </mapper>

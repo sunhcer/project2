@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.service;
 
+import com.cskaoyan.mall.bean.Brand;
 import com.cskaoyan.mall.bean.BrandList;
 import com.cskaoyan.mall.bean.BrandPage;
 
@@ -10,5 +11,14 @@ import com.cskaoyan.mall.bean.BrandPage;
  * @Time 14:50
  */
 public interface BrandService {
+    /**
+     * 获取品牌
+     * @param page
+     * @return
+     */
     BrandList getBrandList(BrandPage page);
+
+    void updateBrand(Brand brand);
+
+    void deleteBrandById(Integer id);
 }

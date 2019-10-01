@@ -23,4 +23,6 @@ public interface CategoryMapper {
     List<CatAndBrandVo> findLevel1Categories();
 
     List<Category> findAllCateGoriesByLevel(String level);
+
+    void deleteById(Integer id);
 }

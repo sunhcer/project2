@@ -194,13 +194,18 @@
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_category
-        where level = #{level}
+        where level = #{level} and deleted = 0
     </select>
 
     <select id="findByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_category
-        where pid = #{id}
+        where pid = #{id} and deleted = 0
     </select>
+
+    <update id="deleteById">
+        update cskaoyan_mall_category
+        set deleted = 1 where id= #{id}
+    </update>
 </mapper>

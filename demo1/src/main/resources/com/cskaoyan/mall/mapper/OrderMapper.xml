@@ -338,4 +338,29 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectAllOrder" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_order
+    where deleted = 0
+  </select>
+  <select id="selectOrderByState" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_order
+    where order_status in #{order_status} and deleted = 0
+  </select>
+
+
+  <select id="selectOrderByCondition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_order
+    where deleted = 0
+    <trim suffixOverrides="and">
+      <if test="userId != null">and user_id=#{userId}</if>
+      <if test="orderSn != null">and order_sn=#{orderSn}</if>
+    </trim>
+  </select>
 </mapper>
