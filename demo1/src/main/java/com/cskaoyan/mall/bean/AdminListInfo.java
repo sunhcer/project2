@@ -6,7 +6,7 @@ import java.util.List;
 public class AdminListInfo {
     private long total;
 
-    private List<AdminDesc> items;
+    private List<Admin> items;
 
     public long getTotal() {
         return total;
@@ -16,11 +16,11 @@ public class AdminListInfo {
         this.total = total;
     }
 
-    public List<AdminDesc> getItems() {
+    public List<Admin> getItems() {
         return items;
     }
 
-    public void setItems(List<AdminDesc> items) {
+    public void setItems(List<Admin> items) {
         this.items = items;
     }
 

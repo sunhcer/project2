@@ -27,7 +27,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public BrandList getBrandList(BrandPage page) {
-        PageHelper.startPage(page.getPage(), page.getLimit(), page.getDesc());
+        PageHelper.startPage(page.getPage(), page.getLimit(), page.getSort_time()+" "+page.getDesc());
         List<Brand> brands = brandMapper.findAllBrandDetail();
         PageInfo<Brand> brandPageInfo = new PageInfo<>(brands);
         long total = brandPageInfo.getTotal();
@@ -48,5 +48,10 @@ public class BrandServiceImpl implements BrandService {
     public void deleteBrandById(Integer id) {
         //假删除  将deleted状态置为1
         brandMapper.deleteById(id);
+    }
+
+    @Override
+    public void insertBrand(Brand brand) {
+        int insertNum = brandMapper.insertSelective(brand);
     }
 }

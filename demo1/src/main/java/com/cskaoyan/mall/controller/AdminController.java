@@ -45,8 +45,8 @@ public class AdminController {
     }
 
     @RequestMapping("/admin/admin/delete")
-    public BaseRespVo delete(@RequestBody AdminDesc adminDesc) {
-        Integer id = adminDesc.getId();
+    public BaseRespVo delete(@RequestBody Admin admin) {
+        Integer id = admin.getId();
         adminService.deleteAdminById(id);
 
         return BaseRespVo.success(null);
