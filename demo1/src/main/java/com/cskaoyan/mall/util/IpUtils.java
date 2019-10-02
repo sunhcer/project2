@@ -9,4 +9,16 @@ public class IpUtils {
         String urlWithoutPre=url.substring(url.indexOf("w")-1,url.length());
         return urlWithoutPre;
     }
+
+    public static String getRandmPath(String fileName){
+        int hashCode = fileName.hashCode();
+        String hexString = Integer.toHexString(hashCode);
+        StringBuilder sb = new StringBuilder();
+        char[] chars = hexString.toCharArray();
+        for (char aChar : chars) {
+            sb.append("/" + aChar);
+        }
+        sb.append("/" + fileName);
+        return sb.toString();
+    }
 }
