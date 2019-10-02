@@ -22,7 +22,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> getAllCategory() {
-        //找L1的全部级别的
+        //找L1的全部级别的  并且删除状态要为0
         return categoryMapper.findAllCateGoriesByLevel("L1");
     }
 
@@ -49,5 +49,22 @@ public class CategoryServiceImpl implements CategoryService {
         //将更新时间换为现在
         category.setUpdateTime(new Date());
         categoryMapper.updateByPrimaryKeySelective(category);
+    }
+
+    /**
+     * 删除category 并且删除其子类 (其实只是将其被删除状态置为1)
+     * @param category
+     */
+    @Override
+    public void deleteCategory(Category category) {
+        List<Category> categoryList = category.getChildren();
+
+        categoryMapper.deleteById(category.getId());
+        if (categoryList != null){
+            for (Category category1 : categoryList) {
+                //将其子类删除状态全部置为1
+                categoryMapper.deleteById(category1.getId());
+            }
+        }
     }
 }

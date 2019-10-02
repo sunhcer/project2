@@ -12,6 +12,24 @@
   <sql id="Base_Column_List">
     id, user_id, goods_id, add_time, update_time, deleted
   </sql>
+
+
+  <select id="queryAllFoot" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from cskaoyan_mall_footprint
+    <where>
+      <if test="userId != null">
+        and user_id like '%' #{userId} '%'
+      </if>
+      <if test="goodsId != null">
+        and goods_id  = #{goodsId}
+      </if>
+      and deleted = 0
+    </where>
+  </select>
+
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

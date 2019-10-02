@@ -10,7 +10,7 @@ import java.util.List;
 public interface AdService {
     List<Ad> refAdPageList(int page, int limit);
 
-    BaseRespVo<Storage> createAdImage(MultipartFile file) throws IOException;
+//    BaseRespVo<Storage> createAdImage(MultipartFile file) throws IOException;
 
     BaseRespVo<Ad>  addAd(Ad ad);
 

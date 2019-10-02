@@ -1,6 +1,9 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.Admin;
+import com.cskaoyan.mall.bean.AdminListInfo;
+import com.cskaoyan.mall.bean.OptionListInfo;
+import com.cskaoyan.mall.bean.Options;
 import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.service.RoleService;
 import com.cskaoyan.mall.vo.BaseRespVo;
@@ -10,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
 
 @RestController
 public class AdminController {
@@ -39,17 +41,27 @@ public class AdminController {
     }
 
     @RequestMapping("/admin/admin/create")
-    public BaseRespVo create(){
-
-        return null;
+    public BaseRespVo create(@RequestBody Admin admin){
+        Integer id = admin.getId();
+        adminService.addAdmin(admin);
+        Admin admin1 = adminService.selectAdminById(id);
+        return BaseRespVo.success(admin1);
     }
 
     @RequestMapping("/admin/admin/delete")
-    public BaseRespVo delete(@RequestBody AdminDesc adminDesc) {
-        Integer id = adminDesc.getId();
+    public BaseRespVo delete(@RequestBody Admin admin) {
+        Integer id = admin.getId();
         adminService.deleteAdminById(id);
 
         return BaseRespVo.success(null);
+    }
+
+    @RequestMapping("/admin/admin/update")
+    public BaseRespVo update(@RequestBody Admin admin) {
+        adminService.updateAdmin(admin);
+        Integer id = admin.getId();
+        Admin admin1 = adminService.selectAdminById(id);
+        return BaseRespVo.success(admin1);
     }
 
 

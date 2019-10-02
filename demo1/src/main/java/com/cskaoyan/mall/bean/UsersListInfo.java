@@ -2,19 +2,13 @@ package com.cskaoyan.mall.bean;
 
 import java.util.List;
 
-/**
- * 类简介：商品页面显示参数
- * 创建时间: 2019-09-30 17:20
- *
- * @author EGGE
- */
-public class GoodsList {
+public class UsersListInfo {
     long total;
-    List<Goods> items;
+    List<User> items;
 
     @Override
     public String toString() {
-        return "GoodsList{" +
+        return "UsersListInfo{" +
                 "total=" + total +
                 ", items=" + items +
                 '}';
@@ -28,11 +22,15 @@ public class GoodsList {
         this.total = total;
     }
 
-    public List<Goods> getItems() {
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+    public List<User> getItems() {
         return items;
     }
 
-    public void setItems(List<Goods> items) {
+    public void setItems(List<User> items) {
         this.items = items;
     }
 }

@@ -3,14 +3,14 @@ package com.cskaoyan.mall.bean;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description:    复用  在订单和品牌处复用 问题也复用了
  * @Author: zhou
  * @Date: 2019/9/30
  * @Time 15:51
  */
-public class BrandList {
+public class BrandList <T> {
     long total;
-    List<Brand> items;
+    List<T> items;
 
     public long getTotal() {
         return total;
@@ -20,11 +20,11 @@ public class BrandList {
         this.total = total;
     }
 
-    public List<Brand> getItems() {
+    public List<T> getItems() {
         return items;
     }
 
-    public void setItems(List<Brand> items) {
+    public void setItems(List<T> items) {
         this.items = items;
     }
 

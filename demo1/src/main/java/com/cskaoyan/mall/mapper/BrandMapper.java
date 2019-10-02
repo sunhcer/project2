@@ -22,4 +22,5 @@ public interface BrandMapper {
 
     List<Brand> findAllBrandDetail();
 
+    void deleteById(Integer id);
 }

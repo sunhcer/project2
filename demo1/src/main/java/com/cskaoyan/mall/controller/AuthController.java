@@ -1,10 +1,12 @@
 package com.cskaoyan.mall.controller;
 
 
+import com.cskaoyan.mall.service.DashBoardService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.DashBoard;
 import com.cskaoyan.mall.vo.LoginVo;
 import com.cskaoyan.mall.vo.UserInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,6 +22,10 @@ import java.util.List;
  */
 @RestController
 public class AuthController {
+    @Autowired
+    DashBoardService dashBoardService;
+
+
     @RequestMapping("admin/auth/login")
     public BaseRespVo login(LoginVo user){
         BaseRespVo respVo=BaseRespVo.success("795d0858-6431-462a-b1ae-50b58801733f");
@@ -48,11 +54,13 @@ public class AuthController {
      */
     @RequestMapping("/admin/dashboard")
     public BaseRespVo dashboard(){
+
         DashBoard dashBoard = new DashBoard();
-        dashBoard.setGoodsTotal(253);
-        dashBoard.setUserTotal(22);
-        dashBoard.setProductsTotal(258);
-        dashBoard.setOrderTotal(207);
+
+        dashBoard.setGoodsTotal(dashBoardService.queryGoodsTotal());
+        dashBoard.setUserTotal(dashBoardService.queryUserTotal());
+        dashBoard.setProductsTotal(dashBoardService.queryProductTotal());
+        dashBoard.setOrderTotal(dashBoardService.queryOrderTotal());
         BaseRespVo respVo = BaseRespVo.success(dashBoard);
         return respVo;
     }

@@ -174,4 +174,130 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+  <!--<resultMap id="addressMapLeft" type="com.cskaoyan.mall.vo.UserAddress">-->
+  <!--<result column="is_default"  property="isDefault" />-->
+  <!--<result column="address"  property="address" />-->
+  <!--<result column="name"  property="name" />-->
+  <!--<result column="mobile"  property="mobile" />-->
+  <!--<result column="id"  property="id" />-->
+  <!--<result column="user_id"  property="userId" />-->
+  <!--<association property="area" column="area_id" select="com.cskaoyan.mapper.AddressMapper.queryAreaByAreaId"/>-->
+  <!--<association property="areaId" column="area_id" select="com.cskaoyan.mapper.AddressMapper.queryAreaIdByAreaId"/>-->
+
+  <!--<association property="city" column="city_id" select="com.cskaoyan.mapper.AddressMapper.queryCityByCityId"/>-->
+  <!--<association property="cityId" column="city_id" select="com.cskaoyan.mapper.AddressMapper.queryCityIdByCityId"/>-->
+
+  <!--<association property="province" column="province_id" select="com.cskaoyan.mapper.AddressMapper.queryProvinceByProvinceId"/>-->
+  <!--<association property="provinceId" column="province_id" select="com.cskaoyan.mapper.AddressMapper.queryProvinceByProvinceId"/>-->
+  <!--</resultMap>-->
+
+  <!--<select id="queryUsersAddress" resultMap="addressMapLeft">-->
+    <!--select-->
+    <!--is_default,-->
+    <!--area_id,-->
+    <!--address,-->
+    <!--`name`,-->
+    <!--mobile,-->
+    <!--id,-->
+    <!--city_id,-->
+    <!--user_id,-->
+    <!--province_id-->
+    <!--from cskaoyan_mall_address-->
+  <!--<where>-->
+    <!--<if test="name != null">-->
+     <!--and  `name` like '%' #{name} '%'-->
+    <!--</if>-->
+   <!--<if test="userId != null">-->
+      <!--and  user_id like '%' #{userId} '%'-->
+    <!--</if>-->
+    <!--</where>-->
+    <!--&lt;!&ndash;select id ,name,user_id,province_id,city_id,area_id,address,mobile,is_default&ndash;&gt;-->
+    <!--&lt;!&ndash;from cskaoyan_mall_address&ndash;&gt;-->
+    <!--&lt;!&ndash;<where>&ndash;&gt;-->
+      <!--&lt;!&ndash;<if test="name !=null">&ndash;&gt;-->
+        <!--&lt;!&ndash;and name like '%' #{name} '%'&ndash;&gt;-->
+      <!--&lt;!&ndash;</if>&ndash;&gt;-->
+      <!--&lt;!&ndash;<if test="userId != null">&ndash;&gt;-->
+        <!--&lt;!&ndash;and user_id = #{userId}&ndash;&gt;-->
+      <!--&lt;!&ndash;</if>&ndash;&gt;-->
+    <!--&lt;!&ndash;</where>&ndash;&gt;-->
+  <!--</select>-->
+
+  <!--<select id="queryAreaByAreaId" resultType="string" >-->
+    <!--select `name` as area from cskaoyan_mall_region where `code` = #{area_id}-->
+  <!--</select>-->
+  <!--<select id="queryAreaIdByAreaId" resultType="int">-->
+    <!--select id as areaId from cskaoyan_mall_region where `code` = #{area_id}-->
+  <!--</select>-->
+
+  <!--<select id="queryCityByCityId" resultType="string" >-->
+    <!--select `name` as city from cskaoyan_mall_region where `code` = #{city_id}-->
+  <!--</select>-->
+  <!--<select id="queryCityIdByCityId" resultType="int">-->
+    <!--select id as cityId from cskaoyan_mall_region where `code` = #{city_id}-->
+  <!--</select>-->
+  <!--<select id="queryProvinceByProvinceId" resultType="string">-->
+    <!--select `name` as province from cskaoyan_mall_region where `code` = #{province_id}-->
+  <!--</select>-->
+  <!--<select id="queryProvinceIdByProvinceId" resultType="int">-->
+    <!--select id as provinceId from cskaoyan_mall_region where `code` = #{province_id}-->
+  <!--</select>-->
+
+
+
+
+  <!--查询用户地址-->
+  <resultMap id="AddressRegionMap" type="com.cskaoyan.mall.vo.UserAddress">
+    <result column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="user_id" property="userId"/>
+    <result column="address" property="address"/>
+    <result column="mobile" property="mobile"/>
+    <result column="is_default" property="isDefault"/>
+    <association property="provinceId" column="province_id"
+                 select="com.cskaoyan.mall.mapper.AddressMapper.selectProvinceId"/>
+    <association property="province" column="province_id"
+                 select="com.cskaoyan.mall.mapper.AddressMapper.selectProvince"/>
+    <association property="cityId" column="city_id"
+                 select="com.cskaoyan.mall.mapper.AddressMapper.selectCityId"/>
+    <association property="city" column="city_id"
+                 select="com.cskaoyan.mall.mapper.AddressMapper.selectCity"/>
+    <association property="areaId" column="area_id"
+                 select="com.cskaoyan.mall.mapper.AddressMapper.selectAreaId"/>
+    <association property="area" column="area_id"
+                 select="com.cskaoyan.mall.mapper.AddressMapper.selectArea"/>
+  </resultMap>
+  <select id="queryUsersAddress" resultMap="AddressRegionMap">
+    select id ,name,user_id,province_id,city_id,area_id,address,mobile,is_default
+    from cskaoyan_mall_address
+    <where>
+      <if test="name !=null">
+        and name like '%' #{name} '%'
+      </if>
+      <if test="userId != null">
+        and user_id = #{userId}
+      </if>
+      and deleted = 0
+    </where>
+  </select>
+  <select id="selectProvinceId" resultType="int">
+        select id as provinceId from cskaoyan_mall_region where `code` =  #{province_id}
+    </select>
+  <select id="selectProvince" resultType="string">
+        select name as province from cskaoyan_mall_region where `code` =  #{province_id}
+    </select>
+  <select id="selectCityId" resultType="int">
+        select id as cityId from cskaoyan_mall_region where `code` =  #{city_id}
+    </select>
+  <select id="selectCity" resultType="string">
+        select name as city from cskaoyan_mall_region where `code` =  #{city_id}
+    </select>
+  <select id="selectAreaId" resultType="int">
+        select id as areaId from cskaoyan_mall_region where `code` =  #{area_id}
+    </select>
+  <select id="selectArea" resultType="string">
+        select name as area from cskaoyan_mall_region where `code` =  #{area_id}
+    </select>
 </mapper>

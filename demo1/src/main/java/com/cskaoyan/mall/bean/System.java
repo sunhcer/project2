@@ -9,7 +9,7 @@ public class System {
 
     private String keyValue;
 
-    private Date addTime;
+     private Date addTime;
 
     private Date updateTime;
 
