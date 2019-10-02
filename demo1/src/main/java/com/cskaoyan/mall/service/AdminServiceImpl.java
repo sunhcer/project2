@@ -1,7 +1,7 @@
 package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.mapper.AdminMapper;
-import com.cskaoyan.mall.vo.AdminInfo;
+import com.cskaoyan.mall.bean.AdminInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

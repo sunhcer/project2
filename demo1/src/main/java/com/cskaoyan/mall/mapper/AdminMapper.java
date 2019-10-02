@@ -1,7 +1,7 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Admin;
-import com.cskaoyan.mall.vo.AdminInfo;
+import com.cskaoyan.mall.bean.AdminInfo;
 
 public interface AdminMapper {
     int deleteByPrimaryKey(Integer id);
