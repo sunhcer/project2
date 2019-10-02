@@ -14,4 +14,7 @@ server:
 my:
   file:
     path: E:\wx\storage\fetch\
-
+mybatis:
+  type-handlers-package: com.cskaoyan.mall.mybatis
+pagehelper:
+  helper-dialect: mysql
