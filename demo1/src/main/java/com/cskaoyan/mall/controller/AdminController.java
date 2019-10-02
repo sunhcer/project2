@@ -1,6 +1,9 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bean.Admin;
+import com.cskaoyan.mall.bean.AdminListInfo;
+import com.cskaoyan.mall.bean.OptionListInfo;
+import com.cskaoyan.mall.bean.Options;
 import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.service.LogService;
 import com.cskaoyan.mall.service.RoleService;
@@ -11,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-
 
 @RestController
 public class AdminController {

@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.bean.AdminListInfo;
 
 
+
 public interface AdminService {
 //    void insertAdmin(AdminInfo adminInfo);
     AdminListInfo selectAllAdmin(int page, int limit,String username, String sort, String order);

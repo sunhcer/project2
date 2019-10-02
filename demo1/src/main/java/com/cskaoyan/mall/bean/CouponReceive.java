@@ -9,6 +9,11 @@ public class CouponReceive {
     String sort;
     String order;
 
+    public CouponReceive() {
+        this.type=100;
+        this.status=100;
+    }
+
     @Override
     public String toString() {
         return "CouponReceive{" +

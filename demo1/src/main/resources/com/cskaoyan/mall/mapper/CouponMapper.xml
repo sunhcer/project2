@@ -266,4 +266,59 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <!--这里返回类型有string转string[],不能用selectKey-->
+  <insert id="insertCouponByAll" >
+      <selectKey resultType="int" keyProperty="coupon.id" keyColumn="id" order="AFTER">
+          select last_insert_id() as id
+      </selectKey>
+    insert into cskaoyan_mall_coupon (id,name,`desc`,tag,total,discount,min,`limit`,type,status,
+    goods_type,goods_value,time_type,days,add_time,update_time,deleted,start_time,end_time) values
+    (null,#{coupon.name},#{coupon.desc},#{coupon.tag},#{coupon.total},
+    #{coupon.discount},#{coupon.min},#{coupon.limit},#{coupon.type},
+    #{coupon.status},#{coupon.goodsType},
+    #{coupon.goodsValue,typeHandler=com.cskaoyan.mall.util.StringArrayHandlerUtil},
+    #{coupon.timeType},
+    #{coupon.days},#{coupon.addTime},#{coupon.updateTime},#{coupon.deleted},#{coupon.startTime},
+    #{coupon.endTime})
+  </insert>
+
+  <resultMap id="selectByIdMap" type="com.cskaoyan.mall.bean.CouponArray">
+    <result column="id" property="id"/>
+    <result column="name" property="name"/>
+    <result column="desc" property="desc"/>
+    <result column="tag" property="tag"/>
+    <result column="total" property="total"/>
+    <result column="discount" property="discount"/>
+    <result column="min" property="min"/>
+    <result column="limit" property="limit"/>
+    <result column="type" property="type"/>
+    <result column="status" property="status"/>
+    <result column="goods_type" property="goodsType"/>
+    <result column="goods_value" property="goodsValue" typeHandler="com.cskaoyan.mall.util.StringArrayHandlerUtil"/>
+    <result column="time_type" property="timeType"/>
+    <result column="days" property="days"/>
+    <result column="add_time" property="addTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="deleted" property="deleted"/>
+    <result column="start_time" property="startTime"/>
+    <result column="end_time" property="endTime" />
+
+  </resultMap>
+  <select id="selectById" resultMap="selectByIdMap">
+    select id,name,`desc`,tag,total,discount,min,`limit`,type,status,
+    goods_type,goods_value,time_type,days,add_time,update_time,deleted,start_time,end_time from
+     cskaoyan_mall_coupon
+    where id=#{id}
+  </select>
+
+  <update id="couponUpdate">
+    update cskaoyan_mall_coupon set name=#{coupon.name},`desc`= #{coupon.desc},tag= #{coupon.tag},
+    total= #{coupon.total},discount= #{coupon.discount},min= #{coupon.min},`limit`= #{coupon.limit},
+    type= #{coupon.type},status= #{coupon.status},goods_type= #{coupon.goodsType},
+    goods_value= #{coupon.goodsValue,typeHandler=com.cskaoyan.mall.util.StringArrayHandlerUtil},
+    time_type= #{coupon.timeType},days= #{coupon.days},add_time= #{coupon.addTime},
+    update_time= #{coupon.updateTime},deleted= #{coupon.deleted}
+    where id=#{coupon.id}
+  </update>
 </mapper>
