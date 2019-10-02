@@ -1,5 +1,7 @@
 package com.cskaoyan.mall.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class StatGood {
@@ -8,7 +10,8 @@ public class StatGood {
 
     private int orders;
 
-    private String day;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date day;
 
     private int products;
 
@@ -28,11 +31,11 @@ public class StatGood {
         this.orders = orders;
     }
 
-    public String getDay() {
+    public Date getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(Date day) {
         this.day = day;
     }
 

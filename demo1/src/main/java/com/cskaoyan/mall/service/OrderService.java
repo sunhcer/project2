@@ -1,9 +1,6 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.BrandList;
-import com.cskaoyan.mall.bean.Order;
-import com.cskaoyan.mall.bean.OrderDetail;
-import com.cskaoyan.mall.bean.OrderPage;
+import com.cskaoyan.mall.bean.*;
 
 /**
  * @Description:
@@ -17,4 +14,5 @@ public interface OrderService {
     OrderDetail getOrderDetail(int id);
 
     void updateOrder(Order order);
+
 }

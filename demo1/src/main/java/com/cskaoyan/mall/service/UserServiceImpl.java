@@ -123,21 +123,4 @@ public class UserServiceImpl implements UserService {
         return  userFeedbackInfo;
     }
 
-
-    @Override
-    public StatUser[] getStatUsers() {
-        StatUser[] statUsers = userMapper.getStatUsers();
-        return statUsers;
-    }
-
-    @Override
-    public StatOrder[] getStatOrders() {
-        return new StatOrder[0];
-    }
-
-    @Override
-    public StatGood[] getStatGoods() {
-        return new StatGood[0];
-    }
-
 }

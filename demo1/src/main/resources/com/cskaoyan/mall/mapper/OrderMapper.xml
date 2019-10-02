@@ -46,6 +46,11 @@
     from cskaoyan_mall_Order
     where deleted = 0
   </select>
+  <select id="getStatOrders" resultType="com.cskaoyan.mall.bean.StatOrder">
+    select sum(order_price) as amount,substring(pay_time,1,10) as `day`,count(id) as orders,(select count(distinct user_id) from cskaoyan_mall_order) as customers,(sum(order_price)/(select count(distinct user_id) from cskaoyan_mall_order)) as pcr
+    from cskaoyan_mall_order
+    group by `day`
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_order
     where id = #{id,jdbcType=INTEGER}
