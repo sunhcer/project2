@@ -39,9 +39,11 @@ public class AdminController {
     }
 
     @RequestMapping("/admin/admin/create")
-    public BaseRespVo create(){
-
-        return null;
+    public BaseRespVo create(@RequestBody Admin admin){
+        Integer id = admin.getId();
+        adminService.addAdmin(admin);
+        Admin admin1 = adminService.selectAdminById(id);
+        return BaseRespVo.success(admin1);
     }
 
     @RequestMapping("/admin/admin/delete")
@@ -50,6 +52,14 @@ public class AdminController {
         adminService.deleteAdminById(id);
 
         return BaseRespVo.success(null);
+    }
+
+    @RequestMapping("/admin/admin/update")
+    public BaseRespVo update(@RequestBody Admin admin) {
+        adminService.updateAdmin(admin);
+        Integer id = admin.getId();
+        Admin admin1 = adminService.selectAdminById(id);
+        return BaseRespVo.success(admin1);
     }
 
 
