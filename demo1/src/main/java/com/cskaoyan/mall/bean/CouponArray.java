@@ -3,9 +3,10 @@ package com.cskaoyan.mall.bean;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
-public class Coupon {
+public class CouponArray {
     private Integer id;
 
     private String name;
@@ -28,7 +29,7 @@ public class Coupon {
 
     private Short goodsType;
 
-    private String goodsValue;
+    private String[] goodsValue;
 
     private String code;
 
@@ -36,9 +37,9 @@ public class Coupon {
 
     private Short days;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+       @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     private Date addTime;
@@ -46,6 +47,36 @@ public class Coupon {
     private Date updateTime;
 
     private Boolean deleted;
+
+//    public CouponArray(Boolean deleted) {
+//        this.deleted =false;
+//    }
+
+    @Override
+    public String toString() {
+        return "CouponArray{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", tag='" + tag + '\'' +
+                ", total=" + total +
+                ", discount=" + discount +
+                ", min=" + min +
+                ", limit=" + limit +
+                ", type=" + type +
+                ", status=" + status +
+                ", goodsType=" + goodsType +
+                ", goodsValue=" + Arrays.toString(goodsValue) +
+                ", code='" + code + '\'' +
+                ", timeType=" + timeType +
+                ", days=" + days +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", addTime=" + addTime +
+                ", updateTime=" + updateTime +
+                ", deleted=" + deleted +
+                '}';
+    }
 
     public Integer getId() {
         return id;
@@ -60,7 +91,7 @@ public class Coupon {
     }
 
     public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+        this.name = name;
     }
 
     public String getDesc() {
@@ -68,7 +99,7 @@ public class Coupon {
     }
 
     public void setDesc(String desc) {
-        this.desc = desc == null ? null : desc.trim();
+        this.desc = desc;
     }
 
     public String getTag() {
@@ -76,7 +107,7 @@ public class Coupon {
     }
 
     public void setTag(String tag) {
-        this.tag = tag == null ? null : tag.trim();
+        this.tag = tag;
     }
 
     public Integer getTotal() {
@@ -135,12 +166,12 @@ public class Coupon {
         this.goodsType = goodsType;
     }
 
-    public String getGoodsValue() {
+    public String[] getGoodsValue() {
         return goodsValue;
     }
 
-    public void setGoodsValue(String goodsValue) {
-        this.goodsValue = goodsValue == null ? null : goodsValue.trim();
+    public void setGoodsValue(String[] goodsValue) {
+        this.goodsValue = goodsValue;
     }
 
     public String getCode() {
@@ -148,7 +179,7 @@ public class Coupon {
     }
 
     public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+        this.code = code;
     }
 
     public Short getTimeType() {
@@ -205,31 +236,5 @@ public class Coupon {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
-    }
-
-    @Override
-    public String toString() {
-        return "Coupon{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", desc='" + desc + '\'' +
-                ", tag='" + tag + '\'' +
-                ", total=" + total +
-                ", discount=" + discount +
-                ", min=" + min +
-                ", limit=" + limit +
-                ", type=" + type +
-                ", status=" + status +
-                ", goodsType=" + goodsType +
-                ", goodsValue='" + goodsValue + '\'' +
-                ", code='" + code + '\'' +
-                ", timeType=" + timeType +
-                ", days=" + days +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", addTime=" + addTime +
-                ", updateTime=" + updateTime +
-                ", deleted=" + deleted +
-                '}';
     }
 }

@@ -50,6 +50,7 @@ public class BaseRespVo<T> {
         return respVo;
     }
 
+
     public static BaseRespVo fail(int errno, String errmsg) {
         BaseRespVo<Object> respVo = new BaseRespVo<>();
 
@@ -70,6 +71,7 @@ public class BaseRespVo<T> {
         respVo.setData(data);
         respVo.setErrmsg(errmsg);
         respVo.setErrno(errno);
+
         return respVo;
     }
 

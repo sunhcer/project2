@@ -42,6 +42,22 @@ public class AdminServiceImpl implements AdminService {
         adminMapper.deleteByPrimaryKey(id);
     }
 
+    @Override
+    public void addAdmin(Admin admin) {
+        adminMapper.insertSelective(admin);
+    }
+
+    @Override
+    public Admin selectAdminById(Integer id) {
+        Admin admin = adminMapper.selectByPrimaryKey(id);
+        return admin;
+    }
+
+    @Override
+    public void updateAdmin(Admin admin) {
+        adminMapper.updateByPrimaryKeySelective(admin);
+    }
+
 
 //
 //    @Override

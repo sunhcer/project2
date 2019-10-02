@@ -1,8 +1,6 @@
 package com.cskaoyan.mall.controller;
 
-import com.cskaoyan.mall.bean.Ad;
-import com.cskaoyan.mall.bean.AdReceive;
-import com.cskaoyan.mall.bean.CouponReceive;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.service.AdService;
 import com.cskaoyan.mall.vo.AdPageList;
 import com.cskaoyan.mall.vo.BaseRespVo;
@@ -52,13 +50,6 @@ public class AdController {
         }
     }
 
-    //推广管理--添加广告--图片上传
-/*    @RequestMapping("/storage/create")
-    public BaseRespVo createAdImage(@RequestBody MultipartFile file) throws IOException {
-        //前台有判空校验,所以直接用
-        BaseRespVo<Storage> baseRespVo=adService.createAdImage(file);
-        return baseRespVo;
-    }*/
 
     //推广管理--添加广告
     @RequestMapping("/ad/create")
@@ -86,7 +77,8 @@ public class AdController {
         BaseRespVo baseRespVo=null;
         int page = receive.getPage();
         int limit = receive.getLimit();
-        if (receive.getName()==null&&receive.getStatus()==0&&receive.getType()==0){
+        //初始化的时候给定一个值用以区分类型0和状态0
+        if (receive.getName()==null&&receive.getStatus()==100&&receive.getType()==100){
             //显示所有
            baseRespVo=adService.findAllCoupon(page,limit);
            return baseRespVo;
@@ -95,5 +87,35 @@ public class AdController {
             baseRespVo=adService.findLikeCouponByReceive(receive);
             return baseRespVo;
         }
+    }
+
+    //推广管理---创建优惠劵
+    //接收不到数据--原因一:日期,原因二:数组
+    @RequestMapping("/coupon/create")
+    public BaseRespVo createCoupon(@RequestBody CouponArray coupon){
+        BaseRespVo baseRespVo=adService.createCoupon(coupon);
+        return baseRespVo;
+    }
+
+    //推广管理--优惠劵详情
+    @RequestMapping("/coupon/read")
+    public BaseRespVo couponRead(int id){
+        BaseRespVo baseRespVo=adService.couponRead(id);
+        return baseRespVo;
+    }
+
+    //推广管理--优惠劵更新;
+    @RequestMapping("/coupon/update")
+    public BaseRespVo couponUpdate(@RequestBody CouponArray coupon){
+        BaseRespVo baseRespVo=adService.couponUpdate(coupon);
+        return baseRespVo;
+    }
+
+    //推广管理--优惠劵删除
+    @RequestMapping("/coupon/delete")
+    public BaseRespVo  couponDelete(CouponArray coupon){
+        int id=coupon.getId();
+        BaseRespVo baseRespVo=adService.couponDelete(id);
+        return baseRespVo;
     }
 }

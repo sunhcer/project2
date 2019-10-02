@@ -271,8 +271,12 @@
       <if test="name!=null">
         name like #{name}
       </if>
+      <if test="type1!=100">
         and type=#{type1}
+      </if>
+      <if test="status1!=100">
       and status=#{status1}
+      </if>
     </where>
   </select>
   <select id="selectLikeCouponPage" resultType="com.cskaoyan.mall.bean.Coupon">
@@ -284,9 +288,14 @@
       <if test="name!=null">
         name like #{name}
       </if>
-      and type=#{type1}
-      and status=#{status1}
+      <if test="type1!=100">
+        and type=#{type1}
+      </if>
+      <if test="status1!=100">
+        and status=#{status1}
+      </if>
     </where>
     limit #{limit} offset #{offsetNum}
   </select>
+
 </mapper>
