@@ -93,7 +93,7 @@
                 #{deleted,jdbcType=BIT}, #{detail,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Goods">
-        <selectKey resultType="Integer" keyProperty="goodsId" keyColumn="id" order="AFTER">
+        <selectKey resultType="Integer" keyProperty="id" keyColumn="id" order="AFTER">
             select last_insert_id()
         </selectKey>
         insert into cskaoyan_mall_goods

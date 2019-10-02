@@ -146,28 +146,31 @@ public class ProductController {
     @RequestMapping("admin/goods/create")
     public BaseRespVo addGoods(@RequestBody GoodsInfoForCreate goodsInfo) {
         Goods goods = goodsInfo.getGoods();
-        if (goods.getGoodsSn()==null||goods.getName()==null)
-            return BaseRespVo.error(null,401,"带*为必填项！");
-        Integer goodsId=productService.addGoods(goods);
-        if(goodsId!=null) {
+        if (goods.getGoodsSn() == null || goods.getName() == null)
+            return BaseRespVo.error(null, 401, "带*为必填项！");
+        Integer goodsId = productService.addGoods(goods);
+        if (goodsId != null) {
             List<GoodsAttribute> goodsAttributes = goodsInfo.getGoodsAttributes();
             List<GoodsProduct> goodsProducts = goodsInfo.getGoodsProducts();
             List<GoodsSpecification> goodsSpecifications = goodsInfo.getGoodsSpecifications();
-            for (GoodsAttribute goodsAttribute : goodsAttributes) {
-                goodsAttribute.setGoodsId(goodsId);
-                goodsAttribute.setAddTime(new Date());
-                productService.addGoodsAttribute(goodsAttribute);
-            }
-            for (GoodsSpecification goodsSpecification : goodsSpecifications) {
-                goodsSpecification.setGoodsId(goodsId);
-                goodsSpecification.setAddTime(new Date());
-                productService.addGoodsSpecification(goodsSpecification);
-            }
-            for (GoodsProduct goodsProduct : goodsProducts) {
-                goodsProduct.setGoodsId(goodsId);
-                goodsProduct.setAddTime(new Date());
-                productService.addGoodsProduct(goodsProduct);
-            }
+            if (goodsAttributes != null)
+                for (GoodsAttribute goodsAttribute : goodsAttributes) {
+                    goodsAttribute.setGoodsId(goodsId);
+                    goodsAttribute.setAddTime(new Date());
+                    productService.addGoodsAttribute(goodsAttribute);
+                }
+            if (goodsSpecifications != null)
+                for (GoodsSpecification goodsSpecification : goodsSpecifications) {
+                    goodsSpecification.setGoodsId(goodsId);
+                    goodsSpecification.setAddTime(new Date());
+                    productService.addGoodsSpecification(goodsSpecification);
+                }
+            if (goodsProducts != null)
+                for (GoodsProduct goodsProduct : goodsProducts) {
+                    goodsProduct.setGoodsId(goodsId);
+                    goodsProduct.setAddTime(new Date());
+                    productService.addGoodsProduct(goodsProduct);
+                }
         }
         return BaseRespVo.success(null);
     }
