@@ -23,4 +23,6 @@ public interface OrderMapper {
     List<Order> selectOrderByState(String statusArray);
 
     List<Order> selectOrderByCondition(OrderPage page);
+
+    Integer findAmountOfOrders();
 }

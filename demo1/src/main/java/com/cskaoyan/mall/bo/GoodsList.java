@@ -1,4 +1,6 @@
-package com.cskaoyan.mall.bean;
+package com.cskaoyan.mall.bo;
+
+import com.cskaoyan.mall.bean.Goods;
 
 import java.util.List;
 
