@@ -1,6 +1,10 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Collect;
+import com.cskaoyan.mall.vo.UserCollect;
+import com.cskaoyan.mall.vo.UserPage;
+
+import java.util.List;
 
 public interface CollectMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +18,6 @@ public interface CollectMapper {
     int updateByPrimaryKeySelective(Collect record);
 
     int updateByPrimaryKey(Collect record);
+
+    List<UserCollect> queryAllCollect(UserPage userPage);
 }
