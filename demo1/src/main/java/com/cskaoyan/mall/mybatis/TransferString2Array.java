@@ -18,7 +18,7 @@ import java.sql.SQLException;
  * @Date: 2019/10/2
  * @Time 12:45
  */
-@MappedTypes(String.class)
+@MappedTypes(String[].class)
 public class TransferString2Array implements TypeHandler<String[]> {
     ObjectMapper objectMapper = new ObjectMapper();
     @Override
