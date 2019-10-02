@@ -18,4 +18,6 @@ public interface OrderGoodsMapper {
     int updateByPrimaryKey(OrderGoods record);
 
     List<OrderGoods> selectByOrderId(int id);
+
+    List<OrderGoods> selectOrderByGoodsId(Integer goodsId);
 }

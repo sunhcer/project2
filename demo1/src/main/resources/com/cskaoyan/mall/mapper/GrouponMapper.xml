@@ -161,4 +161,13 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--selectGrouponRulesByCondition-->
+  <select id="selectGrouponByCondition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_groupon
+    where deleted = 0
+    <if test="orderSn != null">and order_id in #{orderSn}</if>
+  </select>
 </mapper>
