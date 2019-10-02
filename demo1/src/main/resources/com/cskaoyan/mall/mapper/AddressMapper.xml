@@ -279,6 +279,7 @@
       <if test="userId != null">
         and user_id = #{userId}
       </if>
+      and deleted = 0
     </where>
   </select>
   <select id="selectProvinceId" resultType="int">

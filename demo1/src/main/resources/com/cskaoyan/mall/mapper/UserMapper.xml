@@ -42,7 +42,7 @@
   <select id="queryUserNum" resultType="int">
     select
     count(id)
-    from cskaoyan_mall_user
+    from cskaoyan_mall_user where deleted = 0
   </select>
 
 

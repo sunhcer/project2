@@ -25,6 +25,7 @@
       <if test="valueId != null">
         and  value_id=#{valueId}
       </if>
+      and deleted = 0
     </where>
   </select>
 
