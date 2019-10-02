@@ -24,8 +24,8 @@ public class AdServiceImpl implements AdService {
     @Autowired
     AdMapper adMapper;
 
-    @Value("${my.file.path}")
-    String filePath;
+/*    @Value("${my.file.path}")
+    String filePath;*/
     @Override
     public List<Ad> refAdPageList(int page, int limit) {
         //这个分页比之前的简单一点,暂时不用总数目和总页数
@@ -59,7 +59,7 @@ public class AdServiceImpl implements AdService {
         return totalAd;
     }
 
-    @Override
+/*    @Override
     public BaseRespVo<Storage> createAdImage(MultipartFile file) throws IOException {
         //文件上传api
         //getName=======file
@@ -110,7 +110,7 @@ public class AdServiceImpl implements AdService {
         baseRespVo.setData(storage);
         baseRespVo.setErrmsg("成功");
         return baseRespVo;
-    }
+    }*/
 
     @Override
     public BaseRespVo<Ad> addAd(Ad ad) {
