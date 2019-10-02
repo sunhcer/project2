@@ -1,18 +1,22 @@
 package com.cskaoyan.mall.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class StatUser {
 
-    private String day;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private Date day;
 
     private int users;
 
-    public String getDay() {
+
+    public Date getDay() {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(Date day) {
         this.day = day;
     }
 

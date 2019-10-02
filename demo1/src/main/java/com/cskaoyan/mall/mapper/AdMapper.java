@@ -43,4 +43,6 @@ public interface AdMapper {
     int selectLikeCouponAmount(@Param("name") String name,@Param("type1") int type1,@Param("status1") int status1);
 
     List<Coupon> selectLikeCouponPage(@Param("name") String name,@Param("type1") int type1,@Param("status1") int status1,@Param("limit") int limit,@Param("offsetNum") int offsetNum);
+
+
 }

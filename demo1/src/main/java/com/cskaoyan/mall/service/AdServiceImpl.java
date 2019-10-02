@@ -2,11 +2,13 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.AdMapper;
+import com.cskaoyan.mall.mapper.CouponMapper;
 import com.cskaoyan.mall.util.IpUtils;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -23,6 +25,8 @@ import java.util.UUID;
 public class AdServiceImpl implements AdService {
     @Autowired
     AdMapper adMapper;
+    @Autowired
+    CouponMapper couponMapper;
 
 /*    @Value("${my.file.path}")
     String filePath;*/
@@ -227,5 +231,37 @@ public class AdServiceImpl implements AdService {
         CouponRef couponRef = new CouponRef(list, total);
         BaseRespVo success = BaseRespVo.success(couponRef);
         return success;
+    }
+
+    @Override
+    public BaseRespVo createCoupon(CouponArray coupon) {
+        Date date = new Date();
+        coupon.setAddTime(date);
+        coupon.setUpdateTime(date);
+        int ref=couponMapper.insertCouponByAll(coupon);
+        BaseRespVo success = BaseRespVo.success(coupon);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo couponRead(int id) {
+        CouponArray coupon=couponMapper.selectById(id);
+        BaseRespVo success = BaseRespVo.success(coupon);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo couponUpdate(CouponArray coupon) {
+        Date date = new Date();
+        coupon.setUpdateTime(date);
+        couponMapper.couponUpdate(coupon);
+        BaseRespVo success = BaseRespVo.success(coupon);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo couponDelete(int id) {
+        //
+        return null;
     }
 }

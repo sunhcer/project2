@@ -1,5 +1,7 @@
 package com.cskaoyan.mall.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -34,8 +36,9 @@ public class Coupon {
 
     private Short days;
 
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
-
+//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     private Date addTime;
@@ -202,5 +205,31 @@ public class Coupon {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    @Override
+    public String toString() {
+        return "Coupon{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", desc='" + desc + '\'' +
+                ", tag='" + tag + '\'' +
+                ", total=" + total +
+                ", discount=" + discount +
+                ", min=" + min +
+                ", limit=" + limit +
+                ", type=" + type +
+                ", status=" + status +
+                ", goodsType=" + goodsType +
+                ", goodsValue='" + goodsValue + '\'' +
+                ", code='" + code + '\'' +
+                ", timeType=" + timeType +
+                ", days=" + days +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", addTime=" + addTime +
+                ", updateTime=" + updateTime +
+                ", deleted=" + deleted +
+                '}';
     }
 }

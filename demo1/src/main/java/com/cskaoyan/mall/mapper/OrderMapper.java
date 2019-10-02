@@ -2,6 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderPage;
+import com.cskaoyan.mall.bean.StatOrder;
 
 import java.util.List;
 
@@ -25,4 +26,6 @@ public interface OrderMapper {
     List<Order> selectOrderByCondition(OrderPage page);
 
     Integer findAmountOfOrders();
+
+    StatOrder[] getStatOrders();
 }

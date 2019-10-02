@@ -21,7 +21,4 @@ public interface UserService {
 
     UserFeedbackInfo selectUsersFeedback(UserPage userPage);
 
-    StatUser[] getStatUsers();
-    StatOrder[] getStatOrders();
-    StatGood[] getStatGoods();
 }
