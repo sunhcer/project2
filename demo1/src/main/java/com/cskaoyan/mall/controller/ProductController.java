@@ -1,16 +1,15 @@
 package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bo.GoodsList;
 import com.cskaoyan.mall.service.ProductService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

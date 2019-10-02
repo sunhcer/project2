@@ -1,6 +1,8 @@
 spring:
   profiles:
     active: dev
+  resources:
+    static-locations: file:${myfile.img-path}
 #配置日志级别和日志路径 只将mapper包下的级别调整为debug的
 logging:
   path: d:/log
@@ -21,3 +23,4 @@ pagehelper:
 myfile:
   img-path: d:/wx/storage/
   img-prefix: http://localhost
+

@@ -40,7 +40,7 @@
         ,
         <include refid="Blob_Column_List"/>
         from cskaoyan_mall_goods
-        where id = #{id,jdbcType=INTEGER}
+        where deleted = 0 and id = #{id,jdbcType=INTEGER}
     </select>
     <select id="findGoodsByNameAndGoodsSn" resultMap="ResultMapWithBLOBs">
         select
@@ -63,10 +63,12 @@
         ,
         <include refid="Blob_Column_List"/>
         from cskaoyan_mall_goods
+        where deleted = 0
     </select>
     <select id="findAmountOfGoods" resultType="Integer">
         select count(*)
         from cskaoyan_mall_goods
+        where deleted = 0
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         delete

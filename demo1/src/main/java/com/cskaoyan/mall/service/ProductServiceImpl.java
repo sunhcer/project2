@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bo.GoodsList;
 import com.cskaoyan.mall.mapper.BrandMapper;
 import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.CommentMapper;
@@ -8,7 +9,6 @@ import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
