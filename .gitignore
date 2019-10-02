@@ -5,6 +5,7 @@
 *.log
 #每个人配置一个application.yml文件，把mysql的数据放进去
 demo1/src/main/resources/application-dev.yml
+demo1/src/main/resources/banner.txt
 
 
 # BlueJ files

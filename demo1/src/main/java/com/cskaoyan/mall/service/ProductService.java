@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bo.GoodsList;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 
 import java.util.List;
@@ -22,4 +23,12 @@ public interface ProductService {
     Integer findAmountOfGoods();
 
     GoodsList findGoodsByPage(GoodsPage page);
+
+    CommentsList findCommentsByPage(CommentsPage page);
+
+    Comment findCommentById(Integer commentId);
+
+    int updateComment(Comment comment);
+
+    int deleteCommentById(Comment comment);
 }

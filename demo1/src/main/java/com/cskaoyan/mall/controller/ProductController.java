@@ -1,14 +1,15 @@
 package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.bo.GoodsList;
 import com.cskaoyan.mall.service.ProductService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class ProductController {
      *
      * @author EGGE
      * @date 2019-09-30 16:17:23
-     * @return
+     * @return 返回给前端的数据
      **/
     @RequestMapping("/admin/goods/catAndBrand")
     public BaseRespVo catAndBrand(){
@@ -64,4 +65,68 @@ public class ProductController {
         GoodsList data=productService.findGoodsByPage(page);
         return BaseRespVo.success(data);
     }
-}
+
+    /**
+     * 处理请求：显示留言列表/搜索留言
+     * 方法用途：返回留言列表
+     * 操作简介：根据传入参数搜索留言
+     *
+     * @author EGGE
+     * @date 2019-10-01 00:24:55
+     * @param page 留言分页信息
+     * @return  返回给前端的数据
+     **/
+    @RequestMapping("admin/comment/list")
+    public BaseRespVo productList(CommentsPage page) {
+        int i;
+        if(page.getUserId()!=null) {
+            try {//尝试将userId转化成int，失败则返回error信息
+                i = Integer.parseInt(page.getUserId());
+            } catch (Exception e) {
+                return BaseRespVo.error(null, 402, "参数错误");
+            }
+        }
+        if(page.getValueId()!=null){
+            try {//尝试将valueId转化成int，失败则返回error信息
+                i = Integer.parseInt(page.getValueId());
+            } catch (Exception e) {
+                return BaseRespVo.error(null, 402, "参数错误");
+            }
+        }
+        CommentsList data=productService.findCommentsByPage(page);
+        return BaseRespVo.success(data);
+    }
+    /**
+     * 处理请求：留言回复
+     * 方法用途：回复留言
+     * 操作简介：对留言进行合法性判断并回复
+     *
+     * @author EGGE
+     * @date 2019-10-01 00:24:48
+     * @param commitReplyRequest  回复的留言和id
+     * @return 返回给前端的数据
+     **/
+    @RequestMapping("admin/order/reply")
+    public BaseRespVo replyComment(@RequestBody CommitReplyRequest commitReplyRequest) {
+        Integer commentId=commitReplyRequest.getCommentId();
+        String content=commitReplyRequest.getContent();
+        if(commentId==null||content==null)
+            return BaseRespVo.error(null, 402, "参数错误");
+        Comment comment=productService.findCommentById(commentId);
+        if(comment==null||comment.getDeleted())//deleted代表逻辑删除
+            return BaseRespVo.error(null, 404, "未能找到该留言，请检查参数");
+        if(comment.getContent()!=null)
+            return BaseRespVo.error(null, 622, "订单商品已回复!");
+        productService.updateComment(comment);
+        //未能获取成功时数据，后考虑修改
+        return BaseRespVo.success(null);
+
+    }
+
+    @RequestMapping("admin/comment/delete")
+    public BaseRespVo replyComment(@RequestBody Comment comment) {
+        productService.deleteCommentById(comment);
+        return BaseRespVo.success(null);
+    }
+
+    }

@@ -1,15 +1,27 @@
-
 #数据库配置 采用默认数据库
 spring:
   profiles:
     active: dev
-
+  resources:
+    static-locations: file:${myfile.img-path}
 #配置日志级别和日志路径 只将mapper包下的级别调整为debug的
 logging:
   path: d:/log
   level:
     com:
       cskaoyan:
-        mapper: debug
+        mall:
+          mapper: debug
 server:
   port: 80
+#my:
+#  file:
+#    path: E:\wx\storage\fetch\
+mybatis:
+  type-handlers-package: com.cskaoyan.mall.mybatis
+pagehelper:
+  helper-dialect: mysql
+myfile:
+  img-path: d:/wx/storage/
+  img-prefix: http://localhost
+

@@ -43,7 +43,7 @@ public class GoodsProduct {
     }
 
     public void setSpecifications(String specifications) {
-        this.specifications = specifications == null ? null : specifications.trim();
+        this.specifications = specifications;
     }
 
     public BigDecimal getPrice() {

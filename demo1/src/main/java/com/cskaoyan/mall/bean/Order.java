@@ -6,11 +6,13 @@ import java.util.Date;
 public class Order {
     private Integer id;
 
+    private Integer orderId;
+
     private Integer userId;
 
     private String orderSn;
 
-    private Short orderStatus;
+    private int orderStatus;
 
     private String consignee;
 
@@ -80,11 +82,11 @@ public class Order {
         this.orderSn = orderSn == null ? null : orderSn.trim();
     }
 
-    public Short getOrderStatus() {
+    public int getOrderStatus() {
         return orderStatus;
     }
 
-    public void setOrderStatus(Short orderStatus) {
+    public void setOrderStatus(int orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -262,5 +264,13 @@ public class Order {
 
     public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 }

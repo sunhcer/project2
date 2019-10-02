@@ -174,4 +174,119 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="queryAllAd" resultType="com.cskaoyan.mall.bean.Ad">
+    select id,name,link,url,position,content,enabled,add_time,update_time,deleted
+    from cskaoyan_mall_ad
+  </select>
+  <select id="queryCurrentPageAdByPageAndLimit" resultType="com.cskaoyan.mall.bean.Ad">
+    select id,name,link,url,position,content,enabled,add_time,update_time,deleted
+    from cskaoyan_mall_ad limit #{limit} offset #{offsetNum}
+  </select>
+
+  <insert id="insertAdImage">
+    <selectKey resultType="int" keyProperty="storage.id" keyColumn="id" order="AFTER">
+      select last_insert_id() as id
+    </selectKey>
+    insert into cskaoyan_mall_storage (id,`key`,name,type,size,url,add_time,update_time) values(
+    null,#{storage.key},
+    #{storage.name},
+    #{storage.type},
+    #{storage.size},#{storage.url},
+    #{storage.addTime},
+    #{storage.updateTime}
+    )
+  </insert>
+    <!--addAd-->
+    <insert id="addAd">
+        <selectKey resultType="int" keyProperty="ad.id" keyColumn="id" order="AFTER">
+            select last_insert_id() as id
+        </selectKey>
+        insert into cskaoyan_mall_ad (id,name,link,enabled,url,position,content,add_time,update_time) values(
+        null,#{ad.name},
+        #{ad.link},
+        #{ad.enabled},
+        #{ad.url},
+        #{ad.position},
+        #{ad.content},
+        #{ad.addTime},
+        #{ad.updateTime}
+        )
+    </insert>
+  <insert id="addAdWithoutLink">
+    <selectKey resultType="int" keyProperty="ad.id" keyColumn="id" order="AFTER">
+      select last_insert_id() as id
+    </selectKey>
+    insert into cskaoyan_mall_ad (id,name,enabled,url,position,content,add_time,update_time) values(
+    null,#{ad.name},
+    #{ad.enabled},
+    #{ad.url},
+    #{ad.position},
+    #{ad.content},
+    #{ad.addTime},
+    #{ad.updateTime}
+    )
+  </insert>
+  <select id="queryPageListAdByPageAndLimit" resultType="com.cskaoyan.mall.bean.Ad">
+    select id,name,link,url,position,content,enabled,add_time,update_time,deleted
+    from cskaoyan_mall_ad
+    <where>
+    <if test="name!=null">
+    name like #{name}
+    </if>
+    <if test="content!=null">
+    and content like #{content}
+    </if>
+    </where>
+    limit #{limit} offset #{offsetNum}
+  </select>
+  <select id="queryAllPageListAdByPageAndLimit" resultType="com.cskaoyan.mall.bean.Ad">
+    select id,name,link,url,position,content,enabled,add_time,update_time,deleted
+    from cskaoyan_mall_ad
+    <where>
+      <if test="name!=null">
+        name like #{name}
+      </if>
+      <if test="content!=null">
+        and content like #{content}
+      </if>
+    </where>
+  </select>
+  <update id="updateAdById">
+    update cskaoyan_mall_ad set name=#{ad.name},link=#{ad.link},url=#{ad.url},position=#{ad.position},
+    content=#{ad.content},enabled=#{ad.enabled},add_time=#{ad.addTime},update_time=#{ad.updateTime},deleted=#{ad.deleted}
+  </update>
+
+  <select id="selectCouponAmount" resultType="int">
+    select count(id) from cskaoyan_mall_coupon
+  </select>
+  <select id="queryCurrentPageCouponByPageAndLimit" resultType="com.cskaoyan.mall.bean.Coupon">
+    select id,name,`desc`,tag,total,discount,min,`limit`,type,status,
+    goods_type,goods_value,time_type,days,add_time,update_time,deleted
+    from cskaoyan_mall_coupon limit #{limit} offset #{offsetNum}
+  </select>
+  <select id="selectLikeCouponAmount" resultType="int">
+    select count(id)
+    from cskaoyan_mall_coupon
+    <where>
+      <if test="name!=null">
+        name like #{name}
+      </if>
+        and type=#{type1}
+      and status=#{status1}
+    </where>
+  </select>
+  <select id="selectLikeCouponPage" resultType="com.cskaoyan.mall.bean.Coupon">
+    select
+    id,name,`desc`,tag,total,discount,min,`limit`,type,status,
+    goods_type,goods_value,time_type,days,add_time,update_time,deleted
+    from cskaoyan_mall_coupon
+    <where>
+      <if test="name!=null">
+        name like #{name}
+      </if>
+      and type=#{type1}
+      and status=#{status1}
+    </where>
+    limit #{limit} offset #{offsetNum}
+  </select>
 </mapper>

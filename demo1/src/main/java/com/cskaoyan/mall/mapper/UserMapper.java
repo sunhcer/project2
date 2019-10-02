@@ -2,6 +2,9 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.StatUser;
 import com.cskaoyan.mall.bean.User;
+import com.cskaoyan.mall.vo.UserPage;
+
+import java.util.List;
 
 public interface UserMapper {
     int deleteByPrimaryKey(Integer id);
@@ -16,5 +19,8 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
+    List<User> queryAllUsers(UserPage userPage);
+
+    int queryUserNum();
     StatUser[] getStatUsers();
 }
