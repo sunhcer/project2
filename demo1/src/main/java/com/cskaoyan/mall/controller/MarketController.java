@@ -37,6 +37,8 @@ public class MarketController {
     IssueService issueService;
     @Autowired
     StorageService storageService;
+    @Autowired
+    KeywordService keywordService;
 
 
     @RequestMapping("/admin/region/list")
@@ -161,9 +163,58 @@ public class MarketController {
         return success;
     }
 
+    ///admin/issue/update
+    @RequestMapping("/admin/issue/update")
+    public BaseRespVo updateIssue(@RequestBody Issue issue){
+        issueService.updateIssueById(issue);
+        return BaseRespVo.success(null);
+    }
+
+    ///admin/issue/create
+    @RequestMapping("/admin/issue/create")
+    public BaseRespVo insertIssue(@RequestBody Issue issue){
+        issueService.insertIssue(issue);
+        return BaseRespVo.success(issue);
+    }
+
     @RequestMapping("/admin/storage/create")
     public BaseRespVo storageImg(MultipartFile file) throws IOException {
         Storage storage = storageService.insertStorage(file);
         return BaseRespVo.success(storage);
+    }
+
+    ///admin/issue/delete
+    @RequestMapping("/admin/issue/delete")
+    public BaseRespVo deleteIssue(@RequestBody Issue issue){
+        issueService.deleteIssueById(issue);
+        return BaseRespVo.success(null);
+    }
+
+    ///admin/keyword/list
+    @RequestMapping("/admin/keyword/list")
+    public BaseRespVo selectKeyword(OrderPage orderPage){
+        BrandList<Keyword> keywordBrandList = keywordService.selectKeyWordByCondition(orderPage);
+        return BaseRespVo.success(keywordBrandList);
+    }
+
+    ///admin/keyword/create
+    @RequestMapping("/admin/keyword/create")
+    public BaseRespVo insertKeyword(@RequestBody Keyword keyword){
+        keywordService.insertKeyword(keyword);
+        return BaseRespVo.success(null);
+    }
+
+    ///admin/keyword/delete
+    @RequestMapping("/admin/keyword/delete")
+    public BaseRespVo deleteKeyword(@RequestBody Keyword keyword){
+        keywordService.deleteKeyword(keyword);
+        return BaseRespVo.success(null);
+    }
+
+    //admin/keyword/update
+    @RequestMapping("/admin/keyword/update")
+    public BaseRespVo updateKeyword(@RequestBody Keyword keyword){
+        keywordService.updateKeyword(keyword);
+        return BaseRespVo.success(null);
     }
 }

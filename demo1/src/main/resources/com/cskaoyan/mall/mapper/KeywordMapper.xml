@@ -138,4 +138,14 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <!--selectKeyWordByCondition-->
+  <select id="selectKeyWordByCondition" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_keyword
+    where deleted = 0
+    <if test="url != null">and url like #{url}</if>
+    <if test="keyword != null">and keyword like #{keyword}</if>
+  </select>
 </mapper>

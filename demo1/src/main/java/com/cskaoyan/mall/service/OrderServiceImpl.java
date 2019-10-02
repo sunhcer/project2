@@ -30,10 +30,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public BrandList getOrderByState(OrderPage page) {
-        //分类是什么？？？？？？
-//        page.setOrder("`" + page.getOrder() + "`");
-//        PageHelper.startPage(page.getPage(), page.getLimit(), page.getOrder());
         PageHelper.startPage(page.getPage(), page.getLimit());
+        if (page.getOrder()!=null && page.getSort() != null){
+            PageHelper.orderBy(page.getSort() + " " + page.getOrder());
+        }
         List<Order> orderList = new ArrayList<>();
         long total = 0;
         //如果状态数组是null  则代表查询所有

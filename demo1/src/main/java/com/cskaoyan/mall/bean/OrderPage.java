@@ -3,7 +3,7 @@ package com.cskaoyan.mall.bean;
 import java.util.List;
 
 /**
- * @Description:
+ * @Description: 关键词复用了这个  团购规则也复用了
  * @Author: zhou
  * @Date: 2019/10/1
  * @Time 17:29
@@ -17,6 +17,33 @@ public class OrderPage {
     private Integer userId;
     private String orderSn;
     String question;
+    String keyword;
+    String url;
+    Integer goodsId;
+
+    public Integer getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Integer goodsId) {
+        this.goodsId = goodsId;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getQuestion() {
         return question;

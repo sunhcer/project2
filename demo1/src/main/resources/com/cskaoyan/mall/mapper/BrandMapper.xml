@@ -159,4 +159,15 @@
         update cskaoyan_mall_brand
         set deleted = 1 where id = #{id}
     </update>
+
+    <!--selectByCondition-->
+    <select id="selectByCondition" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_brand where deleted = 0
+        <trim>
+            <if test="id != null">and id = #{id}</if>
+            <if test="name != null">and name like #{name}</if>
+        </trim>
+    </select>
 </mapper>

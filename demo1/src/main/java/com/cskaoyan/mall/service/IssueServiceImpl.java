@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +25,9 @@ public class IssueServiceImpl implements IssueService {
     @Override
     public BrandList selectIssueByCondition(OrderPage orderPage) {
         PageHelper.startPage(orderPage.getPage(), orderPage.getLimit());
+        if (orderPage.getOrder() != null && orderPage.getSort() != null){
+            PageHelper.orderBy(orderPage.getSort() + " " + orderPage.getOrder());
+        }
         if (orderPage.getQuestion() != null && "".equals(orderPage.getQuestion().trim())){
             //当问题是空字符串时候 将其置为null
             orderPage.setQuestion(null);
@@ -39,5 +43,23 @@ public class IssueServiceImpl implements IssueService {
         issueBrandList.setItems(issueList);
         issueBrandList.setTotal(issuePageInfo.getTotal());
         return issueBrandList;
+    }
+
+    @Override
+    public int updateIssueById(Issue issue) {
+        issue.setUpdateTime(new Date());
+        int inserNum = issueMapper.updateByPrimaryKeySelective(issue);
+        return inserNum;
+    }
+
+    @Override
+    public void deleteIssueById(Issue issue) {
+        issue.setDeleted(true);
+        issueMapper.updateByPrimaryKeySelective(issue);
+    }
+
+    @Override
+    public void insertIssue(Issue issue) {
+        issueMapper.insertIssue(issue);
     }
 }
