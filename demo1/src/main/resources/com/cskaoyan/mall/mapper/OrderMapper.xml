@@ -43,7 +43,7 @@
   </select>
   <select id="findAmountOfOrders" resultType="Integer">
     select count(*)
-    from cskaoyan_mall_Orders
+    from cskaoyan_mall_Order
     where deleted = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
