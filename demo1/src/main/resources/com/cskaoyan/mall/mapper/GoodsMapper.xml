@@ -49,12 +49,12 @@
         <include refid="Blob_Column_List"/>
         from cskaoyan_mall_goods
         <where>
-                <if test="name !=null and name !=''">
-                    `name` like #{name}
-                </if>
-                <if test="goodsSn!=null and goodsSn!=''">
-                   and goods_sn =#{goodsSn}
-                </if>
+            <if test="name !=null and name !=''">
+                `name` like #{name}
+            </if>
+            <if test="goodsSn!=null and goodsSn!=''">
+                and goods_sn =#{goodsSn}
+            </if>
         </where>
     </select>
     <select id="findAllGoods" resultMap="ResultMapWithBLOBs">
@@ -98,11 +98,11 @@
                 #{deleted,jdbcType=BIT}, #{detail,jdbcType=LONGVARCHAR})
     </insert>
     <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Goods">
+        <selectKey resultType="Integer" keyProperty="id" keyColumn="id" order="AFTER">
+            select last_insert_id()
+        </selectKey>
         insert into cskaoyan_mall_goods
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
             <if test="goodsSn != null">
                 goods_sn,
             </if>
@@ -165,9 +165,6 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=INTEGER},
-            </if>
             <if test="goodsSn != null">
                 #{goodsSn,jdbcType=VARCHAR},
             </if>

@@ -19,4 +19,46 @@ public class GoodsInfoForCreate {
     Goods goods;
     List<GoodsProduct> goodsProducts;
     List<GoodsSpecification> goodsSpecifications;
+
+    public List<GoodsAttribute> getGoodsAttributes() {
+        return goodsAttributes;
+    }
+
+    public void setGoodsAttributes(List<GoodsAttribute> goodsAttributes) {
+        this.goodsAttributes = goodsAttributes;
+    }
+
+    public Goods getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Goods goods) {
+        this.goods = goods;
+    }
+
+    public List<GoodsProduct> getGoodsProducts() {
+        return goodsProducts;
+    }
+
+    public void setGoodsProducts(List<GoodsProduct> goodsProducts) {
+        this.goodsProducts = goodsProducts;
+    }
+
+    public List<GoodsSpecification> getGoodsSpecifications() {
+        return goodsSpecifications;
+    }
+
+    public void setGoodsSpecifications(List<GoodsSpecification> goodsSpecifications) {
+        this.goodsSpecifications = goodsSpecifications;
+    }
+
+    @Override
+    public String toString() {
+        return "GoodsInfoForCreate{" +
+                "goodsAttributes=" + goodsAttributes +
+                ", goods=" + goods +
+                ", goodsProducts=" + goodsProducts +
+                ", goodsSpecifications=" + goodsSpecifications +
+                '}';
+    }
 }
