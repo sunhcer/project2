@@ -1,9 +1,6 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.Ad;
-import com.cskaoyan.mall.bean.AdReceive;
-import com.cskaoyan.mall.bean.CouponReceive;
-import com.cskaoyan.mall.bean.Storage;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,4 +27,12 @@ public interface AdService {
     BaseRespVo findAllCoupon(int page, int limit);
 
     BaseRespVo findLikeCouponByReceive(CouponReceive receive);
+
+    BaseRespVo createCoupon(CouponArray coupon);
+
+    BaseRespVo couponRead(int id);
+
+    BaseRespVo couponUpdate(CouponArray coupon);
+
+    BaseRespVo couponDelete(int id);
 }
