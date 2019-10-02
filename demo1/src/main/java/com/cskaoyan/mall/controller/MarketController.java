@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +35,9 @@ public class MarketController {
     OrderService orderService;
     @Autowired
     IssueService issueService;
+    @Autowired
+    StorageService storageService;
+
 
     @RequestMapping("/admin/region/list")
     public BaseRespVo region() {
@@ -65,10 +70,17 @@ public class MarketController {
         return success;
     }
 
+    ///admin/brand/create
+    @RequestMapping("/admin/brand/create")
+    public BaseRespVo createBrand(@RequestBody Brand brand){
+        brandService.insertBrand(brand);
+        return BaseRespVo.success(null);
+    }
+
     @RequestMapping("/admin/category/list")
-    public BaseRespVo getCatagoryList() {
-        List<Category> allCatagory = categoryService.getAllCategory();
-        BaseRespVo success = BaseRespVo.success(allCatagory);
+    public BaseRespVo getCategoryList() {
+        List<Category> allCategory = categoryService.getAllCategory();
+        BaseRespVo success = BaseRespVo.success(allCategory);
         return success;
     }
 
@@ -147,5 +159,11 @@ public class MarketController {
         BrandList brandList = issueService.selectIssueByCondition(orderPage);
         BaseRespVo success = BaseRespVo.success(brandList);
         return success;
+    }
+
+    @RequestMapping("/admin/storage/create")
+    public BaseRespVo storageImg(MultipartFile file) throws IOException {
+        Storage storage = storageService.insertStorage(file);
+        return BaseRespVo.success(storage);
     }
 }

@@ -11,10 +11,13 @@ logging:
           mapper: debug
 server:
   port: 80
-my:
-  file:
-    path: E:\wx\storage\fetch\
+#my:
+#  file:
+#    path: E:\wx\storage\fetch\
 mybatis:
   type-handlers-package: com.cskaoyan.mall.mybatis
 pagehelper:
   helper-dialect: mysql
+myfile:
+  img-path: d:/wx/storage/
+  img-prefix: http://localhost
