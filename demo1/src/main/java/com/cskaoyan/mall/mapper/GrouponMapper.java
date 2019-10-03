@@ -1,6 +1,10 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Groupon;
+import com.cskaoyan.mall.bean.OrderPage;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface GrouponMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +18,6 @@ public interface GrouponMapper {
     int updateByPrimaryKeySelective(Groupon record);
 
     int updateByPrimaryKey(Groupon record);
+
+    List<Groupon> selectGrouponByCondition(@Param("orderPage") OrderPage orderPage);
 }

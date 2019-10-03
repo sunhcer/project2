@@ -11,25 +11,25 @@ public class GetWxConfigServiceImpl implements GetWxConfigService {
     SystemMapper systemMapper;
     @Override
     public WxConfigBean showWxConfig() {
-        String goods = systemMapper.selectKey(11);
-        String list = systemMapper.selectKey(13);
-        String brand = systemMapper.selectKey(15);
-        String hot = systemMapper.selectKey(9);
-        String indexnew = systemMapper.selectKey(2);
-        String topic = systemMapper.selectKey(16);
-        String share = systemMapper.selectKey(4);
+        String goods = systemMapper.selectKey("cskaoyan_mall_wx_catlog_goods");
+        String list = systemMapper.selectKey("cskaoyan_mall_wx_catlog_list");
+        String brand = systemMapper.selectKey("cskaoyan_mall_wx_index_brand");
+        String hot = systemMapper.selectKey("cskaoyan_mall_wx_index_hot");
+        String indexnew = systemMapper.selectKey("cskaoyan_mall_wx_index_new");
+        String topic = systemMapper.selectKey("cskaoyan_mall_wx_index_topic");
+        String share = systemMapper.selectKey("cskaoyan_mall_wx_share");
         WxConfigBean wxConfigBean = new WxConfigBean(goods,list,brand,hot,indexnew,topic,share);
         return wxConfigBean;
     }
 
     @Override
     public void changWxConfig(WxConfigBean wxConfigBean) {
-        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_catlog_goods(),11);
-        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_catlog_list(),13);
-        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_index_brand(),15);
-        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_index_hot(),9);
-        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_index_new(),2);
-        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_index_topic(),16);
-        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_share(),4);
+        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_catlog_goods(),"cskaoyan_mall_wx_catlog_goods");
+        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_catlog_list(),"cskaoyan_mall_wx_catlog_list");
+        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_index_brand(),"cskaoyan_mall_wx_index_brand");
+        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_index_hot(),"cskaoyan_mall_wx_index_hot");
+        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_index_new(),"cskaoyan_mall_wx_index_new");
+        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_index_topic(),"cskaoyan_mall_wx_index_topic");
+        systemMapper.changeKey(wxConfigBean.getCskaoyan_mall_wx_share(),"cskaoyan_mall_wx_share");
     }
 }

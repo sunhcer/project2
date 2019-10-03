@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.service.LogService;
 import com.cskaoyan.mall.service.RoleService;
+import com.cskaoyan.mall.service.StorageService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,6 +23,9 @@ public class AdminController {
 
     @Autowired
     LogService logService;
+
+    @Autowired
+    StorageService storageService;
 
     @RequestMapping("/admin/admin/list")
     public BaseRespVo AdminList(int page, int limit, String username, String sort, String order) {
@@ -91,5 +95,23 @@ public class AdminController {
     public BaseRespVo logList(int page, int limit, String name, String sort, String order) {
         LogListInfo logListInfo = logService.selectAllLog(page,limit,name,sort,order);
         return BaseRespVo.success(logListInfo);
+    }
+
+    @RequestMapping("/admin/storage/list")
+    public BaseRespVo storageList(int page, int limit, String key, String name, String sort, String order) {
+        StorageListInfo storageListInfo = storageService.selectAllStorage(page, limit, key, name, sort, order);
+        return BaseRespVo.success(storageListInfo);
+    }
+
+    @RequestMapping("/admin/storage/update")
+    public BaseRespVo storageUpdate(@RequestBody Storage storage) {
+        storageService.storageUpdate(storage);
+        return BaseRespVo.success(storage);
+    }
+
+    @RequestMapping("/admin/storage/delete")
+    public BaseRespVo storageDelete(@RequestBody Storage storage) {
+        storageService.storageDelete(storage);
+        return BaseRespVo.success(null);
     }
 }

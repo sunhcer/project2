@@ -1,8 +1,12 @@
 package com.cskaoyan.mall.service;
 
+import com.cskaoyan.mall.bean.AdminListInfo;
 import com.cskaoyan.mall.bean.Storage;
+import com.cskaoyan.mall.bean.StorageListInfo;
 import com.cskaoyan.mall.mapper.StorageMapper;
 import com.cskaoyan.mall.util.IpUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -11,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -49,5 +54,40 @@ public class StorageServiceImpl implements StorageService {
         storage.setId(null);
         storageMapper.insertSelective(storage);
         return storage;
+    }
+
+    @Override
+    public StorageListInfo selectAllStorage(int page, int limit, String key, String name, String sort, String order) {
+        PageHelper.startPage(page,limit);
+        PageHelper.orderBy(sort + " " + order);
+        List<Storage> storages;
+
+        if(name != null) {
+            name = "%" + name + "%";
+        }
+        if(key != null) {
+            key = "%" + key + "%";
+        }
+
+        storages = storageMapper.selectAllStorages(key, name);
+
+        PageInfo<Storage> storagePageInfo = new PageInfo<>(storages);
+        long total = storagePageInfo.getTotal();
+        StorageListInfo storageListInfo = new StorageListInfo();
+        storageListInfo.setItems(storages);
+        storageListInfo.setTotal(total);
+
+        return storageListInfo;
+    }
+
+    @Override
+    public void storageUpdate(Storage storage) {
+        storageMapper.updateByPrimaryKeySelective(storage);
+    }
+
+    @Override
+    public void storageDelete(Storage storage) {
+        Integer id = storage.getId();
+        storageMapper.storageDelete(id);
     }
 }

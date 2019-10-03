@@ -113,13 +113,13 @@
   <select id="selectKey" resultType="String">
     select key_value
     from cskaoyan_mall_system
-    where id = #{id}
+    where key_name= #{keyName}
   </select>
-  <select id="changeKey" resultType="String">
+  <update id="changeKey">
     update cskaoyan_mall_system
 
     set key_value=#{key1}
-    where id=#{id}
+    where key_name=#{keyName}
 
-  </select>
+  </update>
 </mapper>

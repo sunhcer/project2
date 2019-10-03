@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Brand;
+import com.cskaoyan.mall.bean.BrandPage;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface BrandMapper {
     List<Brand> findAllBrandDetail();
 
     void deleteById(Integer id);
+
+    List<Brand> selectByCondition(BrandPage page);
 }

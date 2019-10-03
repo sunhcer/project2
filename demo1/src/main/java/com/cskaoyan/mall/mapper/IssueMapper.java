@@ -19,4 +19,6 @@ public interface IssueMapper {
     int updateByPrimaryKey(Issue record);
 
     List<Issue> selectByCondition(OrderPage orderPage);
+
+    void insertIssue(Issue issue);
 }
