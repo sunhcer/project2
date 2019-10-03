@@ -50,14 +50,7 @@
     from cskaoyan_mall_admin
     where username = #{username}
   </select>
-  <select id="queryPermissionsByUsername" resultType="com.cskaoyan.mall.vo.UserInfo">
-    select
-    cma.username as name,cma.avatar as avatar,cma.role_ids as roles,cmp.permission as perms
-    from cskaoyan_mall_admin cma
-    left join cskaoyan_mall_permission cmp
-    on cma.role_ids = cmp.role_id
-    where username = #{primaryPrincipal}
-  </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     update cskaoyan_mall_admin set deleted = 1
     where id = #{id,jdbcType=INTEGER}

@@ -1,6 +1,9 @@
 package com.cskaoyan.mall.shiro;
 
+import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.mapper.AdminMapper;
+import com.cskaoyan.mall.mapper.PermissionMapper;
+import com.cskaoyan.mall.mapper.RoleMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
@@ -13,6 +16,7 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -21,6 +25,13 @@ public class UserRealm  extends AuthorizingRealm {
 
     @Autowired
     AdminMapper adminMapper;
+
+    @Autowired
+    PermissionMapper permissionMapper;
+
+    @Autowired
+    RoleMapper roleMapper;
+
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
@@ -57,9 +68,21 @@ public class UserRealm  extends AuthorizingRealm {
 //        permissions.add("user:delete");
 //        permissions.add("user:update");
 //        permissions.add("user:query");
-        List<String> permissions = adminMapper.queryPermissionsByUsername(primaryPrincipal);
+        Admin admin = adminMapper.selectAdminByName(primaryPrincipal);
+        Integer[] roleIds = admin.getRoleIds();
+        ArrayList<String> permissions = new ArrayList<>();
+        ArrayList<String> roles = new ArrayList<>();
+        for (int i = 0; i < roleIds.length; i++) {
+            List<String> permissionList = permissionMapper.selectPermissionById(roleIds[i]);
+            String roleName = roleMapper.selectRoleNameById(roleIds[i]);
+            roles.add(roleName);
+            permissions.addAll(permissionList);
+        }
         authorizationInfo.addStringPermissions(permissions);
-        authorizationInfo.addRole("utilMan");
+
+        for (String role : roles) {
+            authorizationInfo.addRole(role);
+        }
         return authorizationInfo;
     }
 
