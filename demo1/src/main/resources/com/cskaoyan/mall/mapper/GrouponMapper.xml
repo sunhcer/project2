@@ -168,6 +168,8 @@
     <include refid="Base_Column_List" />
     from cskaoyan_mall_groupon
     where deleted = 0
-    <if test="orderSn != null">and order_id in #{orderSn}</if>
+    <if test="orderPage.orderList != null"> and order_id in
+        <foreach collection="orderPage.orderList" item="orderId" separator="," open="(" close=")">#{orderId}</foreach>
+    </if>
   </select>
 </mapper>

@@ -15,17 +15,17 @@ import java.util.List;
  * @author EGGE
  */
 public class GoodsInfoForCreate {
-    List<GoodsAttribute> goodsAttributes;
+    List<GoodsAttribute> attributes;
     Goods goods;
-    List<GoodsProduct> goodsProducts;
-    List<GoodsSpecification> goodsSpecifications;
+    List<GoodsProduct> products;
+    List<GoodsSpecification> specifications;
 
-    public List<GoodsAttribute> getGoodsAttributes() {
-        return goodsAttributes;
+    public List<GoodsAttribute> getAttributes() {
+        return attributes;
     }
 
-    public void setGoodsAttributes(List<GoodsAttribute> goodsAttributes) {
-        this.goodsAttributes = goodsAttributes;
+    public void setAttributes(List<GoodsAttribute> attributes) {
+        this.attributes = attributes;
     }
 
     public Goods getGoods() {
@@ -36,29 +36,29 @@ public class GoodsInfoForCreate {
         this.goods = goods;
     }
 
-    public List<GoodsProduct> getGoodsProducts() {
-        return goodsProducts;
+    public List<GoodsProduct> getProducts() {
+        return products;
     }
 
-    public void setGoodsProducts(List<GoodsProduct> goodsProducts) {
-        this.goodsProducts = goodsProducts;
+    public void setProducts(List<GoodsProduct> products) {
+        this.products = products;
     }
 
-    public List<GoodsSpecification> getGoodsSpecifications() {
-        return goodsSpecifications;
+    public List<GoodsSpecification> getSpecifications() {
+        return specifications;
     }
 
-    public void setGoodsSpecifications(List<GoodsSpecification> goodsSpecifications) {
-        this.goodsSpecifications = goodsSpecifications;
+    public void setSpecifications(List<GoodsSpecification> specifications) {
+        this.specifications = specifications;
     }
 
     @Override
     public String toString() {
         return "GoodsInfoForCreate{" +
-                "goodsAttributes=" + goodsAttributes +
+                "attributes=" + attributes +
                 ", goods=" + goods +
-                ", goodsProducts=" + goodsProducts +
-                ", goodsSpecifications=" + goodsSpecifications +
+                ", products=" + products +
+                ", specifications=" + specifications +
                 '}';
     }
 }

@@ -230,9 +230,6 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.Goods">
         update cskaoyan_mall_goods
         <set>
-            <if test="goodsSn != null">
-                goods_sn = #{goodsSn,jdbcType=VARCHAR},
-            </if>
             <if test="name != null">
                 name = #{name,jdbcType=VARCHAR},
             </if>
@@ -296,7 +293,7 @@
     <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.cskaoyan.mall.bean.Goods">
         update cskaoyan_mall_goods
         set goods_sn      = #{goodsSn,jdbcType=VARCHAR},
-            name          = #{name,jdbcType=VARCHAR},
+            `name`          = #{name,jdbcType=VARCHAR},
             category_id   = #{categoryId,jdbcType=INTEGER},
             brand_id      = #{brandId,jdbcType=INTEGER},
             gallery       = #{gallery,jdbcType=VARCHAR},

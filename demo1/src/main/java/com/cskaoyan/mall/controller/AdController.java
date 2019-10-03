@@ -2,6 +2,8 @@ package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.service.AdService;
+import com.cskaoyan.mall.service.GrouponRulesService;
+import com.cskaoyan.mall.service.GrouponService;
 import com.cskaoyan.mall.vo.AdPageList;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,10 @@ import java.util.List;
 public class AdController {
     @Autowired
     AdService adService;
+    @Autowired
+    GrouponRulesService grouponRulesService;
+    @Autowired
+    GrouponService grouponService;
 
     //推广管理--首页--只有四个字段
     //推广管理--模糊查询--至少五个字段,默认会提交一个content
@@ -49,7 +55,6 @@ public class AdController {
             }
         }
     }
-
 
     //推广管理--添加广告
     @RequestMapping("/ad/create")
@@ -88,6 +93,50 @@ public class AdController {
             return baseRespVo;
         }
     }
+
+    ///admin/groupon/list
+    @RequestMapping("/groupon/list")
+    public BaseRespVo getGrouponRules(OrderPage orderPage){
+        BrandList<GrouponRules> grouponRules = grouponRulesService.getGrouponRules(orderPage);
+        return BaseRespVo.success(grouponRules);
+    }
+
+    ///admin/groupon/update
+    @RequestMapping("/groupon/update")
+    public BaseRespVo updateGrouponRules(@RequestBody GrouponRules grouponRules){
+        grouponRulesService.updateGroupRules(grouponRules);
+        return BaseRespVo.success(null);
+    }
+
+    ///admin/groupon/create
+    @RequestMapping("/groupon/create")
+    public BaseRespVo insertGrouponRules(@RequestBody GrouponRules grouponRules){
+        boolean flag = grouponRulesService.insertGrouponRules(grouponRules);
+        if (flag){
+            //添加成功
+            return BaseRespVo.success(null);
+        }else{
+            BaseRespVo<Object> baseRespVo = new BaseRespVo<>();
+            baseRespVo.setErrno(402);
+            baseRespVo.setErrmsg("参数值不对");
+            return baseRespVo;
+        }
+    }
+
+    ///admin/groupon/delete
+    @RequestMapping("/groupon/delete")
+    public BaseRespVo deleteGrouponRules(@RequestBody GrouponRules grouponRules){
+        grouponRulesService.deleteGroupRules(grouponRules);
+        return BaseRespVo.success(null);
+    }
+
+    ///admin/groupon/listRecord
+    @RequestMapping("/groupon/listRecord")
+    public BaseRespVo getGroupon(OrderPage orderPage){
+        BrandList<GrouponBean> grouponList = grouponService.getGrouponList(orderPage);
+        return BaseRespVo.success(grouponList);
+    }
+
 
     //推广管理---创建优惠劵
     //接收不到数据--原因一:日期,原因二:数组
