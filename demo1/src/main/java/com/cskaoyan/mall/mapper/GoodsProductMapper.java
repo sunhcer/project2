@@ -2,6 +2,8 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.GoodsProduct;
 
+import java.util.List;
+
 public interface GoodsProductMapper {
     int deleteByPrimaryKey(Integer id);
 
@@ -16,4 +18,6 @@ public interface GoodsProductMapper {
     int updateByPrimaryKey(GoodsProduct record);
 
     Integer findAmountOfProducts();
+
+    List<GoodsProduct> findGoodsProductsByGoodsId(int goodsId);
 }
