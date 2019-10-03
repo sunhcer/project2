@@ -2,10 +2,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.bo.GoodsList;
-import com.cskaoyan.mall.mapper.BrandMapper;
-import com.cskaoyan.mall.mapper.CategoryMapper;
-import com.cskaoyan.mall.mapper.CommentMapper;
-import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -35,7 +32,12 @@ public class ProductServiceImpl implements  ProductService {
 
     @Autowired
     GoodsMapper goodsMapper;
-
+    @Autowired
+    GoodsAttributeMapper goodsAttributeMapper;
+    @Autowired
+    GoodsSpecificationMapper goodsSpecificationMapper;
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
     @Override
     public List<CatAndBrandVo> findAllBrandToVo() {
         return brandMapper.findAllBrandToVo();
@@ -105,5 +107,26 @@ public class ProductServiceImpl implements  ProductService {
     @Override
     public int deleteCommentById(@RequestBody Comment comment) {
         return commentMapper.deleteByPrimaryKey(comment.getId());
+    }
+
+    @Override
+    public Integer addGoods(Goods goods) {
+        return goodsMapper.insertSelective(goods);
+    }
+
+    @Override
+    public Integer addGoodsAttribute(GoodsAttribute goodsAttribute) {
+
+        return goodsAttributeMapper.insertSelective(goodsAttribute);
+    }
+
+    @Override
+    public Integer addGoodsSpecification(GoodsSpecification goodsSpecification) {
+        return goodsSpecificationMapper.insertSelective(goodsSpecification);
+    }
+
+    @Override
+    public Integer addGoodsProduct(GoodsProduct goodsProduct) {
+        return goodsProductMapper.insertSelective(goodsProduct);
     }
 }

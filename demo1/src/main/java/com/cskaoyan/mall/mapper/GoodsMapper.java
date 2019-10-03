@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Goods;
+import com.cskaoyan.mall.bean.StatGood;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface GoodsMapper {
     Integer findAmountOfGoods();
 
     List<Goods> findGoodsByNameAndGoodsSn(@Param("name")String name, @Param("goodsSn") String goodsSn);
+
+    StatGood[] getStatGoods();
 }

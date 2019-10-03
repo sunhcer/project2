@@ -7,10 +7,28 @@ package com.cskaoyan.mall.bean;
  * @Time 14:41
  */
 public class BrandPage {
+    Integer id;
+    String name;
     private int page;
     private int limit;
     private String sort_time;
     private String desc;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getPage() {
         return page;

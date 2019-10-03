@@ -1,5 +1,7 @@
 package com.cskaoyan.mall.mapper;
 
+import com.cskaoyan.mall.bean.StatGood;
+import com.cskaoyan.mall.bean.StatOrder;
 import com.cskaoyan.mall.bean.StatUser;
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.vo.UserPage;
@@ -22,5 +24,7 @@ public interface UserMapper {
     List<User> queryAllUsers(UserPage userPage);
 
     int queryUserNum();
+
     StatUser[] getStatUsers();
+
 }

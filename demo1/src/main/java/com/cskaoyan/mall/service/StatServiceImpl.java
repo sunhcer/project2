@@ -4,6 +4,9 @@ import com.cskaoyan.mall.bean.Stat;
 import com.cskaoyan.mall.bean.StatGood;
 import com.cskaoyan.mall.bean.StatOrder;
 import com.cskaoyan.mall.bean.StatUser;
+import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.mapper.OrderMapper;
+import com.cskaoyan.mall.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +26,13 @@ public class StatServiceImpl implements StatService {
     //调用各个模块的service方法获取数据复制
 
     @Autowired
-    UserService userService;
+    UserMapper userMapper;
+
+    @Autowired
+    OrderMapper orderMapper;
+
+    @Autowired
+    GoodsMapper goodsMapper;
 
     @Override
     public Stat statUser() {
@@ -40,7 +49,7 @@ public class StatServiceImpl implements StatService {
 //        StatUser rows[] = {statUser};
 //        stat.setRows(rows);
 
-        StatUser[] statUsers = userService.getStatUsers();
+        StatUser[] statUsers = userMapper.getStatUsers();
         stat.setRows(statUsers);
         return stat;
     }
@@ -52,16 +61,8 @@ public class StatServiceImpl implements StatService {
         String columns[] = {"day","orders","customers","amount","pcr"};
         stat.setColumns(columns);
 
-        StatOrder statOrder = new StatOrder();
-        statOrder.setAmount(8462.00);
-        statOrder.setCustomers(12);
-        String format = simpleDateFormat.format(new Date());
-        statOrder.setDay(format);
-        statOrder.setOrders(21);
-        statOrder.setPcr(5469.00);
-
-        StatOrder rows[] = {statOrder};
-        stat.setRows(rows);
+        StatOrder[] statOrders = orderMapper.getStatOrders();
+        stat.setRows(statOrders);
         return stat;
 
     }
@@ -73,15 +74,17 @@ public class StatServiceImpl implements StatService {
         String columns[] = {"day","orders","products","amount"};
         stat.setColumns(columns);
 
-        StatGood statGood = new StatGood();
-        statGood.setAmount(1234.00);
-        String format = simpleDateFormat.format(new Date());
-        statGood.setDay(format);
-        statGood.setOrders(13);
-        statGood.setProducts(20);
-
-        StatGood rows[] = {statGood};
-        stat.setRows(rows);
+//        StatGood statGood = new StatGood();
+//        statGood.setAmount(1234.00);
+//        String format = simpleDateFormat.format(new Date());
+//        statGood.setDay(format);
+//        statGood.setOrders(13);
+//        statGood.setProducts(20);
+//
+//        StatGood rows[] = {statGood};
+//        stat.setRows(rows);
+        StatGood[] statGoods = goodsMapper.getStatGoods();
+        stat.setRows(statGoods);
         return stat;
     }
 }

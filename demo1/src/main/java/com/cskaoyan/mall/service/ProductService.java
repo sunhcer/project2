@@ -31,4 +31,12 @@ public interface ProductService {
     int updateComment(Comment comment);
 
     int deleteCommentById(Comment comment);
+
+    Integer addGoods(Goods goods);
+
+    Integer addGoodsAttribute(GoodsAttribute goodsAttribute);
+
+    Integer addGoodsSpecification(GoodsSpecification goodsSpecification);
+
+    Integer addGoodsProduct(GoodsProduct goodsProduct);
 }
