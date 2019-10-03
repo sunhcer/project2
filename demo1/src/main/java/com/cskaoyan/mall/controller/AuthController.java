@@ -1,17 +1,26 @@
 package com.cskaoyan.mall.controller;
 
 
+import com.cskaoyan.mall.bean.Admin;
+import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.service.DashBoardService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.DashBoard;
 import com.cskaoyan.mall.vo.LoginVo;
 import com.cskaoyan.mall.vo.UserInfo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
+
+import java.io.Serializable;
 import java.util.List;
+
 
 /**
  * 类简介：
@@ -25,27 +34,45 @@ public class AuthController {
     @Autowired
     DashBoardService dashBoardService;
 
+    @Autowired
+    AdminService adminService;
 
     @RequestMapping("admin/auth/login")
-    public BaseRespVo login(LoginVo user){
-        BaseRespVo respVo=BaseRespVo.success("795d0858-6431-462a-b1ae-50b58801733f");
-        return respVo;
+    public BaseRespVo login(@RequestBody LoginVo loginVo){
+
+        String username = loginVo.getUsername();
+        String password = loginVo.getPassword();
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        Subject subject = SecurityUtils.getSubject();
+
+        try {
+            subject.login(token);
+        } catch (AuthenticationException e) {
+            return BaseRespVo.fail(605,"用户帐号或密码不正确");
+        }
+        Serializable id = subject.getSession().getId();
+        return BaseRespVo.success(id);
 
     }
+
     @RequestMapping("admin/auth/info")
     public BaseRespVo info(String token){
-        UserInfo userInfo=new UserInfo();
-        userInfo.setAvater("https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif");
-        userInfo.setName("admin123");
-        List perms=new ArrayList();
-        perms.add("*");
-        userInfo.setPerms(perms);
-        List roles=new ArrayList();
-        roles.add("超级管理员");
-        userInfo.setRoles(roles);
-        BaseRespVo respVo=BaseRespVo.success(userInfo);
-        return respVo;
+        Subject subject = SecurityUtils.getSubject();
+        String principal = (String) subject.getPrincipal();
+        Admin admin = adminService.selectAdminByName(principal);
+        UserInfo userInfo = new UserInfo();
+        String avatar = admin.getAvatar();
+        String username = admin.getUsername();
+        userInfo.setAvatar(avatar);
+        userInfo.setName(username);
 
+        List<String> perms = adminService.selectPermissionsByName(principal);
+        List<String> roles = adminService.selectRolesByName(principal);
+
+        userInfo.setPerms(perms);
+        userInfo.setRoles(roles);
+
+        return BaseRespVo.success(userInfo);
     }
 
     /**
@@ -63,5 +90,17 @@ public class AuthController {
         dashBoard.setOrderTotal(dashBoardService.queryOrderTotal());
         BaseRespVo respVo = BaseRespVo.success(dashBoard);
         return respVo;
+    }
+
+    @RequestMapping("/fail")
+    public String fail(){
+        return "fail";
+    }
+
+    @RequestMapping("/admin/auth/logout")
+    public BaseRespVo logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return BaseRespVo.success(null);
     }
 }
