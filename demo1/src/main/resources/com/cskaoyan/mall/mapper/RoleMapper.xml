@@ -44,6 +44,13 @@
     where name = #{name}
     and deleted = 0
   </select>
+
+  <select id="selectRoleNameById" resultType="string">
+    select
+    `name`
+    from cskaoyan_mall_role
+    where id = #{id}
+  </select>
   <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     update cskaoyan_mall_role
     set deleted = 1
