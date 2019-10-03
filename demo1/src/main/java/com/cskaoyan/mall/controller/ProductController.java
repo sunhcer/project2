@@ -6,15 +6,14 @@ import com.cskaoyan.mall.bo.GoodsList;
 import com.cskaoyan.mall.service.ProductService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 类简介：后台商品管理模块
@@ -143,16 +142,28 @@ public class ProductController {
         return BaseRespVo.success(null);
     }
 
+    /**
+     * 处理请求：新增商品
+     * 方法用途：用于新建商品
+     * 操作简介：接收各种参数并存入数据库
+     *
+     * @param goodsInfo 封装了商品参数的请求头
+     * @return 返回给前端的数据
+     * @author EGGE
+     * @date 2019-10-03 14:39:52
+     **/
     @RequestMapping("admin/goods/create")
     public BaseRespVo addGoods(@RequestBody GoodsInfoForCreate goodsInfo) {
         Goods goods = goodsInfo.getGoods();
         if (goods.getGoodsSn() == null || goods.getName() == null)
             return BaseRespVo.error(null, 401, "带*为必填项！");
-        Integer goodsId = productService.addGoods(goods);
+        goods.setAddTime(new Date());
+        productService.addGoods(goods);
+        Integer goodsId = goods.getId();
         if (goodsId != null) {
-            List<GoodsAttribute> goodsAttributes = goodsInfo.getGoodsAttributes();
-            List<GoodsProduct> goodsProducts = goodsInfo.getGoodsProducts();
-            List<GoodsSpecification> goodsSpecifications = goodsInfo.getGoodsSpecifications();
+            List<GoodsAttribute> goodsAttributes = goodsInfo.getAttributes();
+            List<GoodsProduct> goodsProducts = goodsInfo.getProducts();
+            List<GoodsSpecification> goodsSpecifications = goodsInfo.getSpecifications();
             if (goodsAttributes != null)
                 for (GoodsAttribute goodsAttribute : goodsAttributes) {
                     goodsAttribute.setGoodsId(goodsId);
@@ -175,5 +186,40 @@ public class ProductController {
         return BaseRespVo.success(null);
     }
 
+    /**
+     * 处理请求：获取商品详细信息
+     * 方法用途：获取商品详细信息
+     * 操作简介：根据商品id找到所有有关数据
+     *
+     * @param id 商品id
+     * @return 返回给前端的数据
+     * @author EGGE
+     * @date 2019-10-03 14:46:22
+     **/
+    @RequestMapping("admin/goods/detail")
+    public BaseRespVo goodsDetail( String id) {
+        GoodsInfoForCreate goodsInfo = new GoodsInfoForCreate();
+        int goodsId = 0;
+        try {
+            goodsId = Integer.parseInt(id);
+        } catch (Exception e) {
+            BaseRespVo.error(null, 402, "参数错误!");
+        }
+        Goods goods = productService.findGoodsById(goodsId);
+        List<GoodsAttribute> attributes=null;
+        List<GoodsProduct> products=null;
+        List<GoodsSpecification> specifications=null;
+        if(goods!=null){
+            attributes=productService.findGoodsAttributesByGoodsId(goodsId);
+            products=productService.findGoodsProductsByGoodsId(goodsId);
+            specifications=productService.findGoodsSpecificationsByGoodsId(goodsId);
+        }
+        goodsInfo.setGoods(goods);
+        goodsInfo.setAttributes(attributes);
+        goodsInfo.setProducts(products);
+        goodsInfo.setSpecifications(specifications);
 
+        return BaseRespVo.success(goodsInfo);
+
+    }
 }

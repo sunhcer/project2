@@ -63,8 +63,10 @@ public class ProductServiceImpl implements  ProductService {
         PageHelper.startPage(page.getPage(),page.getLimit(),page.getSort()+" "+page.getOrder());
         //sort代表要查的子列，order代表排序规则，二者之间需要空格
         List<Goods> goods;
+        page.setName(page.getName()==null?null:page.getName().trim());
+        page.setGoodsSn(page.getGoodsSn()==null?null:page.getGoodsSn().trim());
         if(page.getName()!=null||page.getGoodsSn()!=null) {//改进版：去除前后空格
-            goods = goodsMapper.findGoodsByNameAndGoodsSn("%"+page.getName().trim()+"%", page.getGoodsSn().trim());
+            goods = goodsMapper.findGoodsByNameAndGoodsSn("%"+page.getName()+"%", page.getGoodsSn());
         }else{
             goods=goodsMapper.findAllGoods();
         }
@@ -128,5 +130,25 @@ public class ProductServiceImpl implements  ProductService {
     @Override
     public Integer addGoodsProduct(GoodsProduct goodsProduct) {
         return goodsProductMapper.insertSelective(goodsProduct);
+    }
+
+    @Override
+    public Goods findGoodsById(int id) {
+        return goodsMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<GoodsAttribute> findGoodsAttributesByGoodsId(int goodsId) {
+        return goodsAttributeMapper.findGoodsAttributesByGoodsId(goodsId);
+    }
+
+    @Override
+    public List<GoodsProduct> findGoodsProductsByGoodsId(int goodsId) {
+        return goodsProductMapper.findGoodsProductsByGoodsId(goodsId);
+    }
+
+    @Override
+    public List<GoodsSpecification> findGoodsSpecificationsByGoodsId(int goodsId) {
+        return goodsSpecificationMapper.findGoodsSpecificationsByGoodsId(goodsId);
     }
 }
