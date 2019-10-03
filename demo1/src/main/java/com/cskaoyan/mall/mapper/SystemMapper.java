@@ -1,8 +1,7 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.System;
-
-import java.util.Date;
+import org.apache.ibatis.annotations.Param;
 
 
 public interface SystemMapper {
@@ -18,7 +17,7 @@ public interface SystemMapper {
 
     int updateByPrimaryKey(System record);
     //查询
-    String selectKey(int id);
+    String selectKey(String keyName);
     //修改
-    String changeKey(String key1, int id);
+    void changeKey(@Param("key1") String key1, @Param("keyName") String keyName);
 }

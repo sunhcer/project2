@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * 运费配置
  */
 @RestController
-public class ExpressController {
+public class ExpressConfigController {
     @Autowired
     GetExpressConfigService getExpressConfigService;
     @RequestMapping(value = "admin/config/express",method = RequestMethod.GET )

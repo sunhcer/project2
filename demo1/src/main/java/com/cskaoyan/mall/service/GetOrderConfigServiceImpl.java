@@ -12,17 +12,17 @@ public class GetOrderConfigServiceImpl implements GetOrderConfigService{
 
     @Override
     public OrderConfigBean showOrderConfig() {
-        String comment = systemMapper.selectKey(10);
-        String unconfirm = systemMapper.selectKey(3);
-        String unpaid = systemMapper.selectKey(1);
+        String comment = systemMapper.selectKey("cskaoyan_mall_order_comment");
+        String unconfirm = systemMapper.selectKey("cskaoyan_mall_order_unconfirm");
+        String unpaid = systemMapper.selectKey("cskaoyan_mall_order_unpaid");
         OrderConfigBean orderConfigBean = new OrderConfigBean(comment, unconfirm, unpaid);
         return orderConfigBean;
     }
 
     @Override
     public void changeOrderConfig(OrderConfigBean orderConfigBean) {
-        systemMapper.changeKey(orderConfigBean.getCskaoyan_mall_order_comment(),10);
-        systemMapper.changeKey(orderConfigBean.getCskaoyan_mall_order_unconfirm(),3);
-        systemMapper.changeKey(orderConfigBean.getCskaoyan_mall_order_unpaid(),1);
+        systemMapper.changeKey(orderConfigBean.getCskaoyan_mall_order_comment(),"cskaoyan_mall_order_comment");
+        systemMapper.changeKey(orderConfigBean.getCskaoyan_mall_order_unconfirm(),"cskaoyan_mall_order_unconfirm");
+        systemMapper.changeKey(orderConfigBean.getCskaoyan_mall_order_unpaid(),"cskaoyan_mall_order_unpaid");
     }
 }
