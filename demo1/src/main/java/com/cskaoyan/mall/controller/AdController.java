@@ -55,8 +55,7 @@ public class AdController {
             }
         }
     }
-
-
+    
     //推广管理--添加广告
     @RequestMapping("/ad/create")
     public BaseRespVo<Ad> addAd(@RequestBody Ad ad){
@@ -95,7 +94,6 @@ public class AdController {
         }
     }
 
-<<<<<<< HEAD
     ///admin/groupon/list
     @RequestMapping("/groupon/list")
     public BaseRespVo getGrouponRules(OrderPage orderPage){
