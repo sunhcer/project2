@@ -55,12 +55,9 @@ public class GrouponServiceImpl implements GrouponService {
                 }
             }
             if (list.size() > 0) {
-                String orderSn = Arrays.toString(list.toArray());
-                orderSn = orderSn.replace("[", "(");
-                orderSn = orderSn.replace("]", ")");
-                orderPage.setOrderSn(orderSn);
+                orderPage.setOrderList(list);
             } else {
-                orderPage.setOrderSn(null);
+                orderPage.setOrderList(null);
             }
             logger.warn(Arrays.toString(list.toArray()));
         }

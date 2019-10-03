@@ -16,10 +16,19 @@ public class OrderPage {
     List<Integer> orderStatusArray;
     private Integer userId;
     private String orderSn;
+    private List orderList;
     String question;
     String keyword;
     String url;
     Integer goodsId;
+
+    public List getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List orderList) {
+        this.orderList = orderList;
+    }
 
     public Integer getGoodsId() {
         return goodsId;
