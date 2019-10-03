@@ -35,4 +35,18 @@ public interface AdService {
     BaseRespVo couponUpdate(CouponArray coupon);
 
     BaseRespVo couponDelete(int id);
+
+    BaseRespVo topicList(TopicReceive receive);
+
+    BaseRespVo queryLikeTopicPage(TopicReceive receive);
+
+    BaseRespVo topicCreate(TopicArray topicArray);
+
+    BaseRespVo topicUpdate(TopicArray topicArray);
+
+    BaseRespVo topicDelete(TopicArray topicArray);
+
+    BaseRespVo couponListuser(CouponQueryUser couponQueryUser);
+
+    BaseRespVo couponListuserByStatus(CouponQueryUser couponQueryUser);
 }

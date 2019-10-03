@@ -195,4 +195,79 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="queryTopicAmount" resultType="int">
+    select count(id) from cskaoyan_mall_topic
+  </select>
+
+  <resultMap id="queryAllTopicMap" type="com.cskaoyan.mall.bean.TopicArray">
+    <result column="id" property="id"/>
+    <result column="title" property="title"/>
+    <result column="subtitle" property="subtitle"/>
+    <result column="price" property="price"/>
+    <result column="read_count" property="readCount"/>
+    <result column="pic_url" property="picUrl"/>
+    <result column="sort_order" property="sortOrder"/>
+    <result column="goods" property="goods" typeHandler="com.cskaoyan.mall.util.StringArrayHandlerUtil"/>
+    <result column="add_time" property="addTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="deleted" property="deleted"/>
+    <result column="content" property="content"/>
+  </resultMap>
+  <select id="queryAllTopic" resultMap="queryAllTopicMap">
+    select id,title,subtitle,price,read_count,pic_url,sort_order,goods,
+    add_time,update_time,deleted,content from cskaoyan_mall_topic limit #{pagesize} offset #{offsetNum}
+  </select>
+
+  <select id="queryLikeTopicAmount" resultType="int">
+    select   count(id) from cskaoyan_mall_topic
+    <where>
+      <if test="title!=null">
+        title like #{title}
+      </if>
+      <if test="subtitle!=null">
+       and subtitle like #{subtitle}
+      </if>
+    </where>
+  </select>
+
+  <select id="queryLikeTopicPage" resultMap="queryAllTopicMap">
+     select id,title,subtitle,price,read_count,pic_url,sort_order,goods,
+    add_time,update_time,deleted,content from cskaoyan_mall_topic
+     <where>
+       <if test="title!=null">
+         title like #{title}
+       </if>
+       <if test="subtitle!=null">
+         and subtitle like #{subtitle}
+       </if>
+     </where>
+     limit #{pagesize} offset #{offsetNum}
+  </select>
+
+  <insert id="AddTopic">
+    <selectKey resultType="int" keyProperty="topicArray.id" keyColumn="id" order="AFTER">
+      select last_insert_id() as id
+    </selectKey>
+    insert into cskaoyan_mall_topic (id,title,subtitle,price,read_count,pic_url,sort_order,goods,
+    add_time,update_time,deleted,content) values
+    (null,#{topicArray.title},#{topicArray.subtitle},#{topicArray.price},#{topicArray.readCount},
+    #{topicArray.picUrl},#{topicArray.sortOrder},
+    #{topicArray.goods,typeHandler=com.cskaoyan.mall.util.StringArrayHandlerUtil},
+    #{topicArray.addTime},
+    #{topicArray.updateTime},#{topicArray.deleted},#{topicArray.content}
+    )
+  </insert>
+
+  <update id="topicUpdate">
+    update cskaoyan_mall_topic set title=#{topicArray.title},subtitle=#{topicArray.subtitle},
+    price=#{topicArray.price},read_count=#{topicArray.readCount},pic_url=#{topicArray.picUrl},
+    sort_order=#{topicArray.sortOrder},goods=#{topicArray.goods,typeHandler=com.cskaoyan.mall.util.StringArrayHandlerUtil},
+    add_time=#{topicArray.addTime},update_time=#{topicArray.updateTime},deleted=#{topicArray.deleted},
+    content=#{topicArray.content} where id=#{topicArray.id}
+  </update>
+
+  <delete id="topicDelete">
+    delete from cskaoyan_mall_topic where id=#{id}
+  </delete>
 </mapper>
