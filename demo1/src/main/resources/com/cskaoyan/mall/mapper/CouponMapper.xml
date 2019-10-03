@@ -321,4 +321,40 @@
     update_time= #{coupon.updateTime},deleted= #{coupon.deleted}
     where id=#{coupon.id}
   </update>
+  <delete id="couponDeleteById">
+    delete from cskaoyan_mall_coupon where id=#{id}
+  </delete>
+
+ <select id="queryCouponUserByCouponId" resultType="com.cskaoyan.mall.bean.CouponUser">
+   select id from cskaoyan_mall_coupon_user where coupon_id=#{couponId}
+ </select>
+
+  <resultMap id="queryCouponUserPageMap" type="com.cskaoyan.mall.bean.CouponUser">
+    <result column="id" property="id"/>
+    <result column="user_id" property="userId"/>
+    <result column="coupon_id" property="couponId"/>
+    <result column="status" property="status"/>
+    <result column="used_time" property="usedTime"/>
+    <result column="start_time" property="startTime"/>
+    <result column="end_time" property="endTime"/>
+    <result column="order_id" property="orderId"/>
+    <result column="add_time" property="addTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="deleted" property="deleted"/>
+  </resultMap>
+  <select id="queryCouponUserPageByStatus" resultMap="queryCouponUserPageMap">
+    select id,user_id,coupon_id,status,used_time,start_time,end_time,order_id,
+    add_time,update_time,deleted from cskaoyan_mall_coupon_user where coupon_id=#{couponId} and status=#{status}
+    limit #{pagesize} offset #{offsetNum}
+  </select>
+  <select id="queryCouponUserPage" resultMap="queryCouponUserPageMap">
+     select id,user_id,coupon_id,status,used_time,start_time,end_time,order_id,
+    add_time,update_time,deleted from cskaoyan_mall_coupon_user where coupon_id=#{couponId}
+    limit #{pagesize} offset #{offsetNum}
+  </select>
+
+  <select id="queryCouponUserByCouponIdAndStatus" resultMap="queryCouponUserPageMap">
+    select id,user_id,coupon_id,status,used_time,start_time,end_time,order_id,
+    add_time,update_time,deleted from cskaoyan_mall_coupon_user where coupon_id=#{couponId} and status=#{status}
+  </select>
 </mapper>
