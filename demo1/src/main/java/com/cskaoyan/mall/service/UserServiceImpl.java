@@ -7,12 +7,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.cskaoyan.mall.bean.StatGood;
-import com.cskaoyan.mall.bean.StatOrder;
-import com.cskaoyan.mall.bean.StatUser;
-import com.cskaoyan.mall.mapper.UserMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -37,13 +31,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     FeedbackMapper feedbackMapper;
 
+
+
+//    username:
+//    mobile:
     @Override
     public UsersListInfo selectAllUsers(UserPage userPage) {
+        if(userPage.getUsername()!=null&&"".equals(userPage.getUsername().trim())){
+            userPage.setUsername(null);
+        }
+        if(userPage.getMobile()!=null&&"".equals(userPage.getMobile().trim())){
+            userPage.setMobile(null);
+        }
         int page=userPage.getPage();
         int limit=userPage.getLimit();
         PageHelper.startPage(page,limit);
-//        String username ="%"+ userPage.getUsername()+"%";
-//        userPage.setUsername(username);
         List<User> users = userMapper.queryAllUsers(userPage);
         PageInfo<User> userPageInfo = new PageInfo<>(users);
         long total = userPageInfo.getTotal();
@@ -53,8 +55,16 @@ public class UserServiceImpl implements UserService {
         return usersListInfo;
     }
 
+//    name: 1
+//    userId: 1
     @Override
     public UsersAddressInfo selectUsersAddress(UserPage userPage) {
+        if(userPage.getName()!=null&&"".equals(userPage.getName().trim())){
+            userPage.setName(null);
+        }
+        if(userPage.getUserId()!=null&&"".equals(userPage.getUserId().trim())){
+            userPage.setUserId(null);
+        }
         int page=userPage.getPage();
         int limit=userPage.getLimit();
         PageHelper.startPage(page,limit);
@@ -67,8 +77,16 @@ public class UserServiceImpl implements UserService {
         return usersAddressInfo;
     }
 
+//    userId: 1
+//    valueId: 1
     @Override
     public UsersCollectInfo selectUsersCollect(UserPage userPage) {
+        if(userPage.getValueId()!=null&&"".equals(userPage.getValueId().trim())){
+            userPage.setValueId(null);
+        }
+        if(userPage.getUserId()!=null&&"".equals(userPage.getUserId().trim())){
+            userPage.setUserId(null);
+        }
         int page=userPage.getPage();
         int limit=userPage.getLimit();
         PageHelper.startPage(page,limit);
@@ -81,8 +99,17 @@ public class UserServiceImpl implements UserService {
         return usersCollectInfo;
     }
 
+
+//    userId: 1
+//    goodsId: 1
     @Override
     public UsersFootInfo selectUsersFoot(UserPage userPage) {
+        if(userPage.getGoodsId()!=null&&"".equals(userPage.getGoodsId().trim())){
+            userPage.setGoodsId(null);
+        }
+        if(userPage.getUserId()!=null&&"".equals(userPage.getUserId().trim())){
+            userPage.setUserId(null);
+        }
         int page=userPage.getPage();
         int limit=userPage.getLimit();
         PageHelper.startPage(page,limit);
@@ -95,8 +122,16 @@ public class UserServiceImpl implements UserService {
         return usersFootInfo;
     }
 
+//    userId: 1
+//    keyword: 1
     @Override
     public UserHistoryInfo selectUsersHistory(UserPage userPage) {
+        if(userPage.getKeyword()!=null&&"".equals(userPage.getKeyword().trim())){
+            userPage.setKeyword(null);
+        }
+        if(userPage.getUserId()!=null&&"".equals(userPage.getUserId().trim())){
+            userPage.setUserId(null);
+        }
         int page=userPage.getPage();
         int limit=userPage.getLimit();
         PageHelper.startPage(page,limit);
@@ -109,8 +144,16 @@ public class UserServiceImpl implements UserService {
         return userHistoryInfo;
     }
 
+//    username
+//    id
     @Override
     public UserFeedbackInfo selectUsersFeedback(UserPage userPage) {
+        if(userPage.getUsername()!=null&&"".equals(userPage.getUsername().trim())){
+            userPage.setUsername(null);
+        }
+        if(userPage.getId()!=null&&"".equals(userPage.getId().trim())){
+            userPage.setId(null);
+        }
         int page=userPage.getPage();
         int limit=userPage.getLimit();
         PageHelper.startPage(page,limit);

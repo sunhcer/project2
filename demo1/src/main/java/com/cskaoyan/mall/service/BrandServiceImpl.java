@@ -33,7 +33,7 @@ public class BrandServiceImpl implements BrandService {
         if (page.getSort_time() != null) {
             PageHelper.orderBy(page.getSort_time() + " " + page.getDesc());
         }
-        if (page.getName() != null && "".equals(page.getName())) {
+        if (page.getName() != null && "".equals(page.getName().trim())) {
             page.setName(null);
         }
         if (page.getId() != null || page.getName() != null) {
