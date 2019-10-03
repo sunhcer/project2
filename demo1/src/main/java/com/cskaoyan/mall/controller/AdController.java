@@ -56,7 +56,6 @@ public class AdController {
         }
     }
 
-
     //推广管理--添加广告
     @RequestMapping("/ad/create")
     public BaseRespVo<Ad> addAd(@RequestBody Ad ad){
@@ -138,6 +137,7 @@ public class AdController {
         return BaseRespVo.success(grouponList);
     }
 
+
     //推广管理---创建优惠劵
     //接收不到数据--原因一:日期,原因二:数组
     @RequestMapping("/coupon/create")
@@ -146,6 +146,7 @@ public class AdController {
         return baseRespVo;
     }
 
+    //修复
     //推广管理--优惠劵详情
     @RequestMapping("/coupon/read")
     public BaseRespVo couponRead(int id){
@@ -162,9 +163,58 @@ public class AdController {
 
     //推广管理--优惠劵删除
     @RequestMapping("/coupon/delete")
-    public BaseRespVo  couponDelete(CouponArray coupon){
+    public BaseRespVo  couponDelete(@RequestBody CouponArray coupon){
         int id=coupon.getId();
         BaseRespVo baseRespVo=adService.couponDelete(id);
+        return baseRespVo;
+    }
+    //推广管理--优惠劵详情,多表查询
+    @RequestMapping("/coupon/listuser")
+    public BaseRespVo couponListuser(CouponQueryUser couponQueryUser){
+        //进入详情页默认查询全部
+        if (couponQueryUser.getStatus()==100) {
+            BaseRespVo baseRespVo = adService.couponListuser(couponQueryUser);
+            return baseRespVo;
+        }else{
+            BaseRespVo baseRespVo=adService.couponListuserByStatus(couponQueryUser);
+            return baseRespVo;
+        }
+    }
+
+
+    //推广管理--专题管理,首页显示和模糊查询
+    @RequestMapping("/topic/list")
+    public BaseRespVo topicList(TopicReceive receive){
+        BaseRespVo baseRespVo=null;
+        if (receive.getSubtitle()==null&&receive.getTitle()==null){
+            //查询所有
+            baseRespVo=adService.topicList(receive);
+            return baseRespVo;
+        }else{
+            //模糊查询
+            baseRespVo=adService.queryLikeTopicPage(receive);
+           return baseRespVo;
+        }
+    }
+
+    //推广管理--专题管理--新建管理
+    @RequestMapping("/topic/create")
+    public BaseRespVo topicCreate(@RequestBody TopicArray topicArray){
+        BaseRespVo baseRespVo=adService.topicCreate(topicArray);
+        return baseRespVo;
+    }
+
+    //推广管理--专题管理--更新管理
+    @RequestMapping("/topic/update")
+    public BaseRespVo TopicUpdate(@RequestBody TopicArray topicArray){
+        BaseRespVo baseRespVo=adService.topicUpdate(topicArray);
+        return baseRespVo;
+    }
+
+    //推广管理--专题管理--删除
+    @RequestMapping("/topic/delete")
+    public BaseRespVo topicDelete(@RequestBody TopicArray topicArray){
+        BaseRespVo baseRespVo=adService.topicDelete(topicArray);
         return baseRespVo;
     }
 }

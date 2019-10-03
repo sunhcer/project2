@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.AdMapper;
 import com.cskaoyan.mall.mapper.CouponMapper;
+import com.cskaoyan.mall.mapper.TopicMapper;
 import com.cskaoyan.mall.util.IpUtils;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class AdServiceImpl implements AdService {
     AdMapper adMapper;
     @Autowired
     CouponMapper couponMapper;
+    @Autowired
+    TopicMapper topicMapper;
 
 /*    @Value("${my.file.path}")
     String filePath;*/
@@ -261,7 +264,107 @@ public class AdServiceImpl implements AdService {
 
     @Override
     public BaseRespVo couponDelete(int id) {
-        //
-        return null;
+        //假删除,将delete更新为1
+        couponMapper.couponDeleteById(id);
+        BaseRespVo baseRespVo = new BaseRespVo();
+        baseRespVo.setErrmsg("成功");
+        return baseRespVo;
+    }
+
+    @Override
+    public BaseRespVo topicList(TopicReceive receive) {
+        //查询总页数
+        int total=topicMapper.queryTopicAmount();
+        //分页
+        int currentPage=receive.getPage();
+        int pagesize=receive.getLimit();
+        int offsetNum=(currentPage-1)*pagesize;
+        List<TopicArray> list=topicMapper.queryAllTopic(pagesize,offsetNum);
+        TopicArrayPage topicArrayPage = new TopicArrayPage(list, total);
+        BaseRespVo success = BaseRespVo.success(topicArrayPage);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo queryLikeTopicPage(TopicReceive receive) {
+        //拼接关键字
+        String title=receive.getTitle();
+        String subtitle = receive.getSubtitle();
+        if (title!=null&&title.trim()!=null){
+            title="%"+title+"%";
+        }
+        if (subtitle!=null&&subtitle.trim()!=null){
+            subtitle="%"+subtitle+"%";
+        }
+        //模糊查询总数
+        //查询总页数
+        int total=topicMapper.queryLikeTopicAmount(title,subtitle);
+        //分页
+        int currentPage=receive.getPage();
+        int pagesize=receive.getLimit();
+        int offsetNum=(currentPage-1)*pagesize;
+        List<TopicArray> list=topicMapper.queryLikeTopicPage(title,subtitle,pagesize,offsetNum);
+        TopicArrayPage topicArrayPage = new TopicArrayPage(list, total);
+        BaseRespVo success = BaseRespVo.success(topicArrayPage);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo topicCreate(TopicArray topicArray) {
+        Date date = new Date();
+        topicArray.setAddTime(date);
+        topicArray.setUpdateTime(date);
+        //after
+        int ref=topicMapper.AddTopic(topicArray);
+        BaseRespVo success = BaseRespVo.success(topicArray);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo topicUpdate(TopicArray topicArray) {
+        //这里更新时忽略addtime,查询时加上addtime
+        topicMapper.topicUpdate(topicArray);
+        BaseRespVo success = BaseRespVo.success(topicArray);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo topicDelete(TopicArray topicArray) {
+        topicMapper.topicDelete(topicArray.getId());
+        BaseRespVo<Object> objectBaseRespVo = new BaseRespVo<>();
+        objectBaseRespVo.setErrmsg("成功");
+        return objectBaseRespVo;
+    }
+
+    @Override
+    public BaseRespVo couponListuser(CouponQueryUser couponQueryUser) {
+        List<CouponUser> list=couponMapper.queryCouponUserByCouponId(couponQueryUser.getCouponId());
+        //总页数
+        int total=list.size();
+        //分页
+        int currentPage=couponQueryUser.getPage();
+        int pagesize=couponQueryUser.getLimit();
+        int offsetNum=(currentPage-1)*pagesize;
+        List<CouponUser> list1=couponMapper.queryCouponUserPage(pagesize,offsetNum,couponQueryUser.getCouponId());
+        CouponUserPage couponUserPage = new CouponUserPage(list1, total);
+        BaseRespVo success = BaseRespVo.success(couponUserPage);
+        return success;
+    }
+
+    @Override
+    public BaseRespVo couponListuserByStatus(CouponQueryUser couponQueryUser) {
+        //总页数
+        List<CouponUser> list=couponMapper.queryCouponUserByCouponIdAndStatus(couponQueryUser.getCouponId(),
+                couponQueryUser.getStatus());
+        int total=list.size();
+        //分页
+        int currentPage=couponQueryUser.getPage();
+        int pagesize=couponQueryUser.getLimit();
+        int offsetNum=(currentPage-1)*pagesize;
+        List<CouponUser> list1=couponMapper.queryCouponUserPageByStatus(pagesize,offsetNum,couponQueryUser.getCouponId(),
+                couponQueryUser.getStatus());
+        CouponUserPage couponUserPage = new CouponUserPage(list1, total);
+        BaseRespVo success = BaseRespVo.success(couponUserPage);
+        return success;
     }
 }
