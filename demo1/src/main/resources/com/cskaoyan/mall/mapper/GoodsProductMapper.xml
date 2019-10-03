@@ -106,9 +106,6 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.GoodsProduct">
         update cskaoyan_mall_goods_product
         <set>
-            <if test="goodsId != null">
-                goods_id = #{goodsId,jdbcType=INTEGER},
-            </if>
             <if test="specifications != null">
                 specifications = #{specifications,jdbcType=VARCHAR},
             </if>
@@ -135,8 +132,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.GoodsProduct">
         update cskaoyan_mall_goods_product
-        set goods_id       = #{goodsId,jdbcType=INTEGER},
-            specifications = #{specifications,jdbcType=VARCHAR},
+        set specifications = #{specifications,jdbcType=VARCHAR},
             price          = #{price,jdbcType=DECIMAL},
             number         = #{number,jdbcType=INTEGER},
             url            = #{url,jdbcType=VARCHAR},

@@ -87,9 +87,6 @@
     <update id="updateByPrimaryKeySelective" parameterType="com.cskaoyan.mall.bean.GoodsAttribute">
         update cskaoyan_mall_goods_attribute
         <set>
-            <if test="goodsId != null">
-                goods_id = #{goodsId,jdbcType=INTEGER},
-            </if>
             <if test="attribute != null">
                 attribute = #{attribute,jdbcType=VARCHAR},
             </if>
@@ -110,8 +107,7 @@
     </update>
     <update id="updateByPrimaryKey" parameterType="com.cskaoyan.mall.bean.GoodsAttribute">
         update cskaoyan_mall_goods_attribute
-        set goods_id    = #{goodsId,jdbcType=INTEGER},
-            attribute   = #{attribute,jdbcType=VARCHAR},
+        set attribute   = #{attribute,jdbcType=VARCHAR},
             value       = #{value,jdbcType=VARCHAR},
             add_time    = #{addTime,jdbcType=TIMESTAMP},
             update_time = #{updateTime,jdbcType=TIMESTAMP},

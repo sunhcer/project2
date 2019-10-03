@@ -151,4 +151,39 @@ public class ProductServiceImpl implements  ProductService {
     public List<GoodsSpecification> findGoodsSpecificationsByGoodsId(int goodsId) {
         return goodsSpecificationMapper.findGoodsSpecificationsByGoodsId(goodsId);
     }
+
+    @Override
+    public int updateGoods(Goods goods) {
+        return goodsMapper.updateByPrimaryKeySelective(goods);
+    }
+
+    @Override
+    public GoodsAttribute findGoodsAttributesById(Integer id) {
+        return goodsAttributeMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateGoodsAttribute(GoodsAttribute goodsAttribute) {
+        return goodsAttributeMapper.updateByPrimaryKeySelective(goodsAttribute);
+    }
+
+    @Override
+    public GoodsSpecification findGoodsSpecificationById(Integer id) {
+        return goodsSpecificationMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateGoodsSpecification(GoodsSpecification goodsSpecification) {
+        return goodsSpecificationMapper.updateByPrimaryKeySelective(goodsSpecification);
+    }
+
+    @Override
+    public GoodsProduct findGoodsProductsById(Integer id) {
+        return goodsProductMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public int updateGoodsProducts(GoodsProduct goodsProduct) {
+        return goodsProductMapper.updateByPrimaryKeySelective(goodsProduct);
+    }
 }

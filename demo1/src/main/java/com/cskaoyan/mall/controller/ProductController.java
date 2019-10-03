@@ -197,7 +197,7 @@ public class ProductController {
      * @date 2019-10-03 14:46:22
      **/
     @RequestMapping("admin/goods/detail")
-    public BaseRespVo goodsDetail( String id) {
+    public BaseRespVo getGoodsInfoByGoodsId(String id) {
         GoodsInfoForCreate goodsInfo = new GoodsInfoForCreate();
         int goodsId = 0;
         try {
@@ -206,13 +206,13 @@ public class ProductController {
             BaseRespVo.error(null, 402, "参数错误!");
         }
         Goods goods = productService.findGoodsById(goodsId);
-        List<GoodsAttribute> attributes=null;
-        List<GoodsProduct> products=null;
-        List<GoodsSpecification> specifications=null;
-        if(goods!=null){
-            attributes=productService.findGoodsAttributesByGoodsId(goodsId);
-            products=productService.findGoodsProductsByGoodsId(goodsId);
-            specifications=productService.findGoodsSpecificationsByGoodsId(goodsId);
+        List<GoodsAttribute> attributes = null;
+        List<GoodsProduct> products = null;
+        List<GoodsSpecification> specifications = null;
+        if (goods != null) {
+            attributes = productService.findGoodsAttributesByGoodsId(goodsId);
+            products = productService.findGoodsProductsByGoodsId(goodsId);
+            specifications = productService.findGoodsSpecificationsByGoodsId(goodsId);
         }
         goodsInfo.setGoods(goods);
         goodsInfo.setAttributes(attributes);
@@ -221,5 +221,47 @@ public class ProductController {
 
         return BaseRespVo.success(goodsInfo);
 
+    }
+
+    /**
+     * 处理请求：修改商品
+     * 方法用途：修改商品信息
+     * 操作简介：根据传入的信息修改数据库
+     *
+     * @param goodsInfo 商品信息
+     * @return 返回给前端的数据
+     * @author EGGE
+     * @date 2019-10-03 16:57:10
+     **/
+    @RequestMapping("admin/goods/update")
+    public BaseRespVo updateGoodsInfo(@RequestBody GoodsInfoForCreate goodsInfo) {
+        Goods goods = goodsInfo.getGoods();
+        if (productService.findGoodsById(goods.getId()) != null)
+            productService.updateGoods(goods);
+        List<GoodsAttribute> goodsAttributes = goodsInfo.getAttributes();
+        List<GoodsProduct> goodsProducts = goodsInfo.getProducts();
+        List<GoodsSpecification> goodsSpecifications = goodsInfo.getSpecifications();
+        if (goodsAttributes != null)
+            for (GoodsAttribute goodsAttribute : goodsAttributes) {
+                if (productService.findGoodsAttributesById(goodsAttribute.getId()) != null) {
+                    goodsAttribute.setUpdateTime(new Date());
+                    productService.updateGoodsAttribute(goodsAttribute);
+                }
+            }
+        if (goodsSpecifications != null)
+            for (GoodsSpecification goodsSpecification : goodsSpecifications) {
+                if (productService.findGoodsSpecificationById(goodsSpecification.getId()) != null) {
+                    goodsSpecification.setUpdateTime(new Date());
+                    productService.updateGoodsSpecification(goodsSpecification);
+                }
+            }
+        if (goodsProducts != null)
+            for (GoodsProduct goodsProduct : goodsProducts) {
+                if (productService.findGoodsProductsById(goodsProduct.getId()) != null) {
+                    goodsProduct.setUpdateTime(new Date());
+                    productService.updateGoodsProducts(goodsProduct);
+                }
+            }
+        return BaseRespVo.success(null);
     }
 }
