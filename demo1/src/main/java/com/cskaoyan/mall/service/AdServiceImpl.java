@@ -31,6 +31,8 @@ public class AdServiceImpl implements AdService {
     @Autowired
     TopicMapper topicMapper;
 
+    @Value("myfile.img-prefix")
+    String imgprefix;
 /*    @Value("${my.file.path}")
     String filePath;*/
     @Override
@@ -51,8 +53,8 @@ public class AdServiceImpl implements AdService {
         List<Ad> list=adMapper.queryCurrentPageAdByPageAndLimit(limit,offsetNum);
         //遍历list,拼接ip前缀
         for (Ad ad : list) {
-            String url=ad.getUrl();
-            url=IpUtils.appendIp(url);
+            String url=imgprefix+ad.getUrl();
+//            url=IpUtils.appendIp(url);
             ad.setUrl(url);
         }
         return list;
@@ -124,9 +126,9 @@ public class AdServiceImpl implements AdService {
         BaseRespVo<Ad> adBaseRespVo = new BaseRespVo<>();
         adBaseRespVo.setErrmsg("成功");
         Date date = new Date();
-        String url=ad.getUrl();
+        String url=ad.getUrl().replace(imgprefix,"");
         //剪切url前缀,存到数据库
-        url=IpUtils.SplicePreIp(url);
+//        url=IpUtils.SplicePreIp(url);
         ad.setUrl(url);
         ad.setAddTime(date);
         ad.setUpdateTime(date);
@@ -138,7 +140,8 @@ public class AdServiceImpl implements AdService {
            ref=adMapper.addAdWithoutLink(ad);
         }
         //拼接url返回
-        url=IpUtils.appendIp(url);
+//        url=IpUtils.appendIp(url);
+        url=imgprefix+url;
         ad.setUrl(url);
         adBaseRespVo.setData(ad);
         return adBaseRespVo;
@@ -159,9 +162,11 @@ public class AdServiceImpl implements AdService {
         }
         List<Ad> list=adMapper.queryPageListAdByPageAndLimit(limit,offsetNum,name,content);
         for (Ad ad : list) {
-            String url=ad.getUrl();
-            url=IpUtils.appendIp(url);
+            String url=imgprefix+ad.getUrl();
+//            url=IpUtils.appendIp(url);
+
             ad.setUrl(url);
+
         }
         return list;
     }
@@ -188,7 +193,8 @@ public class AdServiceImpl implements AdService {
     public BaseRespVo<Ad> updateAd(Ad ad) {
         //这里name和content前端设置不可以为空,link可以为空串,link: "",这样不影响插入
         String preUrl=ad.getUrl();
-        String url=IpUtils.SplicePreIp(preUrl);
+//        String url=IpUtils.SplicePreIp(preUrl);
+        String url=preUrl.replace(imgprefix,"");
         ad.setUrl(url);
         adMapper.updateAdById(ad);
         //返回带前缀的url
