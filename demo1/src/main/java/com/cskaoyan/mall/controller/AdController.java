@@ -95,7 +95,6 @@ public class AdController {
         }
     }
 
-<<<<<<< HEAD
     ///admin/groupon/list
     @RequestMapping("/groupon/list")
     public BaseRespVo getGrouponRules(OrderPage orderPage){
