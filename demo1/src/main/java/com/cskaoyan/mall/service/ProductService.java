@@ -39,4 +39,26 @@ public interface ProductService {
     Integer addGoodsSpecification(GoodsSpecification goodsSpecification);
 
     Integer addGoodsProduct(GoodsProduct goodsProduct);
+
+    Goods findGoodsById(int id);
+
+    List<GoodsAttribute> findGoodsAttributesByGoodsId(int goodsId);
+
+    List<GoodsProduct> findGoodsProductsByGoodsId(int goodsId);
+
+    List<GoodsSpecification> findGoodsSpecificationsByGoodsId(int goodsId);
+
+    int updateGoods(Goods goods);
+
+    GoodsAttribute findGoodsAttributesById(Integer id);
+
+    int updateGoodsAttribute(GoodsAttribute goodsAttribute);
+
+    GoodsSpecification findGoodsSpecificationById(Integer id);
+
+    int updateGoodsSpecification(GoodsSpecification goodsSpecification);
+
+    GoodsProduct findGoodsProductsById(Integer id);
+
+    int updateGoodsProducts(GoodsProduct goodsProduct);
 }

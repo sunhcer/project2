@@ -56,7 +56,6 @@ public class AdController {
         }
     }
 
-
     //推广管理--添加广告
     @RequestMapping("/ad/create")
     public BaseRespVo<Ad> addAd(@RequestBody Ad ad){
@@ -138,6 +137,7 @@ public class AdController {
         return BaseRespVo.success(grouponList);
     }
 
+
     //推广管理---创建优惠劵
     //接收不到数据--原因一:日期,原因二:数组
     @RequestMapping("/coupon/create")
@@ -146,6 +146,7 @@ public class AdController {
         return baseRespVo;
     }
 
+    //修复
     //推广管理--优惠劵详情
     @RequestMapping("/coupon/read")
     public BaseRespVo couponRead(int id){

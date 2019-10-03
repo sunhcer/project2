@@ -22,7 +22,7 @@
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_comment
-        where id = #{id,jdbcType=INTEGER}
+        where deleted != 1 and id = #{id,jdbcType=INTEGER}
     </select>
     <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
         update cskaoyan_mall_comment
@@ -44,6 +44,7 @@
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_goods
         <where>
+            deleted != 1
             <if test="valueId !=null and valueId !=''">
                 value_id = #{valueId}
             </if>
@@ -56,6 +57,7 @@
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_comment
+        where deleted != 1
     </select>
     <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Comment">
         insert into cskaoyan_mall_comment
