@@ -31,7 +31,7 @@ public class AdServiceImpl implements AdService {
     @Autowired
     TopicMapper topicMapper;
 
-    @Value("myfile.img-prefix")
+    @Value("${myfile.img-prefix}")
     String imgprefix;
 /*    @Value("${my.file.path}")
     String filePath;*/
@@ -286,6 +286,11 @@ public class AdServiceImpl implements AdService {
         int pagesize=receive.getLimit();
         int offsetNum=(currentPage-1)*pagesize;
         List<TopicArray> list=topicMapper.queryAllTopic(pagesize,offsetNum);
+        for (TopicArray topicArray : list) {
+            //拼接url
+            String url=imgprefix+topicArray.getPicUrl();
+            topicArray.setPicUrl(url);
+        }
         TopicArrayPage topicArrayPage = new TopicArrayPage(list, total);
         BaseRespVo success = BaseRespVo.success(topicArrayPage);
         return success;
@@ -310,6 +315,11 @@ public class AdServiceImpl implements AdService {
         int pagesize=receive.getLimit();
         int offsetNum=(currentPage-1)*pagesize;
         List<TopicArray> list=topicMapper.queryLikeTopicPage(title,subtitle,pagesize,offsetNum);
+        for (TopicArray topicArray : list) {
+            //拼接url
+            String url=imgprefix+topicArray.getPicUrl();
+            topicArray.setPicUrl(url);
+        }
         TopicArrayPage topicArrayPage = new TopicArrayPage(list, total);
         BaseRespVo success = BaseRespVo.success(topicArrayPage);
         return success;
@@ -321,7 +331,13 @@ public class AdServiceImpl implements AdService {
         topicArray.setAddTime(date);
         topicArray.setUpdateTime(date);
         //after
+        //剪切url
+        String url=topicArray.getPicUrl().replace(imgprefix,"");
+        topicArray.setPicUrl(url);
         int ref=topicMapper.AddTopic(topicArray);
+        //拼接url
+        url=imgprefix+topicArray.getPicUrl();
+        topicArray.setPicUrl(url);
         BaseRespVo success = BaseRespVo.success(topicArray);
         return success;
     }
@@ -329,7 +345,13 @@ public class AdServiceImpl implements AdService {
     @Override
     public BaseRespVo topicUpdate(TopicArray topicArray) {
         //这里更新时忽略addtime,查询时加上addtime
+        //剪切url
+        String url=topicArray.getPicUrl().replace(imgprefix,"");
+        topicArray.setPicUrl(url);
         topicMapper.topicUpdate(topicArray);
+        //拼接url
+        url=imgprefix+topicArray.getPicUrl();
+        topicArray.setPicUrl(url);
         BaseRespVo success = BaseRespVo.success(topicArray);
         return success;
     }
