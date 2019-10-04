@@ -9,14 +9,45 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
   </resultMap>
+
+  <resultMap id="SystemPermissionMap" type="com.cskaoyan.mall.bean.SystemPermissions">
+
+    <result column="alabel" jdbcType="VARCHAR" property="id" />
+    <result column="alabel" jdbcType="VARCHAR" property="label" />
+    <result column="aapi" jdbcType="VARCHAR" property="api" />
+
+    <collection property="children" ofType="com.cskaoyan.mall.bean.SystemPermissions">
+      <result column="blabel" jdbcType="VARCHAR" property="id" />
+      <result column="blabel" jdbcType="VARCHAR" property="label" />
+      <result column="bapi" jdbcType="VARCHAR" property="api" />
+      <collection property="children" ofType="com.cskaoyan.mall.bean.SystemPermissions">
+        <result column="permission" jdbcType="VARCHAR" property="id" />
+        <result column="clabel" jdbcType="VARCHAR" property="label" />
+        <result column="capi" jdbcType="VARCHAR" property="api" />
+      </collection>
+    </collection>
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, role_id, permission, add_time, update_time, deleted
   </sql>
+
+  <select id="selectAllSystemPermissions" resultMap="SystemPermissionMap">
+    SELECT cml.label as alabel,
+    cml1.label as blabel,
+    cmlp.api as capi,cmlp.label as clabel,cmlp.permission as permission
+    from cskaoyan_mall_label cml
+    left join cskaoyan_mall_label cml1 on cml.id = cml1.fid
+    left join cskaoyan_mall_label_permission cmlp on cml1.id = cmlp.fid
+    WHERE cml.fid = 0
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from cskaoyan_mall_permission
     where id = #{id,jdbcType=INTEGER}
+    and deleted = 0
   </select>
 
   <select id="selectPermissionById" resultType="string">
@@ -24,6 +55,7 @@
     permission
     from cskaoyan_mall_permission
     where role_id = #{roleId}
+    and deleted = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_permission
@@ -110,4 +142,30 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectAllPermissions" resultType="string">
+    select permission
+    from cskaoyan_mall_label_permission
+  </select>
+
+  <update id="deletePermissionsByRoleId">
+    update cskaoyan_mall_permission
+    set deleted = 1,update_time = #{time}
+    where role_id = #{roleId}
+  </update>
+
+  <insert id="addPermissions">
+    insert into
+    cskaoyan_mall_permission
+    (role_id,permission,add_time,update_time)
+    values
+    (#{roleId},#{permission},#{time},#{time})
+  </insert>
+
+  <select id="selectApiByPermission" resultType="string">
+    select api
+    from cskaoyan_mall_label_permission
+    where permission = #{permission}
+  </select>
+
 </mapper>
