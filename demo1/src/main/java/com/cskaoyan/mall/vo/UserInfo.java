@@ -10,17 +10,17 @@ import java.util.List;
  * @author EGGE
  */
 public class UserInfo {
-    String avater;
+    String avatar;
     String name;
-    List perms;
-    List roles;
+    List<String> perms;
+    List<String> roles;
 
-    public String getAvater() {
-        return avater;
+    public String getAvatar() {
+        return avatar;
     }
 
-    public void setAvater(String avater) {
-        this.avater = avater;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public String getName() {
@@ -31,19 +31,19 @@ public class UserInfo {
         this.name = name;
     }
 
-    public List getPerms() {
+    public List<String> getPerms() {
         return perms;
     }
 
-    public void setPerms(List perms) {
+    public void setPerms(List<String> perms) {
         this.perms = perms;
     }
 
-    public List getRoles() {
+    public List<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(List roles) {
+    public void setRoles(List<String> roles) {
         this.roles = roles;
     }
 }

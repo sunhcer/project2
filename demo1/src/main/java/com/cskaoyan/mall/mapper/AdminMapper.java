@@ -19,7 +19,15 @@ public interface AdminMapper {
 
     List<Admin> selectAllAdmin();
 
-    List<Admin> selectAdminByName(String username);
+    List<Admin> selectAdminByNameLike(String username);
+
 
 //    boolean insertAdmin(AdminInfo adminInfo);
+
+    String queryPasswordByUsername(String principal);
+
+  //  List<String> queryPermissionsByUsername(String primaryPrincipal);
+
+    Admin selectAdminByName(String principal);
+
 }
