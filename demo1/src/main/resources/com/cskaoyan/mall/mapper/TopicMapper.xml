@@ -32,6 +32,13 @@
     from cskaoyan_mall_topic
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findTopicLastAdd" parameterType="java.lang.Integer" resultType="com.cskaoyan.mall.bean.TopicArray">
+    select
+      id,title,subtitle,price,read_count,pic_url,sort_order,goods,
+       add_time,update_time,deleted,content
+    from cskaoyan_mall_topic
+    where deleted != 1 order by add_time desc limit #{limit} offset 0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_topic
     where id = #{id,jdbcType=INTEGER}

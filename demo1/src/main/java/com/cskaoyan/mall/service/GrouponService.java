@@ -1,9 +1,8 @@
 package com.cskaoyan.mall.service;
 
-import com.cskaoyan.mall.bean.BrandList;
-import com.cskaoyan.mall.bean.Groupon;
-import com.cskaoyan.mall.bean.GrouponBean;
-import com.cskaoyan.mall.bean.OrderPage;
+import com.cskaoyan.mall.bean.*;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -19,4 +18,6 @@ public interface GrouponService {
     boolean insertGroupon(Groupon groupon);
 
     void deleteGroup(Groupon groupon);
+
+    List<GrouponRules> findGrouponRuleList(Integer start, Integer end);
 }

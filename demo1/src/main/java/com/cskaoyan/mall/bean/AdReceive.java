@@ -8,6 +8,15 @@ public class AdReceive {
     String order;
     String content;
 
+
+    public AdReceive(int page, int limit, String name, String sort, String order, String content) {
+        this.page = page;
+        this.limit = limit;
+        this.name = name;
+        this.sort = sort;
+        this.order = order;
+        this.content = content;
+    }
     public int getPage() {
         return page;
     }

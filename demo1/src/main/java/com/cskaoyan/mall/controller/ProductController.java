@@ -19,6 +19,16 @@ import java.util.Map;
 /**
  * 类简介：后台商品管理模块
  * 当前方法：
+ *      1.显示商品类别和商家
+ *      2.显示当前页商品信息
+ *      3.搜索商品
+ *      4.显示留言列表
+ *      5.搜索留言
+ *      6.留言回复
+ *      7.删除留言
+ *      8.新增商品
+ *      9.获取商品详细信息
+ *      10.修改商品
  * 创建时间: 2019-09-30 14:06
  *
  * @author EGGE
@@ -53,6 +63,16 @@ public class ProductController {
         return BaseRespVo.success(date);
     }
 
+    /**
+     * 处理请求：显示当前页商品信息/搜索商品
+     * 方法用途：返回商品列表
+     * 操作简介：根据传入参数返回当前页商品
+     *
+     * @author EGGE
+     * @date 2019-10-04 15:43:12
+     * @param page 分页信息 内封装搜索数据
+     * @return 返回给前端的数据
+     **/
     @RequestMapping("admin/goods/list")
     public BaseRespVo productList(GoodsPage page) {
        /* 使用心得分页插件会更简单
