@@ -161,4 +161,9 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="queryCouponUserByUserCouponId" resultType="com.cskaoyan.mall.bean.CouponUser">
+    select id from cskaoyan_mall_coupon_user
+    where user_id=#{userId} and coupon_id=#{couponId}
+  </select>
 </mapper>
