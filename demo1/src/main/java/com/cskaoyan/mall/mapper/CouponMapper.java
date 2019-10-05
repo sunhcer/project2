@@ -37,4 +37,6 @@ public interface CouponMapper {
     List<CouponUser> queryCouponUserPageByStatus(@Param("pagesize") int pagesize, @Param("offsetNum") int offsetNum,@Param("couponId") int couponId,@Param("status") int status);
 
     List<Coupon> findAllCoupon();
+
+    List<CouponArray> queryWxCouponPage();
 }

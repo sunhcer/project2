@@ -363,4 +363,8 @@
     select id,user_id,coupon_id,status,used_time,start_time,end_time,order_id,
     add_time,update_time,deleted from cskaoyan_mall_coupon_user where coupon_id=#{couponId} and status=#{status}
   </select>
+
+  <select id="queryWxCouponPage" resultType="com.cskaoyan.mall.bean.CouponArray">
+    select id,name,`desc`,tag,discount,min,days from cskaoyan_mall_coupon
+  </select>
 </mapper>
