@@ -121,7 +121,7 @@ public class AdminServiceImpl implements AdminService {
         String avatar = admin.getAvatar();
         String username = admin.getUsername();
         UserInfo userInfo = new UserInfo();
-        userInfo.setAvatar(avatar);
+        userInfo.setAvatar(prefix + avatar);
         userInfo.setName(username);
 
         List<String> roles = adminService.selectRolesByName(principal);

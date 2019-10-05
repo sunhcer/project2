@@ -66,17 +66,6 @@ public class AuthController {
     public BaseRespVo info(String token){
         Subject subject = SecurityUtils.getSubject();
         String principal = (String) subject.getPrincipal();
-<<<<<<< HEAD
-        Admin admin = adminService.selectAdminByName(principal);
-        UserInfo userInfo = new UserInfo();
-        String avatar = admin.getAvatar();
-        String username = admin.getUsername();
-        if(avatar != null){
-            userInfo.setAvatar(myprefix + avatar);
-        }
-        userInfo.setName(username);
-=======
->>>>>>> 182e371eb719af3fd8d48d54b58e4c9a3ef8abec
 
         UserInfo userInfo = adminService.getRoleMessage(principal);
 
@@ -103,7 +92,7 @@ public class AuthController {
 
     @RequestMapping("/fail")
     public BaseRespVo fail(){
-        return BaseRespVo.fail(404,"登录失效，请重新登录");
+        return BaseRespVo.fail(507,"登录失效，请重新登录");
     }
 
     @RequestMapping("/admin/auth/logout")
