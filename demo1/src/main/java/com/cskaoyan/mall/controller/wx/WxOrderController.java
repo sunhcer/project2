@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.controller.wx;
 
+import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.service.wx.WxOrderService;
 import com.cskaoyan.mall.vo.BaseRespVo;
@@ -74,6 +75,15 @@ public class WxOrderController {
     @RequestMapping("/wx/order/confirm")
     public BaseRespVo confirm(@RequestBody Order order){
         wxOrderService.confirmOrder(order.getOrderId());
+        return BaseRespVo.success(null);
+    }
+
+    ///wx/order/comment
+    //{"content":"太好了","star":5,"hasPicture":false,"picUrls":[]}
+    @RequestMapping("/wx/order/comment")
+    public BaseRespVo comment(@RequestBody Comment comment){
+        wxOrderService.commentOrder(comment);
+        System.out.println(111);
         return BaseRespVo.success(null);
     }
 }

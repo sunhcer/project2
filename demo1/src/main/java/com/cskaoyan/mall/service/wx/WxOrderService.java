@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.service.wx;
 
+import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.vo.WxOrderDetailData;
 import com.cskaoyan.mall.vo.WxOrderPage;
 import com.cskaoyan.mall.vo.WxOrderVo;
@@ -26,4 +27,6 @@ public interface WxOrderService {
     void refundOrder(Integer orderId);
 
     void confirmOrder(Integer orderId);
+
+    void commentOrder(Comment comment);
 }

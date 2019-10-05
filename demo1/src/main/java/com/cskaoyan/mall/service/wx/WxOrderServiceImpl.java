@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.service.wx;
 
+import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
@@ -152,11 +153,9 @@ public class WxOrderServiceImpl implements WxOrderService {
             handleOption.setConfirm(true);
         }else if (order.getOrderStatus() == 401 || order.getOrderStatus() == 402){
             handleOption.setComment(true);
-        }
-        /*少一个delete comment rebuy*/
-        if (order.getOrderStatus() == 403){
             handleOption.setRebuy(true);
         }
+        handleOption.setComment(true);
         return handleOption;
     }
 
@@ -178,5 +177,10 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Override
     public void confirmOrder(Integer orderId) {
         orderMapper.setOrderStatus(orderId, 401);
+    }
+
+    @Override
+    public void commentOrder(Comment comment) {
+
     }
 }
