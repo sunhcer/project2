@@ -13,10 +13,10 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import java.io.Serializable;
 
@@ -35,6 +35,8 @@ public class AuthController {
 
     @Autowired
     AdminService adminService;
+    @Value("${myfile.img-prefix}")
+    String myprefix;
 
     @Autowired
     PermissionService permissionService;
@@ -64,6 +66,17 @@ public class AuthController {
     public BaseRespVo info(String token){
         Subject subject = SecurityUtils.getSubject();
         String principal = (String) subject.getPrincipal();
+<<<<<<< HEAD
+        Admin admin = adminService.selectAdminByName(principal);
+        UserInfo userInfo = new UserInfo();
+        String avatar = admin.getAvatar();
+        String username = admin.getUsername();
+        if(avatar != null){
+            userInfo.setAvatar(myprefix + avatar);
+        }
+        userInfo.setName(username);
+=======
+>>>>>>> 182e371eb719af3fd8d48d54b58e4c9a3ef8abec
 
         UserInfo userInfo = adminService.getRoleMessage(principal);
 

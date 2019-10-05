@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ public class GrouponServiceImpl implements GrouponService {
     GrouponRulesMapper grouponRulesMapper;
     @Autowired
     OrderGoodsMapper orderGoodsMapper;
+    @Value("${myfile.img-prefix}")
+    String myprefix;
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
@@ -70,6 +73,8 @@ public class GrouponServiceImpl implements GrouponService {
             GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(groupon.getRulesId());
             Goods goods = goodsMapper.selectByPrimaryKey(grouponRules.getGoodsId());
             if (goods != null) {
+                //将图片前缀加上去
+                goods.setPicUrl(myprefix + goods.getPicUrl());
                 grouponBean.setGoods(goods);
             }
             if (grouponRules != null) {
