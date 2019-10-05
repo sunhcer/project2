@@ -1,15 +1,10 @@
 package com.cskaoyan.mall.controller;
 
 import com.cskaoyan.mall.bean.*;
-import com.cskaoyan.mall.service.AdminService;
-import com.cskaoyan.mall.service.LogService;
-import com.cskaoyan.mall.service.RoleService;
-import com.cskaoyan.mall.service.StorageService;
+import com.cskaoyan.mall.service.*;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,6 +21,9 @@ public class AdminController {
 
     @Autowired
     StorageService storageService;
+
+    @Autowired
+    PermissionService permissionService;
 
     @RequestMapping("/admin/admin/list")
     public BaseRespVo AdminList(int page, int limit, String username, String sort, String order) {
@@ -114,4 +112,28 @@ public class AdminController {
         storageService.storageDelete(storage);
         return BaseRespVo.success(null);
     }
+
+
+    @GetMapping("/admin/role/permissions")
+    public BaseRespVo getPermissions(Integer roleId) {
+        List<SystemPermissions> systemPermissions = permissionService.selectAllSystemPermissions();
+        PermissionInfo permissionInfo = new PermissionInfo();
+        permissionInfo.setSystemPermissions(systemPermissions);
+        List<String> assignedPermissions;
+        if(roleId == 1) {
+            assignedPermissions = permissionService.selectAllPermissions();
+        } else {
+            assignedPermissions = permissionService.selectAllPermissionsById(roleId);
+        }
+        permissionInfo.setAssignedPermissions(assignedPermissions);
+
+        return BaseRespVo.success(permissionInfo);
+    }
+
+    @PostMapping("/admin/role/permissions")
+    public BaseRespVo setPermissions(@RequestBody RolePermissionInfo rolePermissionInfo) {
+        permissionService.setPermissions(rolePermissionInfo);
+        return BaseRespVo.success(null);
+    }
+
 }

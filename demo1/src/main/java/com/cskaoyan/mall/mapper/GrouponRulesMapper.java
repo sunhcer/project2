@@ -2,6 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.GrouponRules;
 import com.cskaoyan.mall.bean.OrderPage;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface GrouponRulesMapper {
     int updateByPrimaryKey(GrouponRules record);
 
     List<GrouponRules> selectGrouponRulesByCondition(OrderPage orderPage);
+
+    List<GrouponRules> selectByAddTimeWithLimit(@Param("limit") Integer limit, @Param("offset") Integer offset);
 }

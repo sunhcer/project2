@@ -106,4 +106,9 @@ public class GrouponServiceImpl implements GrouponService {
     public void deleteGroup(Groupon groupon) {
 
     }
+
+    @Override
+    public List<GrouponRules> findGrouponRuleList(Integer start, Integer end) {
+        return grouponRulesMapper.selectByAddTimeWithLimit(end-start,start);
+    }
 }

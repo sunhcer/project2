@@ -49,4 +49,8 @@ public interface AdService {
     BaseRespVo couponListuser(CouponQueryUser couponQueryUser);
 
     BaseRespVo couponListuserByStatus(CouponQueryUser couponQueryUser);
+
+    List<Coupon> findAllCoupon();
+
+    List<TopicArray> findTopicLastAdd(Integer i);
 }

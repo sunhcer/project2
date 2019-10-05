@@ -61,4 +61,14 @@ public interface ProductService {
     GoodsProduct findGoodsProductsById(Integer id);
 
     int updateGoodsProducts(GoodsProduct goodsProduct);
+
+    List<Brand> findAllBrand();
+
+    List<Category> findAllCategories();
+
+    List<Goods> findGoodsByCategoryIdForIndex(Integer id);
+
+    List<Goods> findGoodsIsHotLastAdd(Integer i);
+
+    List<Goods> findGoodsLastAdd(Integer number);
 }

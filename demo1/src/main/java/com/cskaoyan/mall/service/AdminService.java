@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service;
 
 import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.bean.AdminListInfo;
+import com.cskaoyan.mall.vo.UserInfo;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public interface AdminService {
     List<String> selectRolesByName(String principal);
 
     Admin selectAdminByName(String principal);
+
+    UserInfo getRoleMessage(String principal);
 }

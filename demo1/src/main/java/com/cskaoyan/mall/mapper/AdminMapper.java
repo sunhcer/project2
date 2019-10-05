@@ -29,4 +29,5 @@ public interface AdminMapper {
   //  List<String> queryPermissionsByUsername(String primaryPrincipal);
 
     Admin selectAdminByName(String principal);
+
 }
