@@ -254,6 +254,7 @@
   <update id="updateAdById">
     update cskaoyan_mall_ad set name=#{ad.name},link=#{ad.link},url=#{ad.url},position=#{ad.position},
     content=#{ad.content},enabled=#{ad.enabled},add_time=#{ad.addTime},update_time=#{ad.updateTime},deleted=#{ad.deleted}
+    where id=#{ad.id}
   </update>
 
   <select id="selectCouponAmount" resultType="int">
