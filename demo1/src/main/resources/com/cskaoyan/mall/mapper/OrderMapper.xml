@@ -373,4 +373,33 @@
       <if test="orderSn != null">and order_sn=#{orderSn}</if>
     </trim>
   </select>
+
+  <!--selectOneUserAllOrders-->
+  <select id="selectOneUserAllOrders" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_order
+    where deleted = 0 and user_id=#{userId}
+  </select>
+
+  <!--selectOneUserStateOrders-->
+  <select id="selectOneUserStateOrders" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_order
+    where deleted = 0 and user_id=#{userId} and order_status = #{orderStatus}
+  </select>
+
+  <!--selectCountByOrderStatus-->
+  <select id="selectCountByOrderStatus" resultType="int">
+    select
+    count(id)
+    from cskaoyan_mall_order
+    where deleted = 0 and user_id=#{userId} and order_status = #{statusId}
+  </select>
+
+  <!--setOrderStatus-->
+  <update id="setOrderStatus">
+    update cskaoyan_mall_order set order_status = #{statusId} where id = #{orderId}
+  </update>
 </mapper>

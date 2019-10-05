@@ -2,6 +2,7 @@ package com.cskaoyan.mall.vo;
 
 import com.cskaoyan.mall.bean.OrderGoods;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -15,7 +16,7 @@ public class WxOrderDetailVo {
     String orderStatusText;
     boolean isGroupin;
     String orderSn;
-    double actualPrice;
+    BigDecimal actualPrice;
     List<OrderGoods> goodsList;
     HandleOption handleOption;
 
@@ -51,11 +52,11 @@ public class WxOrderDetailVo {
         this.orderSn = orderSn;
     }
 
-    public double getActualPrice() {
+    public BigDecimal getActualPrice() {
         return actualPrice;
     }
 
-    public void setActualPrice(double actualPrice) {
+    public void setActualPrice(BigDecimal actualPrice) {
         this.actualPrice = actualPrice;
     }
 

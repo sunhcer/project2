@@ -20,4 +20,6 @@ public interface OrderGoodsMapper {
     List<OrderGoods> selectByOrderId(int id);
 
     List<OrderGoods> selectOrderByGoodsId(Integer goodsId);
+
+    List<OrderGoods> selectOrderGoodsByOrderId(Integer orderId);
 }
