@@ -93,7 +93,7 @@ public class AuthController {
 
     @RequestMapping("/fail")
     public BaseRespVo fail(){
-        return BaseRespVo.fail(404,"登录失效，请重新登录");
+        return BaseRespVo.fail(507,"登录失效，请重新登录");
     }
 
     @RequestMapping("/admin/auth/logout")
