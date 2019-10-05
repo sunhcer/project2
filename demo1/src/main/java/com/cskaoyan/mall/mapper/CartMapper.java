@@ -1,6 +1,9 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Cart;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CartMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +17,12 @@ public interface CartMapper {
     int updateByPrimaryKeySelective(Cart record);
 
     int updateByPrimaryKey(Cart record);
+
+    List<Cart> selectCartAll();
+
+    List<Cart> selectCartAllChecked();
+
+    void updateCheckedByProductId(@Param("productId") Integer productId,@Param("checked") int isChecked);
+
+    void deleteByProductId(Integer productId);
 }
