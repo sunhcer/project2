@@ -56,18 +56,6 @@ public class UserRealm  extends AuthorizingRealm {
         //获得doGetAuthenticationInfo方法的返回值的第一个参数
         String primaryPrincipal = (String) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
-//        authorizationInfo.addStringPermission("user:insert");
-//        authorizationInfo.addStringPermission("user:delete");
-//        authorizationInfo.addStringPermission("user:update");
-//        authorizationInfo.addStringPermission("user:query");
-
-        //权限信息时根据认证时的用户信息去数据库中查询获得的
-//        List<String> permissions = new ArrayList<>();
-//        permissions.add("user:query");
-//        permissions.add("user:insert");
-//        permissions.add("user:delete");
-//        permissions.add("user:update");
-//        permissions.add("user:query");
         Admin admin = adminMapper.selectAdminByName(primaryPrincipal);
         Integer[] roleIds = admin.getRoleIds();
         ArrayList<String> permissions = new ArrayList<>();
