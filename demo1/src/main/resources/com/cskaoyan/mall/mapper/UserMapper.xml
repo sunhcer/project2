@@ -246,4 +246,13 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="queryUserIdByUsername" resultType="int">
+    select id from cskaoyan_mall_user
+    <where>
+      <if test="username!=null">
+        username=#{username}
+      </if>
+    </where>
+  </select>
 </mapper>

@@ -83,8 +83,6 @@ public class WxIndexController {
         data.put("newGoodsList",newGoodsList);
         data.put("topicList",topicList);
         return BaseRespVo.success(data);
-
-
     }
 
     @RequestMapping("wx/catalog/current")
