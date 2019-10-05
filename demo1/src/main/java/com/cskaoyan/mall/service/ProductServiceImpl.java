@@ -370,4 +370,65 @@ public class ProductServiceImpl implements ProductService {
         }
         return goodsProductMapper.updateByPrimaryKeySelective(goodsProduct);
     }
+
+    @Override
+    public List<Brand> findAllBrand() {
+        return brandMapper.findAllBrandDetail();
+    }
+
+    @Override
+    public List<Category> findAllCategories() {
+        List<Category> l1 = categoryMapper.findAllCateGoriesByLevel("L1");
+        for (Category category : l1) {
+            if(!category.getIconUrl().startsWith("http")){
+                category.setIconUrl(imgPrefix+category.getIconUrl());
+            }
+            if(!category.getPicUrl().startsWith("http")){
+                category.setPicUrl(imgPrefix+category.getPicUrl());
+            }
+        }
+        return l1;
+    }
+
+    /**
+     * 根据类别返回商品，首页专用
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Goods> findGoodsByCategoryIdForIndex(Integer id) {
+        List<Goods> goodsByCategoryId = goodsMapper.findGoodsByCategoryId(id);
+        for (Goods goods : goodsByCategoryId) {
+            if(!goods.getPicUrl().startsWith("http")){
+                goods.setPicUrl(imgPrefix+goods.getPicUrl());
+            }
+        }
+        if (goodsByCategoryId.size()>10) {
+            return goodsByCategoryId.subList(0,10);
+        }
+        return goodsByCategoryId;
+        //返回前面十个商品，此处可改进
+    }
+
+    @Override
+    public List<Goods> findGoodsLastAdd(Integer number) {
+        List<Goods> goodsLastAdd = goodsMapper.findGoodsLastAdd(number);
+        for (Goods goods : goodsLastAdd) {
+            if(goods.getPicUrl()!=null&&!goods.getPicUrl().startsWith("http")){
+                goods.setPicUrl(imgPrefix+goods.getPicUrl());
+            }
+        }
+        return goodsLastAdd;
+    }
+
+    @Override
+    public List<Goods> findGoodsIsHotLastAdd(Integer i) {
+        List<Goods> goodsIsHotLastAdd = goodsMapper.findGoodsIsHotLastAdd(i);
+        for (Goods goods : goodsIsHotLastAdd) {
+            if(goods.getPicUrl()!=null&&!goods.getPicUrl().startsWith("http")){
+                goods.setPicUrl(imgPrefix+goods.getPicUrl());
+            }
+        }
+        return goodsIsHotLastAdd;
+    }
 }

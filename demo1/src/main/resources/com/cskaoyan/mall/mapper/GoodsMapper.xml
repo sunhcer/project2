@@ -42,6 +42,30 @@
         from cskaoyan_mall_goods
         where deleted != 1 and id = #{id,jdbcType=INTEGER}
     </select>
+    <select id="findGoodsIsHotLastAdd" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from cskaoyan_mall_goods
+        where deleted != 1 and is_hot = 1 order by add_time desc limit #{limit} offset 0
+    </select>
+    <select id="findGoodsLastAdd" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from cskaoyan_mall_goods
+        where deleted != 1 order by add_time desc limit #{limit} offset 0
+    </select>
+    <select id="findGoodsByCategoryId" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from cskaoyan_mall_goods
+        where deleted != 1 and category_id = #{id,jdbcType=INTEGER}
+    </select>
     <select id="findGoodsByNameAndGoodsSn" resultMap="ResultMapWithBLOBs">
         select
         <include refid="Base_Column_List"/>

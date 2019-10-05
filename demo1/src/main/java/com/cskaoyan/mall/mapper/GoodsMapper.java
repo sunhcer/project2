@@ -28,4 +28,10 @@ public interface GoodsMapper {
     List<Goods> findGoodsByNameAndGoodsSn(@Param("name")String name, @Param("goodsSn") String goodsSn);
 
     StatGood[] getStatGoods();
+
+    List<Goods> findGoodsByCategoryId(Integer id);
+
+    List<Goods> findGoodsIsHotLastAdd(Integer i);
+
+    List<Goods> findGoodsLastAdd(Integer number);
 }

@@ -4,6 +4,7 @@ package com.cskaoyan.mall.controller;
 import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.service.AdminService;
 import com.cskaoyan.mall.service.DashBoardService;
+import com.cskaoyan.mall.service.PermissionService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.DashBoard;
 import com.cskaoyan.mall.vo.LoginVo;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -37,6 +39,9 @@ public class AuthController {
     @Autowired
     AdminService adminService;
 
+    @Autowired
+    PermissionService permissionService;
+
     @RequestMapping("admin/auth/login")
     public BaseRespVo login(@RequestBody LoginVo loginVo){
 
@@ -45,13 +50,16 @@ public class AuthController {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
 
-        try {
-            subject.login(token);
-        } catch (AuthenticationException e) {
-            return BaseRespVo.fail(605,"用户帐号或密码不正确");
-        }
-        Serializable id = subject.getSession().getId();
-        return BaseRespVo.success(id);
+        if(subject != null) {
+            try {
+                subject.login(token);
+            } catch (AuthenticationException e) {
+                return BaseRespVo.fail(605, "用户帐号或密码不正确");
+            }
+            Serializable id = subject.getSession().getId();
+            return BaseRespVo.success(id);
+        } else
+            return BaseRespVo.fail(605,"账号不存在");
 
     }
 
@@ -59,18 +67,9 @@ public class AuthController {
     public BaseRespVo info(String token){
         Subject subject = SecurityUtils.getSubject();
         String principal = (String) subject.getPrincipal();
-        Admin admin = adminService.selectAdminByName(principal);
-        UserInfo userInfo = new UserInfo();
-        String avatar = admin.getAvatar();
-        String username = admin.getUsername();
-        userInfo.setAvatar(avatar);
-        userInfo.setName(username);
 
-        List<String> perms = adminService.selectPermissionsByName(principal);
-        List<String> roles = adminService.selectRolesByName(principal);
+        UserInfo userInfo = adminService.getRoleMessage(principal);
 
-        userInfo.setPerms(perms);
-        userInfo.setRoles(roles);
 
         return BaseRespVo.success(userInfo);
     }
@@ -93,8 +92,8 @@ public class AuthController {
     }
 
     @RequestMapping("/fail")
-    public String fail(){
-        return "fail";
+    public BaseRespVo fail(){
+        return BaseRespVo.fail(404,"登录失效，请重新登录");
     }
 
     @RequestMapping("/admin/auth/logout")

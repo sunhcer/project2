@@ -395,4 +395,20 @@ public class AdServiceImpl implements AdService {
         BaseRespVo success = BaseRespVo.success(couponUserPage);
         return success;
     }
+
+    @Override
+    public List<Coupon> findAllCoupon() {
+        return couponMapper.findAllCoupon();
+    }
+
+    @Override
+    public List<TopicArray> findTopicLastAdd(Integer i) {
+        List<TopicArray> topicLastAdd = topicMapper.findTopicLastAdd(i);
+        for (TopicArray topicArray : topicLastAdd) {
+            if(topicArray.getPicUrl()!=null&&!topicArray.getPicUrl().startsWith("http")){
+                topicArray.setPicUrl(imgprefix+topicArray.getPicUrl());
+            }
+        }
+        return topicLastAdd;
+    }
 }

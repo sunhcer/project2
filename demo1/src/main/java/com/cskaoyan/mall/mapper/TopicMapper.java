@@ -35,4 +35,6 @@ public interface TopicMapper {
     void topicUpdate(@Param("topicArray") TopicArray topicArray);
 
     void topicDelete(@Param("id") Integer id);
+
+    List<TopicArray> findTopicLastAdd(Integer i);
 }

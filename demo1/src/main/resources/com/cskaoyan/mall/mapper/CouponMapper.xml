@@ -311,6 +311,12 @@
      cskaoyan_mall_coupon
     where id=#{id}
   </select>
+  <select id="findAllCoupon" resultMap="selectByIdMap">
+    select id,name,`desc`,tag,total,discount,min,`limit`,type,status,
+    goods_type,goods_value,time_type,days,add_time,update_time,deleted,start_time,end_time from
+     cskaoyan_mall_coupon
+    where deleted !=1
+  </select>
 
   <update id="couponUpdate">
     update cskaoyan_mall_coupon set name=#{coupon.name},`desc`= #{coupon.desc},tag= #{coupon.tag},
