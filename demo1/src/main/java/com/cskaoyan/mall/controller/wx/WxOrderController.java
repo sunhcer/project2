@@ -2,6 +2,8 @@ package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Order;
+import com.cskaoyan.mall.bean.Storage;
+import com.cskaoyan.mall.service.admin.StorageService;
 import com.cskaoyan.mall.service.wx.WxOrderService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.WxOrderDetailData;
@@ -11,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +30,8 @@ public class WxOrderController {
 
     @Autowired
     WxOrderService wxOrderService;
+    @Autowired
+    StorageService storageService;
     ///wx/order/list
     @RequestMapping("/wx/order/list")
     public BaseRespVo order(WxOrderPage page){
@@ -83,7 +89,15 @@ public class WxOrderController {
     @RequestMapping("/wx/order/comment")
     public BaseRespVo comment(@RequestBody Comment comment){
         wxOrderService.commentOrder(comment);
-        System.out.println(111);
         return BaseRespVo.success(null);
+    }
+
+    ///wx/storage/upload
+    @RequestMapping("/wx/storage/upload")
+    public BaseRespVo fileUpload(MultipartFile file) throws IOException {
+        file.getOriginalFilename();
+        Storage storage = storageService.insertStorage(file);
+
+        return BaseRespVo.success(storage);
     }
 }

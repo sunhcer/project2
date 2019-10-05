@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service.wx;
 import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderGoods;
+import com.cskaoyan.mall.mapper.CommentMapper;
 import com.cskaoyan.mall.mapper.OrderGoodsMapper;
 import com.cskaoyan.mall.mapper.OrderMapper;
 import com.cskaoyan.mall.util.TransferCodeToText;
@@ -33,6 +34,8 @@ public class WxOrderServiceImpl implements WxOrderService {
     OrderGoodsMapper orderGoodsMapper;
     @Value("${myfile.img-prefix}")
     String myprefix;
+    @Autowired
+    CommentMapper commentMapper;
 
     @Override
     public WxOrderVo getOrderByShowType(WxOrderPage page) {
@@ -181,6 +184,15 @@ public class WxOrderServiceImpl implements WxOrderService {
 
     @Override
     public void commentOrder(Comment comment) {
+        comment.setId(null);
+        if (comment.getPicUrls() != null){
+            String[] picUrls = comment.getPicUrls();
+            for (int i = 0; i < picUrls.length; i++) {
+                picUrls[i] = picUrls[i].replace(myprefix , "");
+            }
+            comment.setPicUrls(picUrls);
+        }
 
+        commentMapper.insertSelective(comment);
     }
 }
