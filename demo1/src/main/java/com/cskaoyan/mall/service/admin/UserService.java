@@ -19,4 +19,6 @@ public interface UserService {
     UserFeedbackInfo selectUsersFeedback(UserPage userPage);
 
     User selectUserInfoByUsername(String username);
+
+    boolean registertUser(User user);
 }

@@ -74,6 +74,9 @@
       #{deleted,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.User">
+    <selectKey resultType="int" order="AFTER" keyColumn="id" keyProperty="id">
+      select last_insert_id()
+    </selectKey>
     insert into cskaoyan_mall_user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
