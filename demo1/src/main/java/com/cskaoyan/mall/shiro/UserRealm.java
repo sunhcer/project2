@@ -22,7 +22,6 @@ import java.util.List;
 @Component
 public class UserRealm  extends AuthorizingRealm {
 
-
     @Autowired
     AdminMapper adminMapper;
 

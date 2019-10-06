@@ -255,4 +255,18 @@
       </if>
     </where>
   </select>
+
+  <!--selectPasswordByUsername-->
+  <select id="selectPasswordByUsername" resultType="string">
+    select password from cskaoyan_mall_user
+    where username = #{username}
+  </select>
+
+  <!--selectUserByUsername-->
+  <select id="selectUserByUsername" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_user
+    where username = #{username}
+  </select>
 </mapper>

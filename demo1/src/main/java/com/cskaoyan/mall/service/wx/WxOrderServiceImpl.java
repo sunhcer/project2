@@ -1,16 +1,11 @@
 package com.cskaoyan.mall.service.wx;
 
-import com.cskaoyan.mall.bean.Comment;
-import com.cskaoyan.mall.bean.Order;
-import com.cskaoyan.mall.bean.OrderGoods;
-import com.cskaoyan.mall.mapper.CommentMapper;
-import com.cskaoyan.mall.mapper.OrderGoodsMapper;
-import com.cskaoyan.mall.mapper.OrderMapper;
+import com.cskaoyan.mall.bean.*;
+import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.util.TransferCodeToText;
 import com.cskaoyan.mall.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.omg.CORBA.ORB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,12 +31,21 @@ public class WxOrderServiceImpl implements WxOrderService {
     String myprefix;
     @Autowired
     CommentMapper commentMapper;
+    @Autowired
+    CartMapper cartMapper;
+    @Autowired
+    CouponMapper couponMapper;
+    @Autowired
+    GrouponRulesMapper grouponRulesMapper;
+    @Autowired
+    AddressMapper addressMapper;
+    @Autowired
+    SystemMapper systemMapper;
 
     @Override
-    public WxOrderVo getOrderByShowType(WxOrderPage page) {
+    public WxOrderVo getOrderByShowType(int userId, WxOrderPage page) {
         PageHelper.startPage(page.getPage(), page.getSize());
         //首先在这里要拿到人的信息
-        int userId = 1;
         List<Order> orderList = null;
         if (page.getShowType() == 0) {
             //代表全部订单
@@ -101,7 +105,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public WxOrderDetailData getOrderByOrderId(int orderId) {
+    public WxOrderDetailData getOrderByOrderId( int orderId) {
         Order order = orderMapper.selectByPrimaryKey(orderId);
         List<OrderGoods> orderGoods = orderGoodsMapper.selectOrderGoodsByOrderId(orderId);
 
@@ -121,7 +125,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public Map<String, Integer> getStateNum() {
+    public Map<String, Integer> getStateNum(int userId) {
         //showType = 0全部   全部
         //showType = 1待付款   101
         //showType = 2待发货   201
@@ -131,7 +135,6 @@ public class WxOrderServiceImpl implements WxOrderService {
         String unshipStatusId = "201";
         String unrecvStatusId = "301";
         String uncommentStatusId = "401";
-        int userId = 1;
         int unpaidNum = orderMapper.selectCountByOrderStatus(userId, unpaidStatusId);
         int unshipNum = orderMapper.selectCountByOrderStatus(userId, unshipStatusId);
         int unrecvNum = orderMapper.selectCountByOrderStatus(userId, unrecvStatusId);
@@ -184,7 +187,11 @@ public class WxOrderServiceImpl implements WxOrderService {
 
     @Override
     public void commentOrder(Comment comment) {
+        /*必须将*/
         comment.setId(null);
+        comment.setType((byte) 3);
+        //订单id      不知道哪个字段是订单id
+//        comment.setValueId();
         if (comment.getPicUrls() != null){
             String[] picUrls = comment.getPicUrls();
             for (int i = 0; i < picUrls.length; i++) {
@@ -194,5 +201,47 @@ public class WxOrderServiceImpl implements WxOrderService {
         }
 
         commentMapper.insertSelective(comment);
+    }
+
+    @Override
+    public WxOrderCheckoutBean checkOrder(int cartId, int addressId, int couponId, int grouponRulesId) {
+        //要根据用户id来寻找他的订单        ---这里有问题
+
+        Cart cart = cartMapper.selectByPrimaryKey(cartId);
+        Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
+        GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(grouponRulesId);
+        Address address = addressMapper.selectByPrimaryKey(addressId);
+        WxOrderCheckoutBean wxOrderCheckoutBean = new WxOrderCheckoutBean();
+
+        //设置其中的参数
+
+        //优惠券不知道怎设置
+        wxOrderCheckoutBean.setCouponId(couponId);
+//        if (coupon != null){
+//            wxOrderCheckoutBean.setCouponId(couponId);
+////            wxOrderCheckoutBean.setCouponPrice(coupon);
+//        }
+
+        //团购设置
+        wxOrderCheckoutBean.setGrouponRulesId(grouponRulesId);
+        if (grouponRules != null){
+            wxOrderCheckoutBean.setGrouponPrice(grouponRules.getDiscount());
+        }
+
+        //地址设置
+        wxOrderCheckoutBean.setAddressId(addressId);
+        if (address != null){
+            wxOrderCheckoutBean.setCheckedAddress(address);
+        }
+
+        //运费
+        double freightMin = Double.parseDouble(systemMapper.selectKey("cskaoyan_mall_express_freight_min"));
+        double freight_value = Double.parseDouble(systemMapper.selectKey("cskaoyan_mall_express_freight_value"));
+
+        //先算总价
+
+
+
+        return wxOrderCheckoutBean;
     }
 }

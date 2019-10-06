@@ -3,12 +3,15 @@ package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.Storage;
+import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.admin.StorageService;
 import com.cskaoyan.mall.service.wx.WxOrderService;
-import com.cskaoyan.mall.vo.BaseRespVo;
-import com.cskaoyan.mall.vo.WxOrderDetailData;
-import com.cskaoyan.mall.vo.WxOrderPage;
-import com.cskaoyan.mall.vo.WxOrderVo;
+import com.cskaoyan.mall.util.ShiroUtils;
+import com.cskaoyan.mall.vo.*;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,21 +30,26 @@ import java.util.Map;
  */
 @RestController
 public class WxOrderController {
-
+    Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     WxOrderService wxOrderService;
     @Autowired
     StorageService storageService;
+    @Autowired
+    UserMapper userMapper;
     ///wx/order/list
     @RequestMapping("/wx/order/list")
     public BaseRespVo order(WxOrderPage page){
-        WxOrderVo wxOrderVo = wxOrderService.getOrderByShowType(page);
+        logger.warn("用户" + SecurityUtils.getSubject().getSession());
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        WxOrderVo wxOrderVo = wxOrderService.getOrderByShowType(userId, page);
         return BaseRespVo.success(wxOrderVo);
     }
 
     ///wx/order/detail?orderId=311
     @RequestMapping("/wx/order/detail")
     public BaseRespVo detail(int orderId){
+        logger.warn("用户" + SecurityUtils.getSubject().getSession());
         WxOrderDetailData wxOrderDetailData = wxOrderService.getOrderByOrderId(orderId);
         return BaseRespVo.success(wxOrderDetailData);
     }
@@ -49,7 +57,11 @@ public class WxOrderController {
     ///wx/user/index
     @RequestMapping("/wx/user/index")
     private BaseRespVo wxUserIndex(){
-        Map order = wxOrderService.getStateNum();
+        Subject subject = SecurityUtils.getSubject();
+        logger.warn("用户账号" + subject.getPrincipal().toString());
+        logger.warn("用户sessionid" + subject.getSession().getId());
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        Map order = wxOrderService.getStateNum(userId);
         HashMap<Object, Object> map = new HashMap<>();
         map.put("order", order);
         return BaseRespVo.success(map);
@@ -58,6 +70,8 @@ public class WxOrderController {
     ///wx/order/cancel
     @RequestMapping("/wx/order/cancel")
     public BaseRespVo cancelOrder(@RequestBody Order order){
+        logger.warn("用户" + SecurityUtils.getSubject().getPrincipal().toString());
+        logger.warn("用户" + SecurityUtils.getSubject().getSession());
         Integer orderId = order.getOrderId();
         wxOrderService.cancelOrder(orderId);
         return BaseRespVo.success(null);
@@ -99,5 +113,12 @@ public class WxOrderController {
         Storage storage = storageService.insertStorage(file);
 
         return BaseRespVo.success(storage);
+    }
+
+    ///wx/cart/checkout?cartId=0&addressId=0&couponId=0&grouponRulesId=0
+    @RequestMapping("/wx/cart/checkout")
+    public BaseRespVo checkoutGoods(int cartId, int addressId, int couponId, int grouponRulesId){
+        WxOrderCheckoutBean wxOrderCheckoutBean = wxOrderService.checkOrder(cartId, addressId, couponId, grouponRulesId);
+        return null;
     }
 }

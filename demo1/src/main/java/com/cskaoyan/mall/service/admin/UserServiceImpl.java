@@ -166,4 +166,11 @@ public class UserServiceImpl implements UserService {
         return  userFeedbackInfo;
     }
 
+    //selectUserInfoByUsername
+
+
+    @Override
+    public User selectUserInfoByUsername(String username) {
+        return userMapper.selectUserByUsername(username);
+    }
 }
