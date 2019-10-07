@@ -18,11 +18,13 @@ public interface CartMapper {
 
     int updateByPrimaryKey(Cart record);
 
-    List<Cart> selectCartAll();
+    List<Cart> selectCartAll(int userId);
 
-    List<Cart> selectCartAllChecked();
+    List<Cart> selectCartAllChecked(int userId);
 
     void updateCheckedByProductId(@Param("productId") Integer productId,@Param("checked") int isChecked);
 
     void deleteByProductId(Integer productId);
+
+    List<Cart> selectUserAllCheckedCart(@Param("userId") int userId);
 }

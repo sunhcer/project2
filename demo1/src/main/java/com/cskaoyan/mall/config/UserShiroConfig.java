@@ -1,15 +1,20 @@
 package com.cskaoyan.mall.config;
 
+import com.cskaoyan.mall.shiro.CustomRealmAuthenticator;
 import com.cskaoyan.mall.shiro.UserRealm;
+import com.cskaoyan.mall.shiro.WxRealm;
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.handler.SimpleMappingExceptionResolver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Properties;
@@ -46,9 +51,14 @@ public class UserShiroConfig {
 
     /*securityManager*/
     @Bean
-    public DefaultWebSecurityManager securityManager(UserRealm realm, DefaultWebSessionManager sessionManager){
+    public DefaultWebSecurityManager securityManager(@Qualifier("userRealm") UserRealm userRealm,
+                                                     @Qualifier("wxRealm") WxRealm wxRealm,
+                                                     CustomRealmAuthenticator customRealmAuthenticator,
+                                                     DefaultWebSessionManager sessionManager){
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
-        securityManager.setRealm(realm);
+        securityManager.setRealm(userRealm);
+        securityManager.setRealm(wxRealm);
+        securityManager.setAuthenticator(customRealmAuthenticator);
         securityManager.setSessionManager(sessionManager);
         return securityManager;
     }
@@ -76,5 +86,18 @@ public class UserShiroConfig {
     public DefaultWebSessionManager webSessionManager(){
         MallSessionManager mallSessionManager = new MallSessionManager();
         return mallSessionManager;
+    }
+
+    /*自定义的CustomRealmAuthenticator*/
+    @Bean
+    public CustomRealmAuthenticator customRealmAuthenticator(@Qualifier("userRealm") UserRealm userRealm,
+                                                             @Qualifier("wxRealm") WxRealm wxRealm){
+        CustomRealmAuthenticator realmAuthenticator = new CustomRealmAuthenticator();
+        ArrayList<Realm> realms = new ArrayList<>();
+        realms.add(userRealm);
+        realms.add(wxRealm);
+        realmAuthenticator.setRealms(realms);
+
+        return realmAuthenticator;
     }
 }

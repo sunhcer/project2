@@ -21,4 +21,6 @@ public interface CommentMapper {
     List<Comment> findCommentsByValueIdAndUserId(@Param("valueId") String valueId,@Param("userId")  String userId);
 
     List<Comment> findAllComments();
+
+    List<Comment> findCommentsByGoodsId(Integer goodsId);
 }

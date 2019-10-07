@@ -1,7 +1,5 @@
 package com.cskaoyan.mall.mapper;
 
-import com.cskaoyan.mall.bean.StatGood;
-import com.cskaoyan.mall.bean.StatOrder;
 import com.cskaoyan.mall.bean.StatUser;
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.vo.UserPage;
@@ -30,4 +28,8 @@ public interface UserMapper {
 
 
     int queryUserIdByUsername(@Param("username") String username);
+
+    String selectPasswordByUsername(String username);
+
+    User selectUserByUsername(String username);
 }

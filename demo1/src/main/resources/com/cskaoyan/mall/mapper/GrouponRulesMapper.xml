@@ -23,6 +23,12 @@
     from cskaoyan_mall_groupon_rules
     where id = #{id,jdbcType=INTEGER}
   </select>
+  <select id="findGrouponRuleListByGoodsId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_groupon_rules
+    where deleted !=1 and goods_id=#{goodsId}
+  </select>
   <select id="selectByAddTimeWithLimit" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

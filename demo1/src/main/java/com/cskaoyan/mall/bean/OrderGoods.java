@@ -34,6 +34,16 @@ public class OrderGoods {
 
     private Boolean deleted;
 
+    private boolean checked;
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
     public Integer getId() {
         return id;
     }

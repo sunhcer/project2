@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    @Value("myfile.img-prefix")
+    @Value("${myfile.img-prefix}")
     String imgPrefix;
 
     @Autowired
@@ -27,7 +27,24 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAllCategory() {
         //找L1的全部级别的  并且删除状态要为0
-        return categoryMapper.findAllCateGoriesByLevel("L1");
+        List<Category> categoryList = categoryMapper.findAllCateGoriesByLevel("L1");
+
+
+        for (Category category : categoryList) {
+            category.setPicUrl(imgPrefix + category.getPicUrl());
+            category.setIconUrl(imgPrefix + category.getIconUrl());
+            List<Category> children = category.getChildren();
+            if (children != null){
+                for (Category childrenCategory : children) {
+                    childrenCategory.setPicUrl(imgPrefix + childrenCategory.getPicUrl());
+                    childrenCategory.setIconUrl(imgPrefix + childrenCategory.getIconUrl());
+                }
+            }
+        }
+
+
+        return categoryList;
+
     }
 
     /**
@@ -45,6 +62,19 @@ public class CategoryServiceImpl implements CategoryService {
         category.setId(null);
         category.setAddTime(new Date());
         category.setUpdateTime(new Date());
+
+        String picUrl = category.getPicUrl();
+        String iconUrl = category.getIconUrl();
+        category.setPicUrl(picUrl.replace(imgPrefix, ""));
+        category.setIconUrl(iconUrl.replace(imgPrefix, ""));
+        List<Category> children = category.getChildren();
+        if (children != null){
+            for (Category catagory : children) {
+                category.setPicUrl(catagory.getPicUrl().replace(imgPrefix, ""));
+                category.setIconUrl(catagory.getIconUrl().replace(imgPrefix, ""));
+            }
+        }
+
         int inserRow = categoryMapper.insertSelective(category);
         return inserRow;
     }
@@ -53,6 +83,10 @@ public class CategoryServiceImpl implements CategoryService {
     public void updateCategory(Category category) {
         //将更新时间换为现在
         category.setUpdateTime(new Date());
+        String picUrl = category.getPicUrl();
+        String iconUrl = category.getIconUrl();
+        category.setPicUrl(picUrl.replace(imgPrefix, ""));
+        category.setIconUrl(iconUrl.replace(imgPrefix, ""));
         categoryMapper.updateByPrimaryKeySelective(category);
     }
 

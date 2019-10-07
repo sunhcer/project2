@@ -1,11 +1,8 @@
 package com.cskaoyan.mall.service.admin;
 
 
-import com.cskaoyan.mall.bean.UsersListInfo;
+import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.vo.*;
-import com.cskaoyan.mall.bean.StatGood;
-import com.cskaoyan.mall.bean.StatOrder;
-import com.cskaoyan.mall.bean.StatUser;
 
 public interface UserService {
 
@@ -21,4 +18,7 @@ public interface UserService {
 
     UserFeedbackInfo selectUsersFeedback(UserPage userPage);
 
+    User selectUserInfoByUsername(String username);
+
+    boolean registertUser(User user);
 }

@@ -59,6 +59,12 @@
         from cskaoyan_mall_comment
         where deleted != 1
     </select>
+    <select id="findCommentsByGoodsId"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_comment
+        where deleted != 1 and id =#{goodsId}
+    </select>
     <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Comment">
         insert into cskaoyan_mall_comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
