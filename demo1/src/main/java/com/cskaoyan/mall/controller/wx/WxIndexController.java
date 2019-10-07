@@ -110,7 +110,7 @@ public class WxIndexController {
         List<Comment> data = productService.findCommentByGoodsId(goodsId);
         Map<String, Object> comment = new HashMap<String, Object>();//comment
         comment.put("data", data);
-        comment.put("count", 0);
+        comment.put("count", data.size());
         List<Issue> issue = issueService.selectAllIssues();//issue
         List<GrouponRules> groupon = grouponService.findGrouponRuleListByGoodsId(goodsId);//groupon
         List<GoodsProduct> productList = productService.findGoodsProductsByGoodsId(goodsId);//productList
