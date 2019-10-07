@@ -225,4 +225,12 @@
     set deleted = 1
     where product_id = #{productId}
   </update>
+
+  <!--selectUserAllCheckedCart-->
+  <select id="selectUserAllCheckedCart" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_cart
+    where deleted = 0 and user_id = #{userId} and checked = 1
+  </select>
 </mapper>
