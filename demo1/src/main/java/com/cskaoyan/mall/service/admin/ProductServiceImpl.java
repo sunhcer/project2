@@ -474,7 +474,7 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
         }
-        return null;
+        return commentsByGoodsId;
     }
 
     @Override

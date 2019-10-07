@@ -20,7 +20,6 @@ public interface KeywordMapper {
 
     List<Keyword> selectKeyWordByCondition(OrderPage orderPage);
 
-
     List<Keyword> selectKeyWordIsDefault();
 
     List<Keyword> selectKeyWordIsHot();

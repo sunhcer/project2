@@ -29,4 +29,8 @@ public interface KeywordService {
     List<SearchHistory> getLastHistoryKeywords(Integer number);
 
     List<Keyword> selectKeyWordIsHot();
+
+    Integer deleteHistory();
+
+    Integer addHistoryKeywords(String keyword);
 }
