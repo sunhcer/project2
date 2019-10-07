@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
+import com.cskaoyan.mall.service.admin.ProductServiceImpl;
 import com.cskaoyan.mall.util.TransferBig2Double;
 import com.cskaoyan.mall.util.TransferCodeToText;
 import com.cskaoyan.mall.vo.*;
@@ -212,7 +213,6 @@ public class WxOrderServiceImpl implements WxOrderService {
             }
             comment.setPicUrls(picUrls);
         }
-
         //将订单商品表中的comment改成10
         orderGoodsMapper.updateComment(comment.getOrderGoodsId(), 10);
         //并且订单表中的comments字段-1
