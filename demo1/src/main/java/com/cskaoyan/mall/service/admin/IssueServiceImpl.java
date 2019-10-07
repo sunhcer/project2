@@ -62,4 +62,9 @@ public class IssueServiceImpl implements IssueService {
     public void insertIssue(Issue issue) {
         issueMapper.insertIssue(issue);
     }
+
+    @Override
+    public List<Issue> selectAllIssues() {
+        return issueMapper.selectAllIssues();
+    }
 }

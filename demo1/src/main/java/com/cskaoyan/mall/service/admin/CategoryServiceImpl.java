@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    @Value("myfile.img-prefix")
+    @Value("${myfile.img-prefix}")
     String imgPrefix;
 
     @Autowired
