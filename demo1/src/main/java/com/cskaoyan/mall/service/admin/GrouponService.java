@@ -20,4 +20,6 @@ public interface GrouponService {
     void deleteGroup(Groupon groupon);
 
     List<GrouponRules> findGrouponRuleList(Integer start, Integer end);
+
+    List<GrouponRules> findGrouponRuleListByGoodsId(int goodsId);
 }

@@ -32,7 +32,11 @@ public class WxGoodsController {
     @RequestMapping("/wx/goods/list")
     public BaseRespVo goodsList() {
 
+
+
+
         return BaseRespVo.success(null);
     }
+
 
 }

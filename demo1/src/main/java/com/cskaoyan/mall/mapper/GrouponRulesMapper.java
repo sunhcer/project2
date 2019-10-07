@@ -22,4 +22,6 @@ public interface GrouponRulesMapper {
     List<GrouponRules> selectGrouponRulesByCondition(OrderPage orderPage);
 
     List<GrouponRules> selectByAddTimeWithLimit(@Param("limit") Integer limit, @Param("offset") Integer offset);
+
+    List<GrouponRules> findGrouponRuleListByGoodsId(int goodsId);
 }

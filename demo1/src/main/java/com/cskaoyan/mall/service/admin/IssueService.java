@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.BrandList;
 import com.cskaoyan.mall.bean.Issue;
 import com.cskaoyan.mall.bean.OrderPage;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: zhou
@@ -18,4 +20,6 @@ public interface IssueService {
     void deleteIssueById(Issue issue);
 
     void insertIssue(Issue issue);
+
+    List<Issue> selectAllIssues();
 }

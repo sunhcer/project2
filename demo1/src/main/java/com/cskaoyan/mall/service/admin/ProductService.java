@@ -71,4 +71,8 @@ public interface ProductService {
     List<Goods> findGoodsIsHotLastAdd(Integer i);
 
     List<Goods> findGoodsLastAdd(Integer number);
+
+    Brand findBrandById(Integer brandId);
+
+    List<Comment> findCommentByGoodsId(Integer goodsId);
 }
