@@ -3,6 +3,9 @@ package com.cskaoyan.mall.service.admin;
 import com.cskaoyan.mall.bean.BrandList;
 import com.cskaoyan.mall.bean.Keyword;
 import com.cskaoyan.mall.bean.OrderPage;
+import com.cskaoyan.mall.bean.SearchHistory;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -18,4 +21,12 @@ public interface KeywordService {
     void deleteKeyword(Keyword keyword);
 
     void updateKeyword(Keyword keyword);
+
+//    Keyword searchKeyWord(Keyword keyword);
+
+    List<Keyword> selectKeyWordIsDefault();
+
+    List<SearchHistory> getLastHistoryKeywords(Integer number);
+
+    List<Keyword> selectKeyWordIsHot();
 }

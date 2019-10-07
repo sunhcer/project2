@@ -174,7 +174,6 @@ public class WxOrderServiceImpl implements WxOrderService {
                 handleOption.setComment(true);
             }
         }
-        handleOption.setComment(true);
         return handleOption;
     }
 
@@ -224,9 +223,15 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public WxOrderCheckoutBean checkOrder(int userId, int cartId, int addressId, int couponId, int grouponRulesId) {
+    public WxOrderCheckoutBean checkOrder(int userId, Integer cartId, int addressId, int couponId, int grouponRulesId) {
+        List<Cart> cartList = null;
+        if (cartId == null) {
+            cartList = cartMapper.selectUserAllCheckedCart(userId);
+        }else{
+            cartList = new ArrayList<>();
+            cartList.add(cartMapper.selectByPrimaryKey(cartId));
+        }
 
-        List<Cart> cartList = cartMapper.selectUserAllCheckedCart(userId);
         Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
         GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(grouponRulesId);
         Address address = addressMapper.selectByPrimaryKey(addressId);
@@ -358,14 +363,15 @@ public class WxOrderServiceImpl implements WxOrderService {
             orderGoods.setAddTime(new Date());
             orderGoods.setChecked(true);
             orderGoods.setOrderId(orderId);
-            if (checkOrderGood.getGoodsId() != null){
-                orderGoods.setGoodsId(Integer.parseInt(checkOrderGood.getGoodsId()));
+            if (checkOrderGood.getId() != null){
+                orderGoods.setGoodsId(checkOrderGood.getId());
             }
             orderGoods.setSpecifications(checkOrderGood.getSpecifications());
             orderGoods.setPicUrl(checkOrderGood.getPicUrl());
             orderGoods.setGoodsSn(checkOrderGood.getGoodsSn());
             orderGoods.setPrice(TransferBig2Double.double2Big(checkOrderGood.getPrice()));
             orderGoods.setNumber((short) checkOrderGood.getNumber());
+            orderGoods.setPicUrl(orderGoods.getPicUrl().replace(myprefix, ""));
             orderGoodsMapper.insertSelective(orderGoods);
         }
         return orderId;

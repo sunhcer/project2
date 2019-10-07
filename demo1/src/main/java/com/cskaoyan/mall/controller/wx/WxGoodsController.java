@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller.wx;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.service.admin.ProductService;
 import com.cskaoyan.mall.service.wx.WxGoodService;
+import com.cskaoyan.mall.service.wx.WxHomePageService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.HotListInfo;
 import com.cskaoyan.mall.vo.HotListVo;
@@ -23,6 +24,9 @@ import java.util.Map;
 @RestController
 public class WxGoodsController {
     @Autowired
+    WxHomePageService wxHomePageService;
+
+    @Autowired
     ProductService productService;
 
     @Autowired
@@ -41,16 +45,18 @@ public class WxGoodsController {
 
     @RequestMapping("/wx/goods/list")
     public BaseRespVo goodsList(HotListInfo hotListInfo) {
-        HotListVo hotListVo;
+        HotListVo hotListVo=null;
         if(hotListInfo.getKeyword() != null) {
             hotListVo = wxGoodService.keywordListInfo(hotListInfo);
         } else if(hotListInfo.getIsHot()) {
             hotListVo = wxGoodService.hotListInfo(hotListInfo);
-        } else {
+        } else if (hotListInfo.getIsNew()){
             hotListVo = wxGoodService.firstListInfo(hotListInfo);
+        }else if (hotListInfo.getIsHot()==false&&hotListInfo.getIsNew()==false&&hotListInfo.getKeyword()==null){
+            BaseRespVo baseRespVo=wxHomePageService.goodsWxList(hotListInfo.getCategoryId(),hotListInfo.getPage(),hotListInfo.getSize());
+            return baseRespVo;
         }
         return BaseRespVo.success(hotListVo);
     }
-
 
 }
