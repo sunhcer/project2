@@ -44,7 +44,7 @@ public class WxGoodsController {
         HotListVo hotListVo;
         if(hotListInfo.getKeyword() != null) {
             hotListVo = wxGoodService.keywordListInfo(hotListInfo);
-        } else if(hotListInfo.isHot()) {
+        } else if(hotListInfo.getIsHot()) {
             hotListVo = wxGoodService.hotListInfo(hotListInfo);
         } else {
             hotListVo = wxGoodService.firstListInfo(hotListInfo);

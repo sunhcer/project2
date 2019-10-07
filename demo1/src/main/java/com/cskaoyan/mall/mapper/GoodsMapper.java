@@ -34,4 +34,6 @@ public interface GoodsMapper {
     List<Goods> findGoodsIsHotLastAdd(Integer i);
 
     List<Goods> findGoodsLastAdd(Integer number);
+
+    List<Goods> selectAllHotGoods();
 }
