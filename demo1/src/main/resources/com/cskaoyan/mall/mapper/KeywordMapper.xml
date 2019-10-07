@@ -148,4 +148,17 @@
     <if test="url != null">and url like #{url}</if>
     <if test="keyword != null">and keyword like #{keyword}</if>
   </select>
+
+  <select id="selectKeyWordIsDefault" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_keyword
+    where deleted = 0 and is_default = 1
+  </select>
+  <select id="selectKeyWordIsHot" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_keyword
+    where deleted = 0 and is_hot = 1
+  </select>
 </mapper>
