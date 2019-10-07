@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.OrderGoods;
+import com.cskaoyan.mall.vo.CheckOrderGood;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -27,4 +28,6 @@ public interface OrderGoodsMapper {
     OrderGoods selectOrderGoodsByOrderIdAndGoodsId(@Param("orderId")int orderId,@Param("goodsId")int goodsId);
 
     void updateComment(@Param("orderGoodsId") Integer orderGoodsId, @Param("comment") int comment);
+
+    void insertSelectiveCustom(CheckOrderGood checkOrderGood);
 }

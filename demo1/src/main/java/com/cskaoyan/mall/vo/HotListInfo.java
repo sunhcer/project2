@@ -52,8 +52,10 @@ public class HotListInfo {
         return isHot;
     }
 
+
     public void setIsHot(boolean isHot) {
         this.isHot = isHot;
+
     }
 
     public int getPage() {

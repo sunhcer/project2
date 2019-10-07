@@ -3,7 +3,6 @@ package com.cskaoyan.mall.service.wx;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.vo.*;
-import com.cskaoyan.mall.vo.WxUserInfo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
