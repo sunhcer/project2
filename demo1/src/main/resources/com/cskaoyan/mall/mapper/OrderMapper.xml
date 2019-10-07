@@ -402,4 +402,9 @@
   <update id="setOrderStatus">
     update cskaoyan_mall_order set order_status = #{statusId} where id = #{orderId}
   </update>
+
+  <!--updateComments-->
+  <update id="updateComments">
+    update cskaoyan_mall_order set comments = comments - 1 where id = #{orderId}
+  </update>
 </mapper>

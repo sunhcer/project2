@@ -2,6 +2,7 @@ package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Order;
+import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.Storage;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.admin.StorageService;
@@ -49,7 +50,7 @@ public class WxOrderController {
     ///wx/order/detail?orderId=311
     @RequestMapping("/wx/order/detail")
     public BaseRespVo detail(int orderId){
-        logger.warn("用户" + SecurityUtils.getSubject().getSession());
+//        logger.warn("用户" + SecurityUtils.getSubject().getSession());
         WxOrderDetailData wxOrderDetailData = wxOrderService.getOrderByOrderId(orderId);
         return BaseRespVo.success(wxOrderDetailData);
     }
@@ -58,8 +59,8 @@ public class WxOrderController {
     @RequestMapping("/wx/user/index")
     private BaseRespVo wxUserIndex(){
         Subject subject = SecurityUtils.getSubject();
-        logger.warn("用户账号" + subject.getPrincipal().toString());
-        logger.warn("用户sessionid" + subject.getSession().getId());
+//        logger.warn("用户账号" + subject.getPrincipal().toString());
+//        logger.warn("用户sessionid" + subject.getSession().getId());
         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
         Map order = wxOrderService.getStateNum(userId);
         HashMap<Object, Object> map = new HashMap<>();
@@ -70,8 +71,8 @@ public class WxOrderController {
     ///wx/order/cancel
     @RequestMapping("/wx/order/cancel")
     public BaseRespVo cancelOrder(@RequestBody Order order){
-        logger.warn("用户" + SecurityUtils.getSubject().getPrincipal().toString());
-        logger.warn("用户" + SecurityUtils.getSubject().getSession());
+//        logger.warn("用户" + SecurityUtils.getSubject().getPrincipal().toString());
+//        logger.warn("用户" + SecurityUtils.getSubject().getSession());
         Integer orderId = order.getOrderId();
         wxOrderService.cancelOrder(orderId);
         return BaseRespVo.success(null);
@@ -118,7 +119,15 @@ public class WxOrderController {
     ///wx/cart/checkout?cartId=0&addressId=0&couponId=0&grouponRulesId=0
     @RequestMapping("/wx/cart/checkout")
     public BaseRespVo checkoutGoods(int cartId, int addressId, int couponId, int grouponRulesId){
-        WxOrderCheckoutBean wxOrderCheckoutBean = wxOrderService.checkOrder(cartId, addressId, couponId, grouponRulesId);
-        return null;
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        WxOrderCheckoutBean wxOrderCheckoutBean = wxOrderService.checkOrder(userId, cartId, addressId, couponId, grouponRulesId);
+        return BaseRespVo.success(wxOrderCheckoutBean);
+    }
+
+    ///wx/order/goods?orderId=4&goodsId=1109008
+    @RequestMapping("/wx/order/goods")
+    public BaseRespVo orderGoods(int orderId, int goodsId){
+        OrderGoods orderGoods = wxOrderService.selectOrderGoods(orderId, goodsId);
+        return BaseRespVo.success(orderGoods);
     }
 }

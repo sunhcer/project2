@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,8 @@ public class WxOrderServiceImpl implements WxOrderService {
     AddressMapper addressMapper;
     @Autowired
     SystemMapper systemMapper;
+    @Autowired
+    GoodsMapper goodsMapper;
 
     @Override
     public WxOrderVo getOrderByShowType(int userId, WxOrderPage page) {
@@ -158,8 +161,10 @@ public class WxOrderServiceImpl implements WxOrderService {
         }else if (order.getOrderStatus() == 301){
             handleOption.setConfirm(true);
         }else if (order.getOrderStatus() == 401 || order.getOrderStatus() == 402){
-            handleOption.setComment(true);
             handleOption.setRebuy(true);
+            if (order.getComments() > 0) {
+                handleOption.setComment(true);
+            }
         }
         handleOption.setComment(true);
         return handleOption;
@@ -191,7 +196,8 @@ public class WxOrderServiceImpl implements WxOrderService {
         comment.setId(null);
         comment.setType((byte) 3);
         //订单id      不知道哪个字段是订单id
-//        comment.setValueId();
+        comment.setValueId(comment.getOrderGoodsId());
+        comment.setType((byte) 3);
         if (comment.getPicUrls() != null){
             String[] picUrls = comment.getPicUrls();
             for (int i = 0; i < picUrls.length; i++) {
@@ -200,27 +206,39 @@ public class WxOrderServiceImpl implements WxOrderService {
             comment.setPicUrls(picUrls);
         }
 
+        //将订单商品表中的comment改成10
+        orderGoodsMapper.updateComment(comment.getOrderGoodsId(),10);
+        //并且订单表中的comments字段-1
+        OrderGoods orderGoods = orderGoodsMapper.selectByPrimaryKey(comment.getOrderGoodsId());
+        orderMapper.updateComments(orderGoods.getOrderId());
+
         commentMapper.insertSelective(comment);
     }
 
     @Override
-    public WxOrderCheckoutBean checkOrder(int cartId, int addressId, int couponId, int grouponRulesId) {
-        //要根据用户id来寻找他的订单        ---这里有问题
+    public WxOrderCheckoutBean checkOrder(int userId, int cartId, int addressId, int couponId, int grouponRulesId) {
 
-        Cart cart = cartMapper.selectByPrimaryKey(cartId);
+        List<Cart> cartList = cartMapper.selectUserAllCheckedCart(userId);
         Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
         GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(grouponRulesId);
         Address address = addressMapper.selectByPrimaryKey(addressId);
         WxOrderCheckoutBean wxOrderCheckoutBean = new WxOrderCheckoutBean();
 
         //设置其中的参数
+        //商品列表
+        List<Goods> goodsList = new ArrayList<>();
+        for (Cart cart : cartList) {
+            Goods goods = goodsMapper.selectByPrimaryKey(cart.getGoodsId());
+            goodsList.add(goods);
+        }
+        wxOrderCheckoutBean.setCheckedGoodsList(goodsList);
 
         //优惠券不知道怎设置
         wxOrderCheckoutBean.setCouponId(couponId);
-//        if (coupon != null){
-//            wxOrderCheckoutBean.setCouponId(couponId);
-////            wxOrderCheckoutBean.setCouponPrice(coupon);
-//        }
+        if (coupon != null){
+            wxOrderCheckoutBean.setCouponId(couponId);
+            wxOrderCheckoutBean.setCouponPrice(coupon.getDiscount().doubleValue());
+        }
 
         //团购设置
         wxOrderCheckoutBean.setGrouponRulesId(grouponRulesId);
@@ -239,9 +257,26 @@ public class WxOrderServiceImpl implements WxOrderService {
         double freight_value = Double.parseDouble(systemMapper.selectKey("cskaoyan_mall_express_freight_value"));
 
         //先算总价
+        double totalMoney = 0;
+        for (Cart cart : cartList) {
+            int number = cart.getNumber();
+            double goodPrice = cart.getPrice().doubleValue();
+            totalMoney = totalMoney + number*goodPrice;
+        }
+        wxOrderCheckoutBean.setOrderTotalPrice(totalMoney);
 
-
+        if (totalMoney < freightMin){
+            //订单价格小于最低运费限制
+            wxOrderCheckoutBean.setFreightPrice(freight_value);
+        }
 
         return wxOrderCheckoutBean;
+    }
+
+    @Override
+    public OrderGoods selectOrderGoods(int orderId, int goodsId) {
+        OrderGoods orderGoods = orderGoodsMapper.selectOrderGoodsByOrderIdAndGoodsId(orderId, goodsId);
+        orderGoods.setPicUrl(myprefix + orderGoods.getPicUrl());
+        return orderGoods;
     }
 }
