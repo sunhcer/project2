@@ -6,6 +6,8 @@ import com.cskaoyan.mall.bean.GoodsProduct;
 import com.cskaoyan.mall.mapper.CartMapper;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.mapper.GoodsProductMapper;
+import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.util.ShiroUtils;
 import com.cskaoyan.mall.vo.CartListInfo;
 import com.cskaoyan.mall.vo.CartTotal;
 import com.cskaoyan.mall.vo.CheckedStatus;
@@ -27,6 +29,9 @@ public class WxCartServiceImpl implements WxCartService {
     @Autowired
     GoodsProductMapper goodsProductMapper;
 
+    @Autowired
+    UserMapper userMapper;
+
     @Override
     public void addCart(Cart cart) {
         //只接收到number,productId,goodsId
@@ -37,7 +42,8 @@ public class WxCartServiceImpl implements WxCartService {
         //设置goodsSn
         cart.setGoodsSn(goods.getGoodsSn());
         //设置userId
-        cart.setUserId(1);
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        cart.setUserId(userId);
         //设置goodsName
         cart.setGoodsName(goods.getName());
         //设置price
@@ -61,8 +67,9 @@ public class WxCartServiceImpl implements WxCartService {
 
         CartTotal cartTotal = new CartTotal();
         CartListInfo cartListInfo = new CartListInfo();
-        List<Cart> carts =  cartMapper.selectCartAll();
-        List<Cart> checkedCarts =  cartMapper.selectCartAllChecked();
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        List<Cart> carts =  cartMapper.selectCartAll(userId);
+        List<Cart> checkedCarts =  cartMapper.selectCartAllChecked(userId);
 
         cartListInfo.setCartList(carts);
 
