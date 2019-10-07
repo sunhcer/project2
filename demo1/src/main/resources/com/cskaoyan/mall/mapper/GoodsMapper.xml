@@ -362,6 +362,64 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+
+    <select id="queryWxCategoryGoodsCount" resultType="int">
+        select count(id) from cskaoyan_mall_goods where category_id=#{categoryId}
+    </select>
+
+    <select id="queryWxGoodslist" resultMap="queryWxGoodslistMap">
+        select id,name,brief,pic_url,is_new,is_hot,counter_price,retail_price
+        from cskaoyan_mall_goods
+        where category_id=#{categoryId}
+        limit #{pageSize} offset #{offsetNum}
+    </select>
+    <resultMap id="queryWxGoodslistMap" type="com.cskaoyan.mall.bean.Goods">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="brief" property="brief"/>
+        <result column="pic_url" property="picUrl"/>
+        <result column="is_new" property="isNew"/>
+        <result column="is_hot" property="isHot"/>
+        <result column="counter_price" property="counterPrice"/>
+        <result column="retail_price" property="retailPrice"/>
+    </resultMap>
+    <select id="queryWxNewCategoryGoodsCount" resultType="int">
+        select count(id)
+        from cskaoyan_mall_goods
+        where is_new=#{isNew}
+    </select>
+
+    <select id="queryWxNewGoodsList" resultMap="queryWxGoodslistMap">
+         select id,name,brief,pic_url,is_new,is_hot,counter_price,retail_price
+        from cskaoyan_mall_goods where is_new=#{isNew}
+        order by ${sort} ${order}
+        limit ${size} offset ${offsetNum}
+    </select>
+    <select id="queryWXCurrentNewGoodsList" resultMap="queryWxGoodslistMap">
+        select id,name,brief,pic_url,is_new,is_hot,counter_price,retail_price
+        from cskaoyan_mall_goods where is_new=#{isNew} and category_id=#{categoryId}
+        order by ${sort} ${order}
+        limit ${size} offset ${offsetNum}
+</select>
+    <resultMap id="CheckGoodsResultMap" type="com.cskaoyan.mall.vo.CheckOrderGood">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn"/>
+        <result column="name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="retail_price" jdbcType="VARCHAR" property="price"/>
+        <result column="checked" jdbcType="VARCHAR" property="checked"/>
+        <result column="pic_url" jdbcType="VARCHAR" property="picUrl"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <!--selectByGoodsSn-->
+    <select id="selectByGoodsSn" resultMap="CheckGoodsResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_goods
+        where deleted != 1 and goods_sn = #{goodsSn}
+    </select>
     <select id="selectAllHotGoods" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
@@ -385,5 +443,6 @@
         where name like #{keyword}
         and category_id = #{categoryId}
         and deleted = 0
+
     </select>
 </mapper>

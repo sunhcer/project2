@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.System;
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +47,10 @@ public class WxOrderServiceImpl implements WxOrderService {
     SystemMapper systemMapper;
     @Autowired
     GoodsMapper goodsMapper;
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
+    @Autowired
+    RegionMapper regionMapper;
 
     @Override
     public WxOrderVo getOrderByShowType(int userId, WxOrderPage page) {
@@ -107,7 +115,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public WxOrderDetailData getOrderByOrderId( int orderId) {
+    public WxOrderDetailData getOrderByOrderId(int orderId) {
         Order order = orderMapper.selectByPrimaryKey(orderId);
         List<OrderGoods> orderGoods = orderGoodsMapper.selectOrderGoodsByOrderId(orderId);
 
@@ -152,14 +160,14 @@ public class WxOrderServiceImpl implements WxOrderService {
     private HandleOption handleOption(Order order) {
         //根据订单的状态码等其他信息 判断订单状态信息
         HandleOption handleOption = new HandleOption();
-        if (order.getOrderStatus() == 101){
+        if (order.getOrderStatus() == 101) {
             handleOption.setPay(true);
             handleOption.setCancel(true);
-        }else if (order.getOrderStatus() == 201){
+        } else if (order.getOrderStatus() == 201) {
             handleOption.setRefund(true);
-        }else if (order.getOrderStatus() == 301){
+        } else if (order.getOrderStatus() == 301) {
             handleOption.setConfirm(true);
-        }else if (order.getOrderStatus() == 401 || order.getOrderStatus() == 402){
+        } else if (order.getOrderStatus() == 401 || order.getOrderStatus() == 402) {
             handleOption.setRebuy(true);
             if (order.getComments() > 0) {
                 handleOption.setComment(true);
@@ -197,16 +205,16 @@ public class WxOrderServiceImpl implements WxOrderService {
         //订单id      不知道哪个字段是订单id
         comment.setValueId(comment.getOrderGoodsId());
         comment.setType((byte) 3);
-        if (comment.getPicUrls() != null){
+        if (comment.getPicUrls() != null) {
             String[] picUrls = comment.getPicUrls();
             for (int i = 0; i < picUrls.length; i++) {
-                picUrls[i] = picUrls[i].replace(myprefix , "");
+                picUrls[i] = picUrls[i].replace(myprefix, "");
             }
             comment.setPicUrls(picUrls);
         }
 
         //将订单商品表中的comment改成10
-        orderGoodsMapper.updateComment(comment.getOrderGoodsId(),10);
+        orderGoodsMapper.updateComment(comment.getOrderGoodsId(), 10);
         //并且订单表中的comments字段-1
         OrderGoods orderGoods = orderGoodsMapper.selectByPrimaryKey(comment.getOrderGoodsId());
         orderMapper.updateComments(orderGoods.getOrderId());
@@ -223,31 +231,45 @@ public class WxOrderServiceImpl implements WxOrderService {
         Address address = addressMapper.selectByPrimaryKey(addressId);
         WxOrderCheckoutBean wxOrderCheckoutBean = new WxOrderCheckoutBean();
 
+        //先算总价
+        double totalMoney = 0;
+
         //设置其中的参数
         //商品列表
-        List<Goods> goodsList = new ArrayList<>();
+        List<CheckOrderGood> goodsList = new ArrayList<>();
         for (Cart cart : cartList) {
-            Goods goods = goodsMapper.selectByPrimaryKey(cart.getGoodsId());
+            CheckOrderGood goods = goodsMapper.selectByGoodsSn(cart.getGoodsSn());
+            goods.setPicUrl(myprefix + goods.getPicUrl());
+            goods.setProductId(cart.getProductId().toString());
+            goods.setNumber(cart.getNumber());
+            GoodsProduct goodsProduct = goodsProductMapper.selectByPrimaryKey(cart.getProductId());
+            goods.setSpecifications(goodsProduct.getSpecifications());
+            totalMoney = totalMoney + goods.getPrice() * cart.getNumber();
             goodsList.add(goods);
         }
         wxOrderCheckoutBean.setCheckedGoodsList(goodsList);
 
         //优惠券不知道怎设置
         wxOrderCheckoutBean.setCouponId(couponId);
-        if (coupon != null){
+        if (coupon != null) {
             wxOrderCheckoutBean.setCouponId(couponId);
             wxOrderCheckoutBean.setCouponPrice(coupon.getDiscount().doubleValue());
+        }else{
+            wxOrderCheckoutBean.setCouponId(0);
+            wxOrderCheckoutBean.setCouponPrice(0);
         }
 
         //团购设置
         wxOrderCheckoutBean.setGrouponRulesId(grouponRulesId);
-        if (grouponRules != null){
+        if (grouponRules != null) {
             wxOrderCheckoutBean.setGrouponPrice(grouponRules.getDiscount());
+        }else{
+            wxOrderCheckoutBean.setGrouponPrice(BigDecimal.valueOf(0));
         }
 
         //地址设置
         wxOrderCheckoutBean.setAddressId(addressId);
-        if (address != null){
+        if (address != null) {
             wxOrderCheckoutBean.setCheckedAddress(address);
         }
 
@@ -255,16 +277,17 @@ public class WxOrderServiceImpl implements WxOrderService {
         double freightMin = Double.parseDouble(systemMapper.selectKey("cskaoyan_mall_express_freight_min"));
         double freight_value = Double.parseDouble(systemMapper.selectKey("cskaoyan_mall_express_freight_value"));
 
-        //先算总价
-        double totalMoney = 0;
+
         for (Cart cart : cartList) {
             int number = cart.getNumber();
             double goodPrice = cart.getPrice().doubleValue();
-            totalMoney = totalMoney + number*goodPrice;
+            totalMoney = totalMoney + number * goodPrice;
         }
         wxOrderCheckoutBean.setOrderTotalPrice(totalMoney);
+        wxOrderCheckoutBean.setActualPrice(totalMoney);
+        wxOrderCheckoutBean.setGoodsTotalPrice(BigDecimal.valueOf(totalMoney));
 
-        if (totalMoney < freightMin){
+        if (totalMoney < freightMin) {
             //订单价格小于最低运费限制
             wxOrderCheckoutBean.setFreightPrice(freight_value);
         }
@@ -277,5 +300,76 @@ public class WxOrderServiceImpl implements WxOrderService {
         OrderGoods orderGoods = orderGoodsMapper.selectOrderGoodsByOrderIdAndGoodsId(orderId, goodsId);
         orderGoods.setPicUrl(myprefix + orderGoods.getPicUrl());
         return orderGoods;
+    }
+
+    @Override
+    public void submitOrder(int userId, String addressId, Object message) {
+        int addressIdnum = Integer.parseInt(addressId);
+        WxOrderCheckoutBean wxOrderCheckoutBean = checkOrder(userId, 0, addressIdnum, 0, 0);
+        //删除选中的购物车
+        cartMapper.deleteUserAllCheckedCart(userId);
+        Address address = wxOrderCheckoutBean.getCheckedAddress();
+
+
+        Order order = new Order();
+        order.setUserId(userId);
+        order.setActualPrice(BigDecimal.valueOf(wxOrderCheckoutBean.getActualPrice()));
+        order.setOrderSn(getRandom());
+        order.setOrderStatus(101);
+        order.setConsignee(address.getName());
+        order.setMobile(address.getMobile());
+        order.setGoodsPrice(wxOrderCheckoutBean.getGoodsTotalPrice());
+        order.setGrouponPrice(wxOrderCheckoutBean.getGrouponPrice());
+
+        //地址
+        String province = regionMapper.selectAddressByCode(address.getProvinceId());
+        String city = regionMapper.selectAddressByCode(address.getCityId());
+        String area = regionMapper.selectAddressByCode(address.getAreaId());
+        order.setAddress(province + " " + city + " " + area);
+
+
+        if (message != null){
+            order.setMessage(message.toString());
+        }
+
+        order.setGoodsPrice(wxOrderCheckoutBean.getGoodsTotalPrice());
+        order.setFreightPrice(BigDecimal.valueOf(wxOrderCheckoutBean.getFreightPrice()));
+        order.setCouponPrice(BigDecimal.valueOf(wxOrderCheckoutBean.getCouponPrice()));
+        double orderPrice = wxOrderCheckoutBean.getGoodsTotalPrice().doubleValue() + wxOrderCheckoutBean.getFreightPrice() - wxOrderCheckoutBean.getCouponPrice();
+        order.setOrderPrice(BigDecimal.valueOf(orderPrice));
+        //用户积分减免  ????
+        order.setIntegralPrice(BigDecimal.valueOf(0));
+        order.setGoodsPrice(wxOrderCheckoutBean.getGrouponPrice());
+        order.setActualPrice(BigDecimal.valueOf(wxOrderCheckoutBean.getActualPrice()));
+
+        //orderPrice订单费用， = goods_price + freight_price - coupon_price
+        List<CheckOrderGood> list = wxOrderCheckoutBean.getCheckedGoodsList();
+        order.setComments((short) list.size());
+        order.setAddTime(new Date());
+
+        orderMapper.insertSelective(order);
+        order = orderMapper.selectByPrimaryKey(order.getOrderId());
+
+        for (CheckOrderGood checkOrderGood : list) {
+            OrderGoods orderGoods = new OrderGoods();
+            orderGoods.setAddTime(new Date());
+            orderGoods.setChecked(true);
+            orderGoods.setGoodsId(Integer.parseInt(checkOrderGood.getGoodsId()));
+            orderGoods.setSpecifications(checkOrderGood.getSpecifications());
+            orderGoods.setPicUrl(checkOrderGood.getPicUrl());
+            orderGoods.setGoodsSn(checkOrderGood.getGoodsSn());
+            orderGoods.setPrice(BigDecimal.valueOf(checkOrderGood.getPrice()));
+            orderGoods.setNumber((short) checkOrderGood.getNumber());
+            orderGoodsMapper.insertSelective(orderGoods);
+        }
+
+    }
+
+    private String getRandom(){
+        Date date=new Date();//此时date为当前的时间
+        SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd");
+        String format = dateFormat.format(date);
+        int random = (int) (Math.random() * 1000000);
+        return format + random;
     }
 }

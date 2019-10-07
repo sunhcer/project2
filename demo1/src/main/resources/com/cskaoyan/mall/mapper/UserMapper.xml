@@ -272,4 +272,12 @@
     from cskaoyan_mall_user
     where username = #{username}
   </select>
+
+  <!--selectUserByMobile-->
+  <select id="selectUserByMobile" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_user
+    where mobile = #{mobile}
+  </select>
 </mapper>

@@ -170,4 +170,34 @@
             <if test="name != null">and name like #{name}</if>
         </trim>
     </select>
+    <select id="queryAllWxBrandAmount" resultType="int">
+        select count(id) from cskaoyan_mall_brand
+    </select>
+    <select id="queryWxBrandPage" resultMap="queryWxBrandPageMap">
+        select id,name,`desc`,pic_url,floor_price from cskaoyan_mall_brand
+        limit #{pageSize} offset #{offsetNum}
+    </select>
+    <resultMap id="queryWxBrandPageMap" type="com.cskaoyan.mall.bean.Brand">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="desc" property="desc"/>
+        <result column="pic_url" property="picUrl"/>
+        <result column="floor_price" property="floorPrice"/>
+    </resultMap>
+
+    <select id="queryWxBrandById" resultMap="queryWxBrandByIdMap">
+        select  id,name,`desc`,pic_url,floor_price,sort_order,add_time,update_time,deleted
+        from cskaoyan_mall_brand where id=#{id}
+    </select>
+    <resultMap id="queryWxBrandByIdMap" type="com.cskaoyan.mall.bean.Brand">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="desc" property="desc"/>
+        <result column="pic_url" property="picUrl"/>
+        <result column="floor_price" property="floorPrice"/>
+        <result column="sort_order" property="sortOrder"/>
+        <result column="add_time" property="addTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
 </mapper>

@@ -399,4 +399,14 @@
   <select id="queryWxCouponPage" resultType="com.cskaoyan.mall.bean.CouponArray">
     select id,name,`desc`,tag,discount,min,days from cskaoyan_mall_coupon
   </select>
+
+  <select id="queryCouponLimitByCouponId" resultType="int">
+    select `limit` from cskaoyan_mall_coupon where id=#{couponId}
+  </select>
+  <select id="queryCouponByCouponId" resultType="com.cskaoyan.mall.bean.Coupon">
+    select id,total,status,start_time,end_time,add_time,update_time,deleted from cskaoyan_mall_coupon where id=#{id}
+  </select>
+  <update id="updateWxCouponTotal">
+    update cskaoyan_mall_coupon set total=#{restTotal} where id=#{id}
+  </update>
 </mapper>
