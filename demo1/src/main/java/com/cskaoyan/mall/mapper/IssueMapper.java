@@ -21,4 +21,6 @@ public interface IssueMapper {
     List<Issue> selectByCondition(OrderPage orderPage);
 
     void insertIssue(Issue issue);
+
+    List<Issue> selectAllIssues();
 }

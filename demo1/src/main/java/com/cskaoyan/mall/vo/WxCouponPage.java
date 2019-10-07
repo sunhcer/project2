@@ -1,17 +1,24 @@
 package com.cskaoyan.mall.vo;
+import com.cskaoyan.mall.bean.CouponArray;
 
+import java.util.List;
+import com.cskaoyan.mall.bean.CouponArray;
+
+import java.util.List;
 public class WxCouponPage {
     int status;
     int page;
     int size;
     String code;
+    List<CouponArray> data;
+    int count;
 
-    public String getCode() {
-        return code;
+    public WxCouponPage() {
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public WxCouponPage(List<CouponArray> data, int count) {
+        this.data = data;
+        this.count = count;
     }
 
     public int getStatus() {
@@ -36,5 +43,29 @@ public class WxCouponPage {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public List<CouponArray> getData() {
+        return data;
+    }
+
+    public void setData(List<CouponArray> data) {
+        this.data = data;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

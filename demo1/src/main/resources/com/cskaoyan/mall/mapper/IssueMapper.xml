@@ -111,6 +111,11 @@
         from cskaoyan_mall_issue where deleted = 0
         <if test="question != null">and `question` like #{question}</if>
     </select>
+    <select id="selectAllIssues" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_issue where deleted = 0
+    </select>
 
     <!--insertIssue-->
     <insert id="insertIssue" parameterType="com.cskaoyan.mall.bean.Issue">

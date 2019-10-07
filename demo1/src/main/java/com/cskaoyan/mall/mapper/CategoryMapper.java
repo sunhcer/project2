@@ -25,4 +25,8 @@ public interface CategoryMapper {
     List<Category> findAllCateGoriesByLevel(String level);
 
     void deleteById(Integer id);
+
+    List<Category> findByParentId(Integer pid);
+
+    List<Category> selectAllCategory();
 }

@@ -30,7 +30,7 @@
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_region
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id}
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_region
@@ -110,9 +110,8 @@
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_region
-        where pid = #{id,jdbcType=INTEGER}
+        where pid = #{id}
     </select>
-
     <!--寻找所有的省 及其子信息-->
     <!--<select id="selectAllProvince" resultMap="BaseResultMap">
       select
@@ -128,8 +127,15 @@
     from cskaoyan_mall_region p
     left join cskaoyan_mall_region c on p.id = c.pid
     left join cskaoyan_mall_region a on c.id = a.pid
-    where p.type = 1
+    where p.type=1
   </select>
+
+<select id="selectAllProvince2" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_region
+    where pid=#{pid}
+</select>
 
     <!--根据type寻找-->
 </mapper>

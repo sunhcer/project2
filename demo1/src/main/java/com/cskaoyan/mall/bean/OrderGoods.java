@@ -1,5 +1,7 @@
 package com.cskaoyan.mall.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -20,17 +22,27 @@ public class OrderGoods {
 
     private BigDecimal price;
 
-    private String specifications;
+    private String[] specifications;
 
     private String picUrl;
 
     private Integer comment;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addTime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     private Boolean deleted;
+
+    private boolean checked;
+
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 
     public Integer getId() {
         return id;
@@ -96,12 +108,12 @@ public class OrderGoods {
         this.price = price;
     }
 
-    public String getSpecifications() {
+    public String[] getSpecifications() {
         return specifications;
     }
 
-    public void setSpecifications(String specifications) {
-        this.specifications = specifications == null ? null : specifications.trim();
+    public void setSpecifications(String[] specifications) {
+        this.specifications = specifications;
     }
 
     public String getPicUrl() {

@@ -1,5 +1,7 @@
 package com.cskaoyan.mall.vo;
 
+import java.util.List;
+
 /**
  * @Description:
  * @Author: zhou
@@ -7,23 +9,23 @@ package com.cskaoyan.mall.vo;
  * @Time 15:45
  */
 public class WxOrderVo {
-    WxOrderDetailVo data;
-    int count;
+    List<WxOrderDetailVo> data;
+    long count;
     int totalPages;
 
-    public WxOrderDetailVo getData() {
+    public List<WxOrderDetailVo> getData() {
         return data;
     }
 
-    public void setData(WxOrderDetailVo data) {
+    public void setData(List<WxOrderDetailVo> data) {
         this.data = data;
     }
 
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(long count) {
         this.count = count;
     }
 

@@ -39,6 +39,7 @@ public interface CouponMapper {
 
     List<Coupon> findAllCoupon();
 
+
     List<Coupon> queryMyCouponList( @Param("status")int status,@Param("id")int id);
 
     Coupon queryExchangeCode(@Param("code") String code);
@@ -48,5 +49,6 @@ public interface CouponMapper {
     int insertUserCoupon(@Param("userId")int userId,@Param("couponId")int couponId,
                          @Param("status")int status,@Param("startTime")Date startTime);
 
+    List<CouponArray> queryWxCouponPage();
 
 }
