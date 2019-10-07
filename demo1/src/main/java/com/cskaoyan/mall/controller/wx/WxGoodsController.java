@@ -1,7 +1,11 @@
 package com.cskaoyan.mall.controller.wx;
 
+import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.service.admin.ProductService;
+import com.cskaoyan.mall.service.wx.WxGoodService;
 import com.cskaoyan.mall.vo.BaseRespVo;
+import com.cskaoyan.mall.vo.HotListInfo;
+import com.cskaoyan.mall.vo.HotListVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,21 +25,31 @@ public class WxGoodsController {
     @Autowired
     ProductService productService;
 
+    @Autowired
+    WxGoodService wxGoodService;
+
     @RequestMapping("wx/goods/count")
     public BaseRespVo countGoods() {
-        Integer amountOfGoods = productService.findAmountOfGoods();
+        /*Integer amountOfGoods = productService.findAmountOfGoods();
         Map<String, Integer> data=new HashMap<String, Integer>();
         data.put("goodsCount",amountOfGoods);
-        return BaseRespVo.success(data);
+        return BaseRespVo.success(data);*/
+
+        Integer goodsCount = productService.findAmountOfGoods();
+        return BaseRespVo.success(goodsCount);
     }
 
     @RequestMapping("/wx/goods/list")
-    public BaseRespVo goodsList() {
-
-
-
-
-        return BaseRespVo.success(null);
+    public BaseRespVo goodsList(HotListInfo hotListInfo) {
+        HotListVo hotListVo;
+        if(hotListInfo.getKeyword() != null) {
+            hotListVo = wxGoodService.keywordListInfo(hotListInfo);
+        } else if(hotListInfo.isHot()) {
+            hotListVo = wxGoodService.hotListInfo(hotListInfo);
+        } else {
+            hotListVo = wxGoodService.firstListInfo(hotListInfo);
+        }
+        return BaseRespVo.success(hotListVo);
     }
 
 
