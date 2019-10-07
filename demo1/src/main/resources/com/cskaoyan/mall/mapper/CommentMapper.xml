@@ -63,7 +63,7 @@
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_comment
-        where deleted != 1 and value_id =#{goodsId}
+        where deleted != 1 and value_id =#{goodsId} order by add_time desc
     </select>
     <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Comment">
         insert into cskaoyan_mall_comment
