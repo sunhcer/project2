@@ -115,4 +115,16 @@ public class WxCartServiceImpl implements WxCartService {
             cartMapper.deleteByProductId(productIds[i]);
         }
     }
+
+    @Override
+    public int getCartId() {
+        int cartId = cartMapper.selectLastAddCartId();
+        return cartId;
+    }
+
+    @Override
+    public Cart selectCartById(int cartId) {
+        Cart cart = cartMapper.selectByPrimaryKey(cartId);
+        return cart;
+    }
 }
