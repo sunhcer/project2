@@ -121,4 +121,23 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+
+
+  <resultMap id="BaseWxFootPrintList" type="com.cskaoyan.mall.vo.WxFoot">
+    <id column="brief"  property="brief" />
+    <result column="pic_url"  property="picUrl" />
+    <result column="add_time"  property="addTime" />
+    <result column="goods_id" property="goodsId" />
+    <result column="name"  property="name" />
+    <result column="id"  property="id" />
+    <result column="retail_price"  property="retailPrice" />
+  </resultMap>
+
+  <select id="queryMyFoot" resultMap="BaseWxFootPrintList">
+    SELECT g.brief,g.pic_url,f.add_time,f.goods_id,g.`name`,f.id,g.retail_price
+    FROM cskaoyan_mall_footprint f
+    LEFT JOIN cskaoyan_mall_goods g on f.goods_id = g.id
+    WHERE f.user_id = #{userId}
+  </select>
 </mapper>

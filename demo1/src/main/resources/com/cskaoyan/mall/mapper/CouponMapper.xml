@@ -53,6 +53,14 @@
       #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{addTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
+
+
+  <insert id="insertUserCoupon" >
+    insert into cskaoyan_mall_coupon_user (user_id, coupon_id,status, start_time)
+    values (#{userId},#{couponId},#{status},#{startTime})
+  </insert>
+
+
   <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Coupon">
     insert into cskaoyan_mall_coupon
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -363,4 +371,29 @@
     select id,user_id,coupon_id,status,used_time,start_time,end_time,order_id,
     add_time,update_time,deleted from cskaoyan_mall_coupon_user where coupon_id=#{couponId} and status=#{status}
   </select>
+
+
+<!--核心服务 查找我的优惠券-->
+<select id="queryMyCouponList" resultMap="BaseResultMap">
+        select c.id,c.`name`,c.`desc`,c.tag,c.min,c.discount,c.start_time,c.end_time
+        FROM cskaoyan_mall_coupon c
+        LEFT JOIN cskaoyan_mall_coupon_user cu on cu.coupon_id = c.id
+        where cu.`status`=#{status} and cu.user_id = #{id}
+</select>
+
+  <!--查询兑换码-->
+  <select id="queryExchangeCode" resultMap="BaseResultMap">
+        SELECT  id, `name`, `desc`, tag, total, discount, `min`, `limit`, `type`,
+        `status`, goods_type, goods_value,`code`, time_type, days, start_time, end_time, add_time, update_time, deleted
+        from cskaoyan_mall_coupon  where `code` = #{code}
+</select>
+
+
+  <!--查找这个code 优惠券 user所拥有的数目-->
+  <select id="queryThisCodeCouponNum" resultType="int">
+    SELECT count(*)
+    from cskaoyan_mall_coupon_user
+    where coupon_id = #{id} AND user_id = #{userId}
+  </select>
+
 </mapper>
