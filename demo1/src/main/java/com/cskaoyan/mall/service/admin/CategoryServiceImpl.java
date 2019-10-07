@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.Category;
 import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -17,6 +18,9 @@ import java.util.List;
  */
 @Service
 public class CategoryServiceImpl implements CategoryService {
+    @Value("myfile.img-prefix")
+    String imgPrefix;
+
     @Autowired
     CategoryMapper categoryMapper;
 
@@ -28,6 +32,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 仅仅获取两个参数 label和 value  获取L1的
+     *
      * @return
      */
     @Override
@@ -53,6 +58,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     /**
      * 删除category 并且删除其子类 (其实只是将其被删除状态置为1)
+     *
      * @param category
      */
     @Override
@@ -60,11 +66,60 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categoryList = category.getChildren();
 
         categoryMapper.deleteById(category.getId());
-        if (categoryList != null){
+        if (categoryList != null) {
             for (Category category1 : categoryList) {
                 //将其子类删除状态全部置为1
                 categoryMapper.deleteById(category1.getId());
             }
         }
+    }
+
+    /**
+     * 根据id查找对应category
+     *
+     * @param Id id
+     */
+    @Override
+    public Category findCategoryById(Integer Id) {
+        Category category = categoryMapper.selectByPrimaryKey(Id);
+        insertUrlToCategory(category);
+        return category;
+    }
+
+    /**
+     * 根据pid查找对应category
+     *
+     * @param Pid pid
+     */
+    @Override
+    public List<Category> findCategoryByPid(Integer Pid) {
+        List<Category> categoryList = categoryMapper.findByParentId(Pid);
+        return insertUrlToCategories(categoryList);
+    }
+
+    private List<Category> insertUrlToCategories(List<Category> categoryList) {
+        for (Category category : categoryList) {
+            insertUrlToCategory(category);
+        }
+        return categoryList;
+    }
+
+    private void insertUrlToCategory(Category category) {
+        if (!category.getPicUrl().startsWith("http"))
+            category.setPicUrl(imgPrefix + category.getPicUrl());
+        if (!category.getIconUrl().startsWith("http"))
+            category.setIconUrl(imgPrefix + category.getIconUrl());
+    }
+
+    /**
+     * 根据level查找category 参数目前只能为“L1”/“L2”
+     *
+     * @param level
+     * @return
+     */
+    @Override
+    public List<Category> findAllCateGoriesByLevel(String level) {
+        List<Category> categoryList = categoryMapper.findAllCateGoriesByLevel(level);
+        return insertUrlToCategories(categoryList);
     }
 }

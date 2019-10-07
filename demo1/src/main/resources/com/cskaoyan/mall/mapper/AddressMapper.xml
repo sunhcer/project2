@@ -19,28 +19,29 @@
     id, name, user_id, province_id, city_id, area_id, address, mobile, is_default, add_time,
     update_time, deleted
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from cskaoyan_mall_address
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id}
+
   </select>
+  <!--删除地址-->
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from cskaoyan_mall_address
-    where id = #{id,jdbcType=INTEGER}
+    where id= #{id}
   </delete>
+  <!--插入地址-->
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.Address">
-    insert into cskaoyan_mall_address (id, name, user_id,
-      province_id, city_id, area_id,
-      address, mobile, is_default,
-      add_time, update_time, deleted
-      )
-    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
-      #{provinceId,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{areaId,jdbcType=INTEGER},
-      #{address,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{isDefault,jdbcType=BIT},
-      #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT}
+    insert into cskaoyan_mall_address ( id, name, user_id,province_id, city_id, area_id,address, mobile, is_default, add_time, update_time, deleted)
+    values (#{id}, #{name}, #{userId},
+      #{provinceId}, #{cityId}, #{areaId},
+      #{address}, #{mobile}, #{isDefault},
+      #{addTime}, #{updateTime}, #{deleted}
       )
   </insert>
+
   <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Address">
     insert into cskaoyan_mall_address
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -300,4 +301,11 @@
   <select id="selectArea" resultType="string">
         select name as area from cskaoyan_mall_region where `code` =  #{area_id}
     </select>
+  <!--显示所有地址-->
+  <select id="queryAllAdd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_address
+  </select>
+
 </mapper>

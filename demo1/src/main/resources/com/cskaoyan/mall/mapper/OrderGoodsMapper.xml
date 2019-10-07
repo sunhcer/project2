@@ -211,4 +211,12 @@
     from cskaoyan_mall_order_goods
     where goods_id = #{goodsId}
   </select>
+
+  <!--selectOrderGoodsByOrderId-->
+  <select id="selectOrderGoodsByOrderId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_order_goods
+    where order_id = #{orderId}
+  </select>
 </mapper>

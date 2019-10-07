@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Service
 public class ProductServiceImpl implements ProductService {
-    @Value("myfile.img-prefix")
+    @Value("${myfile.img-prefix}")
     String imgPrefix;
 
     @Autowired
@@ -136,8 +136,14 @@ public class ProductServiceImpl implements ProductService {
             comments = commentMapper.findAllComments();
         }
         for (Comment comment : comments) {
-            if (comment.getPicUrls()!=null)
-                comment.setPicUrls(imgPrefix+comment.getContent());
+            if (comment.getPicUrls()!=null){
+                String[] picUrls = comment.getPicUrls();
+                for (int i = 0; i < picUrls.length; i++) {
+                    picUrls[i] = imgPrefix + picUrls[i];
+                }
+                comment.setPicUrls(picUrls);
+            }
+
         }
         PageInfo<Comment> commentsPageInfo = new PageInfo<>(comments);
         long total = commentsPageInfo.getTotal();
@@ -156,8 +162,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Comment findCommentById(Integer commentId) {
         Comment comment = commentMapper.selectByPrimaryKey(commentId);
-        if(comment.getPicUrls()!=null)
-            comment.setPicUrls(imgPrefix+comment.getContent());
+        if(comment.getPicUrls()!=null){
+            String[] picUrls = comment.getPicUrls();
+            for (int i = 0; i < picUrls.length; i++) {
+                picUrls[i] = imgPrefix + picUrls[i];
+            }
+            comment.setPicUrls(picUrls);
+        }
         return comment;
     }
 
@@ -169,8 +180,13 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public int updateComment(Comment comment) {
-        if (comment.getPicUrls() != null)
-            comment.setPicUrls(comment.getPicUrls().replace(imgPrefix, ""));
+        if (comment.getPicUrls() != null){
+            String[] picUrls = comment.getPicUrls();
+            for (int i = 0; i < picUrls.length; i++) {
+                picUrls[i] = picUrls[i].replace(imgPrefix, "");
+            }
+            comment.setPicUrls(picUrls);
+        }
         return commentMapper.updateByPrimaryKeySelective(comment);
     }
 

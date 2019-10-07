@@ -31,12 +31,32 @@ public class User {
 
     private Byte status;
 
+    private String avatarUrl;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
     private Boolean deleted;
+
+    private String code;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
 
     public Integer getId() {
         return id;
