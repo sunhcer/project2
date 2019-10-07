@@ -138,12 +138,6 @@ public class WxIndexController {
         return BaseRespVo.success(dataForVo);
     }
 
-
-    @RequestMapping("/wx/cart/goodscount")
-    public BaseRespVo goodsCount() {
-
-        return BaseRespVo.success(0);
-    }
     @RequestMapping("wx/goods/related")
     public BaseRespVo goodsRelated() {
         Goods goodsList = productService.findGoodsById(3);
