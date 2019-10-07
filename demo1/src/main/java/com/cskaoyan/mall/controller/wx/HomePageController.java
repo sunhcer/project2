@@ -85,7 +85,8 @@ public class HomePageController {
            baseRespVo=wxHomePageService.wxTopicCommentList(wxCommentList);
            return baseRespVo;
         }else if (type==0){
-            return null;
+            baseRespVo=wxHomePageService.wxGoodsCommentList(wxCommentList);
+            return baseRespVo;
         }else{
             return null;
         }

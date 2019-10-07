@@ -30,4 +30,6 @@ public interface WxHomePageService {
     BaseRespVo goodsWxCategory(int id);
 
     BaseRespVo goodsWxList(int categoryId, int page, int size);
+
+    BaseRespVo wxGoodsCommentList(WxCommentList wxCommentList);
 }

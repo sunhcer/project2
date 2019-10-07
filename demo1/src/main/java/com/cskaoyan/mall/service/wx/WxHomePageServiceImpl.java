@@ -206,6 +206,21 @@ public class WxHomePageServiceImpl implements WxHomePageService {
     }
 
     @Override
+    public BaseRespVo wxGoodsCommentList(WxCommentList wxCommentList) {
+        int pagesize=wxCommentList.getSize();
+        int currentPage=wxCommentList.getPage();
+        int offsetNum=(currentPage-1)*pagesize;
+        int typeId=wxCommentList.getType();
+        int valueId=wxCommentList.getValueId();
+        //查询总数量
+        int count=commentMapper.queryWxTopicCommentAmount(typeId,valueId);
+        List<WxUserComment> list=commentMapper.querywxTopicCommentList(typeId,valueId,pagesize,offsetNum);
+        WxUserCommentPage<WxUserComment> wxUserCommentPage = new WxUserCommentPage<>(list, count, currentPage);
+        BaseRespVo success = BaseRespVo.success(wxUserCommentPage);
+        return success;
+    }
+
+    @Override
     public BaseRespVo wxCommentPost(WxCommentArray wxCommentArray,String username) {
         //返回带id,hasPicture,addTime,updateTime,userId的评论
         //前台有空评论校验,这里不做判空
