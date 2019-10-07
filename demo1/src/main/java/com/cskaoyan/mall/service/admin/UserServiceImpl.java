@@ -6,8 +6,10 @@ import com.cskaoyan.mall.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,7 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     FeedbackMapper feedbackMapper;
-
+    @Value("${user.default-avatar}")
+    String defaultAvatar;
 
 
 //    username:
@@ -166,4 +169,26 @@ public class UserServiceImpl implements UserService {
         return  userFeedbackInfo;
     }
 
+    //selectUserInfoByUsername
+
+
+    @Override
+    public User selectUserInfoByUsername(String username) {
+        return userMapper.selectUserByUsername(username);
+    }
+
+    @Override
+    public boolean registertUser(User user) {
+        User userExists = userMapper.selectUserByUsername(user.getUsername());
+        if (userExists != null){
+            //说明账号存在  返回注册失败
+            return false;
+        }
+        user.setAddTime(new Date());
+        user.setAvatarUrl(defaultAvatar);
+        user.setNickname(user.getUsername());
+        userMapper.insertSelective(user);
+
+        return true;        //返回注册成功
+    }
 }

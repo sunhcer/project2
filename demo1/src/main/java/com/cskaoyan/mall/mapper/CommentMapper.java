@@ -31,4 +31,7 @@ public interface CommentMapper {
     void insertwxCommentPost(@Param("wxCommentArray") WxCommentArray wxCommentArray,@Param("id") int id);
 
     List<WxCommentArray> querywxTopicPicComment(@Param("valueId") int valueId,@Param("type") int type);
+
+    List<Comment> findCommentsByGoodsId(Integer goodsId);
+
 }

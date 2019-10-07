@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.bean;
 
+import com.cskaoyan.mall.vo.HandleOption;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.math.BigDecimal;
@@ -45,20 +46,31 @@ public class Order {
     private String shipSn;
 
     private String shipChannel;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date shipTime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date confirmTime;
 
     private Short comments;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 
     private Date endTime;
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addTime;
 
     private Date updateTime;
 
     private Boolean deleted;
+
+    HandleOption handleOption;
+
+    public HandleOption getHandleOption() {
+        return handleOption;
+    }
+
+    public void setHandleOption(HandleOption handleOption) {
+        this.handleOption = handleOption;
+    }
 
     public Integer getId() {
         return id;

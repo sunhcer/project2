@@ -29,4 +29,14 @@ public class WxGoodsController {
         return BaseRespVo.success(data);
     }
 
+    @RequestMapping("/wx/goods/list")
+    public BaseRespVo goodsList() {
+
+
+
+
+        return BaseRespVo.success(null);
+    }
+
+
 }

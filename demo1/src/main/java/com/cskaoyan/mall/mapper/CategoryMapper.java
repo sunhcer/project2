@@ -32,4 +32,7 @@ public interface CategoryMapper {
     Category queryWxParentCategory(@Param("pid") int pid);
 
     List<Category> queryWxBrotherCategory(@Param("pid") int pid,@Param("id") int id);
+
+    List<Category> findByParentId(Integer pid);
+
 }

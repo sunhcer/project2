@@ -194,7 +194,7 @@
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_category
-        where level = #{level} and deleted = 0
+        where `level` = #{level} and deleted = 0
     </select>
 
     <select id="findByParentId" parameterType="java.lang.Integer" resultMap="BaseResultMap">

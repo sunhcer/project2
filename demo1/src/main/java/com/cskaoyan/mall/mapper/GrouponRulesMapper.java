@@ -27,4 +27,7 @@ public interface GrouponRulesMapper {
     int queryGrouponRulesAmount();
 
     List<WxGrouponRuleData> queryGrouponRulesDataList(@Param("pagesize") int size,@Param("offsetNum") int offsetNum);
+
+    List<GrouponRules> findGrouponRuleListByGoodsId(int goodsId);
+
 }
