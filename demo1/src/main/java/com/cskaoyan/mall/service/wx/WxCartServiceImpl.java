@@ -12,6 +12,7 @@ import com.cskaoyan.mall.vo.CartListInfo;
 import com.cskaoyan.mall.vo.CartTotal;
 import com.cskaoyan.mall.vo.CheckedStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -19,6 +20,9 @@ import java.util.List;
 
 @Service
 public class WxCartServiceImpl implements WxCartService {
+
+    @Value("${myfile.img-prefix}")
+    String imgPrefix;
 
     @Autowired
     CartMapper cartMapper;
@@ -49,7 +53,7 @@ public class WxCartServiceImpl implements WxCartService {
         //设置price
         cart.setPrice(goodsProduct.getPrice());
         //设置pic_url
-        cart.setPicUrl(goods.getPicUrl());
+        cart.setPicUrl(imgPrefix + goods.getPicUrl());
         //设置specifications
         cart.setSpecifications(goodsProduct.getSpecifications());
         //设置add,update time
@@ -71,6 +75,9 @@ public class WxCartServiceImpl implements WxCartService {
         List<Cart> carts =  cartMapper.selectCartAll(userId);
         List<Cart> checkedCarts =  cartMapper.selectCartAllChecked(userId);
 
+        for (Cart cart : carts) {
+            cart.setPicUrl(imgPrefix + cart.getPicUrl());
+        }
         cartListInfo.setCartList(carts);
 
         double checkedGoodsAmount = 0;

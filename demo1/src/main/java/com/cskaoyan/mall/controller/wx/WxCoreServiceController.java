@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.controller.wx;
 
+import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.service.wx.CouponService;
 import com.cskaoyan.mall.service.wx.WxCollectService;
 import com.cskaoyan.mall.service.wx.WxFootPrintService;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class WxCoreServiceController {
@@ -102,14 +104,8 @@ public class WxCoreServiceController {
 
     @RequestMapping("/wx/coupon/selectlist")
     public BaseRespVo wxCouponSelectList(int cartId, int grouponRulesId) {
-       /* data: {
-            couponList: [],
-            cartId: 0,
-                    couponId: 0,
-                    grouponLinkId: 0,
-                    scrollTop: 0
-        },*/
-       return BaseRespVo.success(null);
+       List<Coupon> coupons = couponService.selectCoupons();
+       return BaseRespVo.success(coupons);
     }
 
 }

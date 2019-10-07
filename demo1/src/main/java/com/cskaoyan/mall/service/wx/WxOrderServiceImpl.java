@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
+import com.cskaoyan.mall.service.admin.ProductServiceImpl;
 import com.cskaoyan.mall.util.TransferBig2Double;
 import com.cskaoyan.mall.util.TransferCodeToText;
 import com.cskaoyan.mall.vo.*;
@@ -212,7 +213,6 @@ public class WxOrderServiceImpl implements WxOrderService {
             }
             comment.setPicUrls(picUrls);
         }
-
         //将订单商品表中的comment改成10
         orderGoodsMapper.updateComment(comment.getOrderGoodsId(), 10);
         //并且订单表中的comments字段-1
@@ -225,7 +225,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     @Override
     public WxOrderCheckoutBean checkOrder(int userId, Integer cartId, int addressId, int couponId, int grouponRulesId) {
         List<Cart> cartList = null;
-        if (cartId == null) {
+        if (cartId == null || cartId == 0) {
             cartList = cartMapper.selectUserAllCheckedCart(userId);
         }else{
             cartList = new ArrayList<>();
@@ -283,12 +283,6 @@ public class WxOrderServiceImpl implements WxOrderService {
         double freightMin = Double.parseDouble(systemMapper.selectKey("cskaoyan_mall_express_freight_min"));
         double freight_value = Double.parseDouble(systemMapper.selectKey("cskaoyan_mall_express_freight_value"));
 
-
-        for (Cart cart : cartList) {
-            int number = cart.getNumber();
-            double goodPrice = cart.getPrice().doubleValue();
-            totalMoney = totalMoney + number * goodPrice;
-        }
         wxOrderCheckoutBean.setOrderTotalPrice(totalMoney);
         wxOrderCheckoutBean.setActualPrice(totalMoney);
         wxOrderCheckoutBean.setGoodsTotalPrice(TransferBig2Double.double2Big(totalMoney));
@@ -311,13 +305,22 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public int submitOrder(int userId, String addressId, Object message) {
+    public int submitOrder(int userId, String addressId, Object message, Object cartId) {
         int addressIdnum = Integer.parseInt(addressId);
-        WxOrderCheckoutBean wxOrderCheckoutBean = checkOrder(userId, 0, addressIdnum, 0, 0);
-        //删除选中的购物车
-        cartMapper.deleteUserAllCheckedCart(userId);
-        Address address = wxOrderCheckoutBean.getCheckedAddress();
+        WxOrderCheckoutBean wxOrderCheckoutBean;
+        if (cartId == null) {
+             wxOrderCheckoutBean = checkOrder(userId, 0, addressIdnum, 0, 0);
+            //删除选中的购物车
+            cartMapper.deleteUserAllCheckedCart(userId);
+        }else{
+            int parseInt = Integer.parseInt(cartId.toString());
+            wxOrderCheckoutBean = checkOrder(userId, parseInt, addressIdnum, 0, 0);
+            //删除选中的
+            int cartIdNum = Integer.parseInt(cartId.toString());
+            cartMapper.deleteByPrimaryKey(cartIdNum);
+        }
 
+        Address address = wxOrderCheckoutBean.getCheckedAddress();
 
         Order order = new Order();
         order.setUserId(userId);
@@ -377,6 +380,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         return orderId;
     }
 
+
     private String getRandom(){
         Date date=new Date();//此时date为当前的时间
         SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd");
@@ -384,4 +388,6 @@ public class WxOrderServiceImpl implements WxOrderService {
         int random = (int) (Math.random() * 1000000);
         return format + random;
     }
+
+
 }
