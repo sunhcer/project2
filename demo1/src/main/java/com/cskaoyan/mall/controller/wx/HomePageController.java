@@ -117,10 +117,10 @@ public class HomePageController {
     //这里本来打算过滤未上架的商品,但是有一种情况是,商品未上架,但是上了广告,所以没有过滤
     //同时过滤掉兄弟分类
     //显示当前二级分类下的商品
-    @RequestMapping("/goods/list")
-    public BaseRespVo goodsList(int categoryId,int page,int size){
-        BaseRespVo baseRespVo=wxHomePageService.goodsWxList(categoryId,page,size);
-        return baseRespVo;
-    }
+//    @RequestMapping("/goods/list")
+//    public BaseRespVo goodsList(int categoryId,int page,int size){
+//        BaseRespVo baseRespVo=wxHomePageService.goodsWxList(categoryId,page,size);
+//        return baseRespVo;
+//    }
 
 }

@@ -38,4 +38,10 @@ public interface GoodsMapper {
     int queryWxCategoryGoodsCount(@Param("categoryId") int categoryId);
 
     List<Goods> queryWxGoodslist(@Param("categoryId") int categoryId,@Param("offsetNum") int offsetNum,@Param("pageSize") int size);
+
+    int queryWxNewCategoryGoodsCount(@Param("isNew") boolean isNew);
+
+    List<Goods> queryWxNewGoodsList(@Param("isNew") boolean isNew,@Param("order") String order, @Param("sort") String sort,@Param("size") int size,@Param("offsetNum") int offsetNum);
+
+    List<Goods> queryWXCurrentNewGoodsList(@Param("categoryId") int categoryId,@Param("isNew") boolean isNew,@Param("order") String order, @Param("sort") String sort,@Param("size") int size,@Param("offsetNum") int offsetNum);
 }

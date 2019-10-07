@@ -382,4 +382,22 @@
         <result column="counter_price" property="counterPrice"/>
         <result column="retail_price" property="retailPrice"/>
     </resultMap>
+    <select id="queryWxNewCategoryGoodsCount" resultType="int">
+        select count(id)
+        from cskaoyan_mall_goods
+        where is_new=#{isNew}
+    </select>
+
+    <select id="queryWxNewGoodsList" resultMap="queryWxGoodslistMap">
+         select id,name,brief,pic_url,is_new,is_hot,counter_price,retail_price
+        from cskaoyan_mall_goods where is_new=#{isNew}
+        order by ${sort} ${order}
+        limit ${size} offset ${offsetNum}
+    </select>
+    <select id="queryWXCurrentNewGoodsList" resultMap="queryWxGoodslistMap">
+        select id,name,brief,pic_url,is_new,is_hot,counter_price,retail_price
+        from cskaoyan_mall_goods where is_new=#{isNew} and category_id=#{categoryId}
+        order by ${sort} ${order}
+        limit ${size} offset ${offsetNum}
+    </select>
 </mapper>

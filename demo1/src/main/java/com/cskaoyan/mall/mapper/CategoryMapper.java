@@ -35,4 +35,5 @@ public interface CategoryMapper {
 
     List<Category> findByParentId(Integer pid);
 
+    List<Category> queryWxFilterCategoryList();
 }
