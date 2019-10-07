@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.Address;
 import com.cskaoyan.mall.bean.Region;
 import com.cskaoyan.mall.mapper.AddressMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
+import com.cskaoyan.mall.vo.DeleteAddVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +37,15 @@ public class AddressManageServiceImpl implements AddressManageService {
     }
     //编辑时显示地址信息
     @Override
-    public List<Region> queryById(int id) {
-        List<Region> regions = regionMapper.selectAllProvince();
-        return regions;
+    public Address queryById(Integer id) {
+        Address address = addressMapper.queryByID(id);
+        return address;
+
     }
     //删除地址（未完善）
     @Override
-    public void deleteAddressById(Integer id) {
-        addressMapper.deleteByPrimaryKey(id);
+    public void deleteAddressById(DeleteAddVo deleteAddVo) {
+        addressMapper.deleteByPrimaryKey(deleteAddVo.getId());
     }
 
 

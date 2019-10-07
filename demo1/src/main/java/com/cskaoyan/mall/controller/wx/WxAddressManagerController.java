@@ -4,7 +4,9 @@ import com.cskaoyan.mall.bean.Address;
 import com.cskaoyan.mall.bean.Region;
 import com.cskaoyan.mall.service.wx.AddressManageService;
 import com.cskaoyan.mall.vo.BaseRespVo;
+import com.cskaoyan.mall.vo.DeleteAddVo;
 import com.cskaoyan.mall.vo.WxAddressPjVo;
+import com.cskaoyan.mall.vo.WxReturnAddVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,13 +45,15 @@ public class WxAddressManagerController {
      }
      @RequestMapping("wx/address/detail")
     public BaseRespVo detailAddress(Integer id){
-         List<Region> regions = addressManageService.queryById(id);
-         BaseRespVo success = BaseRespVo.success(regions);
+         Address address = addressManageService.queryById(id);
+         WxReturnAddVo wxReturnAddVo = new WxReturnAddVo(address);
+         BaseRespVo success = BaseRespVo.success(wxReturnAddVo);
          return success;
+
      }
      @RequestMapping("wx/address/delete")
-      public BaseRespVo deleteAdd(Integer id){
-         addressManageService.deleteAddressById(id);
+      public BaseRespVo deleteAdd(@RequestBody DeleteAddVo deleteAddVo){
+         addressManageService.deleteAddressById(deleteAddVo);
          return BaseRespVo.success(null);
      }
 }

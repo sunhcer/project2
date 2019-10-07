@@ -187,5 +187,14 @@ public class WxAuthController {
         return BaseRespVo.success(map);
     }
 
+    /**
+     * wx/auth/bindPhone
+     * written by yanhua
+     */
+    @RequestMapping("wx/auth/bindPhone")
+    public BaseRespVo bind(){
+       return  BaseRespVo.fail(502,"系统内部错误");
+
+    }
 
 }
