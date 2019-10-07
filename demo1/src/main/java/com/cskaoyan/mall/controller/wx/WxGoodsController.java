@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.service.admin.KeywordService;
 import com.cskaoyan.mall.service.admin.ProductService;
 import com.cskaoyan.mall.service.wx.WxGoodService;
 import com.cskaoyan.mall.vo.BaseRespVo;
@@ -28,15 +29,18 @@ public class WxGoodsController {
     @Autowired
     WxGoodService wxGoodService;
 
+    @Autowired
+    KeywordService keywordService;
+
     @RequestMapping("wx/goods/count")
     public BaseRespVo countGoods() {
-        /*Integer amountOfGoods = productService.findAmountOfGoods();
+        Integer amountOfGoods = productService.findAmountOfGoods();
         Map<String, Integer> data=new HashMap<String, Integer>();
         data.put("goodsCount",amountOfGoods);
-        return BaseRespVo.success(data);*/
+        return BaseRespVo.success(data);
 
-        Integer goodsCount = productService.findAmountOfGoods();
-        return BaseRespVo.success(goodsCount);
+//        Integer goodsCount = productService.findAmountOfGoods();
+//        return BaseRespVo.success(goodsCount);
     }
 
     @RequestMapping("/wx/goods/list")
@@ -44,6 +48,7 @@ public class WxGoodsController {
         HotListVo hotListVo;
         if(hotListInfo.getKeyword() != null) {
             hotListVo = wxGoodService.keywordListInfo(hotListInfo);
+            keywordService.addHistoryKeywords(hotListInfo.getKeyword());
         } else if(hotListInfo.getIsHot()) {
             hotListVo = wxGoodService.hotListInfo(hotListInfo);
         } else {

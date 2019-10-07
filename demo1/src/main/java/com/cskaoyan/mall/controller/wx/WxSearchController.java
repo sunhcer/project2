@@ -68,4 +68,9 @@ public class WxSearchController {
         List<String> keywords = wxSearchService.searchHelper(keyword);
         return BaseRespVo.success(keywords);
     }
+    @RequestMapping("wx/search/clearhistory")
+    public BaseRespVo clearHistory() {
+        keywordService.deleteHistory();
+        return BaseRespVo.success(null);
+    }
 }

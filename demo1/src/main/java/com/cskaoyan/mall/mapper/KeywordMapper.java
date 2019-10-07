@@ -20,11 +20,10 @@ public interface KeywordMapper {
 
     List<Keyword> selectKeyWordByCondition(OrderPage orderPage);
 
-<<<<<<< HEAD
     List<Keyword> selectKeyWordIsDefault();
 
     List<Keyword> selectKeyWordIsHot();
-=======
+
     List<String> selectKeywordsByKeywordLike(String keyword);
->>>>>>> 6f58a4690ddd3aba486ac4548780ef69900cbbc8
+
 }

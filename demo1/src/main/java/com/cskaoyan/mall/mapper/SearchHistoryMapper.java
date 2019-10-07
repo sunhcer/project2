@@ -22,4 +22,6 @@ public interface SearchHistoryMapper {
     List<SearchHistory> queryAllHistory(UserPage userPage);
 
     List<SearchHistory> getLastHistoryKeywords(@Param("number") Integer number,@Param("userId") Integer userId);
+
+    Integer deleteByUserId(int userId);
 }

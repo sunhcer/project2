@@ -103,6 +103,22 @@ public class KeywordServiceImpl implements KeywordService {
         return keywordMapper.selectKeyWordIsHot();
     }
 
+    @Override
+    public Integer deleteHistory() {
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        return searchHistoryMapper.deleteByUserId(userId);
+    }
+
+    @Override
+    public Integer addHistoryKeywords(String keyword) {
+        SearchHistory searchHistory=new SearchHistory();
+        searchHistory.setId(null);
+        searchHistory.setAddTime(new Date());
+        searchHistory.setUserId(userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName()));
+        searchHistory.setKeyword(keyword);
+        return searchHistoryMapper.insertSelective(searchHistory);
+    }
+
    /* @Override
     public Keyword searchKeyWord(Keyword keyword) {
         keyword.setId(null);
