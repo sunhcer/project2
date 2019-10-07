@@ -6,9 +6,7 @@ import com.cskaoyan.mall.service.admin.CategoryService;
 import com.cskaoyan.mall.service.admin.GrouponService;
 import com.cskaoyan.mall.service.admin.ProductService;
 import com.cskaoyan.mall.vo.BaseRespVo;
-import com.cskaoyan.mall.vo.CatAndBrandVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -86,7 +84,7 @@ public class WxIndexController {
     }
 
     @RequestMapping("wx/catalog/current")
-    public BaseRespVo currentCatalog(@RequestBody String id){
+    public BaseRespVo currentCatalog(String id){
         int currentCategoryId;
         try{
             currentCategoryId = Integer.parseInt(id);
