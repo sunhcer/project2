@@ -50,6 +50,7 @@ public class WxGoodServiceImpl implements WxGoodService {
 
     @Override
     public HotListVo keywordListInfo(HotListInfo hotListInfo) {
+
         int page = hotListInfo.getPage();
         int limit = hotListInfo.getSize();
         String order = hotListInfo.getOrder();
@@ -75,8 +76,33 @@ public class WxGoodServiceImpl implements WxGoodService {
         return hotListVo;
     }
 
+
     @Override
     public HotListVo firstListInfo(HotListInfo hotListInfo) {
-        return null;
+        //找到总数
+        boolean isNew=hotListInfo.getIsNew();
+        long count=(long)goodsMapper.queryWxNewCategoryGoodsCount(isNew);
+        //找到商品分页列表
+        int page=hotListInfo.getPage();
+        int size=hotListInfo.getSize();
+        int offsetNum=(page-1)*size;
+        String order=hotListInfo.getOrder();
+        String sort=hotListInfo.getSort();
+        List<Goods> goodsList =null;
+        //根据categoryId来分发
+        int categoryId=hotListInfo.getCategoryId();
+        if (categoryId==0) {
+            //返回全部分类
+            goodsList = goodsMapper.queryWxNewGoodsList(isNew, order, sort, size, offsetNum);
+        }else{
+            //返回选定分类
+            goodsList=goodsMapper.queryWXCurrentNewGoodsList(categoryId,isNew, order, sort, size, offsetNum);
+        }
+        List<Category> filterCategoryList=categoryMapper.queryWxFilterCategoryList();
+        HotListVo hotListVo = new HotListVo();
+        hotListVo.setCount(count);
+        hotListVo.setGoodsList(goodsList);
+        hotListVo.setFilterCategoryList(filterCategoryList);
+        return hotListVo;
     }
 }

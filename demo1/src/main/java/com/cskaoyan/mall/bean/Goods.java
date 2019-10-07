@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.bean;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 public class Goods {
@@ -45,6 +46,33 @@ public class Goods {
     private Boolean deleted;
 
     private String detail;
+
+    @Override
+    public String toString() {
+        return "Goods{" +
+                "id=" + id +
+                ", goodsSn='" + goodsSn + '\'' +
+                ", name='" + name + '\'' +
+                ", categoryId=" + categoryId +
+                ", brandId=" + brandId +
+                ", gallery=" + Arrays.toString(gallery) +
+                ", keywords='" + keywords + '\'' +
+                ", brief='" + brief + '\'' +
+                ", isOnSale=" + isOnSale +
+                ", sortOrder=" + sortOrder +
+                ", picUrl='" + picUrl + '\'' +
+                ", shareUrl='" + shareUrl + '\'' +
+                ", isNew=" + isNew +
+                ", isHot=" + isHot +
+                ", unit='" + unit + '\'' +
+                ", counterPrice=" + counterPrice +
+                ", retailPrice=" + retailPrice +
+                ", addTime=" + addTime +
+                ", updateTime=" + updateTime +
+                ", deleted=" + deleted +
+                ", detail='" + detail + '\'' +
+                '}';
+    }
 
     public Integer getId() {
         return id;

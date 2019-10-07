@@ -188,4 +188,49 @@
             deleted     = #{deleted,jdbcType=BIT}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="querywxTopicCommentList" resultMap="querywxTopicCommentListMap">
+        select u.nickname,u.avatar,c.add_time,c.pic_urls,c.content
+        from cskaoyan_mall_comment  c left join cskaoyan_mall_user u
+        on c.user_id=u.id
+        where c.type=#{type} and value_id=#{valueId}
+        limit #{pageSize} offset #{offsetNum}
+    </select>
+    <resultMap id="querywxTopicCommentListMap" type="com.cskaoyan.mall.vo.WxUserComment">
+        <result column="add_time" property="addTime"/>
+        <result column="pic_list" property="picList" typeHandler="com.cskaoyan.mall.util.StringArrayHandlerUtil"/>
+        <result column="content" property="content"/>
+        <association property="userInfo" column="user_id" javaType="com.cskaoyan.mall.vo.WxUserInfo">
+            <result column="nickname" property="nickName"/>
+            <result column="avatar" property="avatarUrl"/>
+        </association>
+    </resultMap>
+    <select id="queryWxTopicCommentAmount" resultType="int">
+        select count(id) from cskaoyan_mall_comment where value_id=#{valueId}
+        and type=#{type}
+    </select>
+    <insert id="insertwxCommentPost">
+        <selectKey resultType="int" keyProperty="wxCommentArray.id" keyColumn="id" order="AFTER">
+            select last_insert_id() as id
+        </selectKey>
+        insert into cskaoyan_mall_comment (id,value_id,`type`,content,user_id,has_picture,
+        pic_urls,star,add_time,update_time) values (
+        null
+        ,#{wxCommentArray.valueId},
+        #{wxCommentArray.type},
+        #{wxCommentArray.content},
+        #{wxCommentArray.userId},
+        #{wxCommentArray.hasPicture},
+        #{wxCommentArray.picUrls,typeHandler=com.cskaoyan.mall.util.StringArrayHandlerUtil},
+        #{wxCommentArray.star},
+        #{wxCommentArray.addTime},#{wxCommentArray.updateTime}
+        )
+    </insert>
+
+    <select id="querywxTopicPicComment" resultMap="querywxTopicPicCommentMap">
+        select pic_urls from cskaoyan_mall_comment where value_id=#{valueId} and type=#{type}
+    </select>
+    <resultMap id="querywxTopicPicCommentMap" type="com.cskaoyan.mall.vo.WxCommentArray">
+        <result column="pic_urls" property="picUrls" typeHandler="com.cskaoyan.mall.util.StringArrayHandlerUtil"/>
+    </resultMap>
 </mapper>

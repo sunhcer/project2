@@ -3,6 +3,7 @@ package com.cskaoyan.mall.mapper;
 import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.bean.CouponArray;
 import com.cskaoyan.mall.bean.CouponUser;
+import com.cskaoyan.mall.vo.WxUserComment;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
@@ -51,4 +52,12 @@ public interface CouponMapper {
 
     List<CouponArray> queryWxCouponPage();
 
-}
+
+    int queryCouponLimitByCouponId(@Param("couponId") int couponId);
+
+    Coupon queryCouponByCouponId(@Param("id") int id);
+
+    void updateWxCouponTotal(@Param("restTotal") int restTotal,@Param("id") int id);
+
+    }
+

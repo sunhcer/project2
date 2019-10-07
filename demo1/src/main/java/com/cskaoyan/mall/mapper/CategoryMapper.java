@@ -2,6 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Category;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -26,7 +27,16 @@ public interface CategoryMapper {
 
     void deleteById(Integer id);
 
+    Category queryCurrentCategory(@Param("id") int id);
+
+    Category queryWxParentCategory(@Param("pid") int pid);
+
+    List<Category> queryWxBrotherCategory(@Param("pid") int pid,@Param("id") int id);
+
     List<Category> findByParentId(Integer pid);
 
+    List<Category> queryWxFilterCategoryList();
+
     List<Category> selectAllCategory();
+
 }
