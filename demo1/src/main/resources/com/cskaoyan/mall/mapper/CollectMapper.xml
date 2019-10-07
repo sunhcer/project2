@@ -130,4 +130,24 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <resultMap id="WxCollect" type="com.cskaoyan.mall.vo.WxCollect">
+    <result column="brief" property="brief"/>
+    <result column="pic_url" property="picUrl"/>
+    <result column="name" property="name"/>
+    <result column="retail_price" property="retailPrice"/>
+    <result column="value_id" property="valueId"/>
+    <result column="id" property="id"/>
+    <result column="type" property="type"/>
+  </resultMap>
+
+  <select id="queryMyCollect" resultMap="WxCollect">
+    SELECT
+    g.brief,g.pic_url,g.name,g.retail_price,c.value_id,c.id,c.type
+    FROM cskaoyan_mall_goods g
+    LEFT JOIN cskaoyan_mall_collect c on g.id = c.value_id
+    WHERE c.user_id=#{userId} and c.type = #{type}
+  </select>
+
+
 </mapper>

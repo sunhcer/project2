@@ -5,6 +5,7 @@ import com.cskaoyan.mall.bean.CouponArray;
 import com.cskaoyan.mall.bean.CouponUser;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface CouponMapper {
@@ -38,5 +39,16 @@ public interface CouponMapper {
 
     List<Coupon> findAllCoupon();
 
+
+    List<Coupon> queryMyCouponList( @Param("status")int status,@Param("id")int id);
+
+    Coupon queryExchangeCode(@Param("code") String code);
+
+    int queryThisCodeCouponNum(@Param("id")int id,@Param("userId")int userId);
+
+    int insertUserCoupon(@Param("userId")int userId,@Param("couponId")int couponId,
+                         @Param("status")int status,@Param("startTime")Date startTime);
+
     List<CouponArray> queryWxCouponPage();
+
 }
