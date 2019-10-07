@@ -14,4 +14,14 @@ public class WxGoodServiceImpl implements WxGoodService {
         boolean hot = hotListInfo.isHot();
         return null;
     }
+
+    @Override
+    public HotListVo keywordListInfo(HotListInfo hotListInfo) {
+        return null;
+    }
+
+    @Override
+    public HotListVo firstListInfo(HotListInfo hotListInfo) {
+        return null;
+    }
 }
