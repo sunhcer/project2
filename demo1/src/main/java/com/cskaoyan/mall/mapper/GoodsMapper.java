@@ -37,4 +37,9 @@ public interface GoodsMapper {
     List<Goods> findGoodsLastAdd(Integer number);
 
     CheckOrderGood selectByGoodsSn(String goodsSn);
+    List<Goods> selectAllHotGoods();
+
+    List<Goods> selectGoodsByNameLike(String keyword);
+
+    List<Goods> selectGoodsByNameLikeAndCategoryId(@Param("keyword") String keyword,@Param("categoryId") int categoryId);
 }

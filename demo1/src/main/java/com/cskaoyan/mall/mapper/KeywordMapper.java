@@ -19,4 +19,6 @@ public interface KeywordMapper {
     int updateByPrimaryKey(Keyword record);
 
     List<Keyword> selectKeyWordByCondition(OrderPage orderPage);
+
+    List<String> selectKeywordsByKeywordLike(String keyword);
 }

@@ -14,6 +14,10 @@ import java.lang.System;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description:
@@ -346,13 +350,12 @@ public class WxOrderServiceImpl implements WxOrderService {
         orderMapper.insertSelective(order);
         order = orderMapper.selectByPrimaryKey(order.getOrderId());
 
-
         for (CheckOrderGood checkOrderGood : list) {
             OrderGoods orderGoods = new OrderGoods();
             orderGoods.setAddTime(new Date());
             orderGoods.setChecked(true);
             orderGoods.setGoodsId(Integer.parseInt(checkOrderGood.getGoodsId()));
-            orderGoods.setSpecifications(Arrays.toString(checkOrderGood.getSpecifications()));
+            orderGoods.setSpecifications(checkOrderGood.getSpecifications());
             orderGoods.setPicUrl(checkOrderGood.getPicUrl());
             orderGoods.setGoodsSn(checkOrderGood.getGoodsSn());
             orderGoods.setPrice(BigDecimal.valueOf(checkOrderGood.getPrice()));

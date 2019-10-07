@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 类简介：
@@ -63,7 +60,7 @@ public class WxIndexController {
                 Map<String, Object> member = new HashMap<>();
                 member.put("goods", goods);
                 member.put("groupon_member", grouponRules.getDiscountMember());
-                member.put("groupon_price", goods.getRetailPrice().subtract(grouponRules.getDiscount()));
+                member.put("groupon_price", goods.getCounterPrice().subtract(grouponRules.getDiscount()));
                 grouponList.add(member);
             }
         }
@@ -117,13 +114,29 @@ public class WxIndexController {
         List<Issue> issue = issueService.selectAllIssues();//issue
         List<GrouponRules> groupon = grouponService.findGrouponRuleListByGoodsId(goodsId);//groupon
         List<GoodsProduct> productList = productService.findGoodsProductsByGoodsId(goodsId);//productList
-        List<Map<String, Object>> specificationList=new ArrayList<>();//specificationList
+        List<SpecificationListForWxGoodsDetail> specificationList=new ArrayList<>();//specificationList
         List<GoodsSpecification> specifications = productService.findGoodsSpecificationsByGoodsId(goodsId);
-        for (GoodsSpecification goodsSpecification : specifications) {
-            Map<String, Object> member=new HashMap<String, Object>();
-            member.put("valueList",goodsSpecification);
-            member.put("name",goodsSpecification.getSpecification());
-            specificationList.add(member);
+//        for (GoodsSpecification goodsSpecification : specifications) {
+//            Map<String, Object> member=new HashMap<String, Object>();
+//            member.put("valueList",goodsSpecification);
+//            member.put("name",goodsSpecification.getSpecification());
+//            specificationList.add(member);
+//        }
+        //存入规格数据，按照同名规格为一组的方式
+        Set<String> names=new HashSet<String>();//用于区分不同组
+        int i =0;//用于分发
+        for (GoodsSpecification specification : specifications) {
+            names.add(specification.getSpecification());
+            if(names.size()>i){
+                i++;
+                SpecificationListForWxGoodsDetail specificationListForWxGoodsDetail = new SpecificationListForWxGoodsDetail(specification.getSpecification(), new LinkedList<>());
+                specificationList.add(specificationListForWxGoodsDetail);
+            }
+            for (SpecificationListForWxGoodsDetail SL : specificationList) {
+                if(SL.getName().equals(specification.getSpecification())){
+                    SL.getValueList().add(specification);
+                }
+            }
         }
         dataForVo.put("info", goods);
         dataForVo.put("attribute", attribute);
@@ -137,6 +150,7 @@ public class WxIndexController {
         dataForVo.put("userHasCollect", 0);
         return BaseRespVo.success(dataForVo);
     }
+
 
     @RequestMapping("wx/goods/related")
     public BaseRespVo goodsRelated() {
