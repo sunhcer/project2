@@ -362,6 +362,7 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+
     <resultMap id="CheckGoodsResultMap" type="com.cskaoyan.mall.vo.CheckOrderGood">
         <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn"/>

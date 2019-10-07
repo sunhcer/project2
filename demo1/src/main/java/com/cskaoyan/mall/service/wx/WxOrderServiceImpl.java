@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
+import com.cskaoyan.mall.util.TransferBig2Double;
 import com.cskaoyan.mall.util.TransferCodeToText;
 import com.cskaoyan.mall.vo.*;
 import com.github.pagehelper.PageHelper;
@@ -285,11 +286,13 @@ public class WxOrderServiceImpl implements WxOrderService {
         }
         wxOrderCheckoutBean.setOrderTotalPrice(totalMoney);
         wxOrderCheckoutBean.setActualPrice(totalMoney);
-        wxOrderCheckoutBean.setGoodsTotalPrice(BigDecimal.valueOf(totalMoney));
+        wxOrderCheckoutBean.setGoodsTotalPrice(TransferBig2Double.double2Big(totalMoney));
 
         if (totalMoney < freightMin) {
             //订单价格小于最低运费限制
             wxOrderCheckoutBean.setFreightPrice(freight_value);
+        }else{
+            wxOrderCheckoutBean.setFreightPrice(0);
         }
 
         return wxOrderCheckoutBean;
@@ -303,7 +306,7 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public void submitOrder(int userId, String addressId, Object message) {
+    public int submitOrder(int userId, String addressId, Object message) {
         int addressIdnum = Integer.parseInt(addressId);
         WxOrderCheckoutBean wxOrderCheckoutBean = checkOrder(userId, 0, addressIdnum, 0, 0);
         //删除选中的购物车
@@ -313,7 +316,7 @@ public class WxOrderServiceImpl implements WxOrderService {
 
         Order order = new Order();
         order.setUserId(userId);
-        order.setActualPrice(BigDecimal.valueOf(wxOrderCheckoutBean.getActualPrice()));
+        order.setActualPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getActualPrice()));
         order.setOrderSn(getRandom());
         order.setOrderStatus(101);
         order.setConsignee(address.getName());
@@ -333,14 +336,14 @@ public class WxOrderServiceImpl implements WxOrderService {
         }
 
         order.setGoodsPrice(wxOrderCheckoutBean.getGoodsTotalPrice());
-        order.setFreightPrice(BigDecimal.valueOf(wxOrderCheckoutBean.getFreightPrice()));
-        order.setCouponPrice(BigDecimal.valueOf(wxOrderCheckoutBean.getCouponPrice()));
+        order.setFreightPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getFreightPrice()));
+        order.setCouponPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getCouponPrice()));
         double orderPrice = wxOrderCheckoutBean.getGoodsTotalPrice().doubleValue() + wxOrderCheckoutBean.getFreightPrice() - wxOrderCheckoutBean.getCouponPrice();
         order.setOrderPrice(BigDecimal.valueOf(orderPrice));
         //用户积分减免  ????
         order.setIntegralPrice(BigDecimal.valueOf(0));
         order.setGoodsPrice(wxOrderCheckoutBean.getGrouponPrice());
-        order.setActualPrice(BigDecimal.valueOf(wxOrderCheckoutBean.getActualPrice()));
+        order.setActualPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getActualPrice()));
 
         //orderPrice订单费用， = goods_price + freight_price - coupon_price
         List<CheckOrderGood> list = wxOrderCheckoutBean.getCheckedGoodsList();
@@ -348,21 +351,24 @@ public class WxOrderServiceImpl implements WxOrderService {
         order.setAddTime(new Date());
 
         orderMapper.insertSelective(order);
-        order = orderMapper.selectByPrimaryKey(order.getOrderId());
-
+        order = orderMapper.selectByPrimaryKey(order.getId());
+        int orderId = order.getId();
         for (CheckOrderGood checkOrderGood : list) {
             OrderGoods orderGoods = new OrderGoods();
             orderGoods.setAddTime(new Date());
             orderGoods.setChecked(true);
-            orderGoods.setGoodsId(Integer.parseInt(checkOrderGood.getGoodsId()));
+            orderGoods.setOrderId(orderId);
+            if (checkOrderGood.getGoodsId() != null){
+                orderGoods.setGoodsId(Integer.parseInt(checkOrderGood.getGoodsId()));
+            }
             orderGoods.setSpecifications(checkOrderGood.getSpecifications());
             orderGoods.setPicUrl(checkOrderGood.getPicUrl());
             orderGoods.setGoodsSn(checkOrderGood.getGoodsSn());
-            orderGoods.setPrice(BigDecimal.valueOf(checkOrderGood.getPrice()));
+            orderGoods.setPrice(TransferBig2Double.double2Big(checkOrderGood.getPrice()));
             orderGoods.setNumber((short) checkOrderGood.getNumber());
             orderGoodsMapper.insertSelective(orderGoods);
         }
-
+        return orderId;
     }
 
     private String getRandom(){

@@ -36,5 +36,5 @@ public interface WxOrderService {
 
     OrderGoods selectOrderGoods(int orderId, int goodsId);
 
-    void submitOrder(int userId, String addressId, Object message);
+    int submitOrder(int userId, String addressId, Object message);
 }
