@@ -22,9 +22,11 @@ public interface AddressMapper {
     int updateByPrimaryKey(Address record);
 
     List<UserAddress> queryUsersAddress(UserPage userPage);
-
     //显示所有地址
     List<Address> queryAllAdd();
-
+   //
+    Address selectProvince();
+    Address selectCity();
+    Address selectArea();
 
 }

@@ -20,4 +20,5 @@ public interface AddressManageService {
      List<Region> queryById(int id);
      //删除地址
      void deleteAddressById(Integer id);
+
  }
