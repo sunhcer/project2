@@ -109,8 +109,15 @@ public class WxIndexController {
         Brand brand = productService.findBrandById(goods.getBrandId());//brand
         List<Comment> data = productService.findCommentByGoodsId(goodsId);
         Map<String, Object> comment = new HashMap<String, Object>();//comment
-        comment.put("data", data);
         comment.put("count", data.size());
+        if(data.size()<=2) {
+            comment.put("data", data);
+        }else {
+            List<Comment> dataLastAdd =new LinkedList<>();
+            dataLastAdd.add(data.get(0));
+            dataLastAdd.add(data.get(1));
+            comment.put("data",dataLastAdd);
+        }
         List<Issue> issue = issueService.selectAllIssues();//issue
         List<GrouponRules> groupon = grouponService.findGrouponRuleListByGoodsId(goodsId);//groupon
         List<GoodsProduct> productList = productService.findGoodsProductsByGoodsId(goodsId);//productList

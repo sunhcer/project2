@@ -89,7 +89,7 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         //找到该劵的剩余总数
         Coupon coupon=couponMapper.queryCouponByCouponId(couponId);
         int restTotal=coupon.getTotal();
-        if (couponUser.size()<limit){//该用户持有的该劵数量没有超过限制
+        if (couponUser.size()<limit||limit==0){//该用户持有的该劵数量没有超过限制
             if (restTotal>0) {//仓库还有该劵的剩余
                 //向Coupon-user表中插入一条数据,并且减少Coupon表中的total
                 couponUserMapper.insertWxCouponUser(coupon,userId);
@@ -206,6 +206,21 @@ public class WxHomePageServiceImpl implements WxHomePageService {
     }
 
     @Override
+    public BaseRespVo wxGoodsCommentList(WxCommentList wxCommentList) {
+        int pagesize=wxCommentList.getSize();
+        int currentPage=wxCommentList.getPage();
+        int offsetNum=(currentPage-1)*pagesize;
+        int typeId=wxCommentList.getType();
+        int valueId=wxCommentList.getValueId();
+        //查询总数量
+        int count=commentMapper.queryWxTopicCommentAmount(typeId,valueId);
+        List<WxUserComment> list=commentMapper.querywxTopicCommentList(typeId,valueId,pagesize,offsetNum);
+        WxUserCommentPage<WxUserComment> wxUserCommentPage = new WxUserCommentPage<>(list, count, currentPage);
+        BaseRespVo success = BaseRespVo.success(wxUserCommentPage);
+        return success;
+    }
+
+    @Override
     public BaseRespVo wxCommentPost(WxCommentArray wxCommentArray,String username) {
         //返回带id,hasPicture,addTime,updateTime,userId的评论
         //前台有空评论校验,这里不做判空
@@ -240,7 +255,8 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         if (list!=null){
             allCount=list.size();
             for (WxCommentArray wxCommentArray : list) {
-                if (wxCommentArray.getPicUrls()!=null){
+                int length = wxCommentArray.getPicUrls().length;
+                if (length >0){
                     hasPicCount+=1;
                 }
             }
