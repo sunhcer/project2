@@ -7,11 +7,8 @@ import com.cskaoyan.mall.mapper.CategoryMapper;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.vo.HotListInfo;
 import com.cskaoyan.mall.vo.HotListVo;
-<<<<<<< HEAD
-=======
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
->>>>>>> 6f58a4690ddd3aba486ac4548780ef69900cbbc8
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
