@@ -89,7 +89,7 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         //找到该劵的剩余总数
         Coupon coupon=couponMapper.queryCouponByCouponId(couponId);
         int restTotal=coupon.getTotal();
-        if (couponUser.size()<limit){//该用户持有的该劵数量没有超过限制
+        if (couponUser.size()<limit||limit==0){//该用户持有的该劵数量没有超过限制
             if (restTotal>0) {//仓库还有该劵的剩余
                 //向Coupon-user表中插入一条数据,并且减少Coupon表中的total
                 couponUserMapper.insertWxCouponUser(coupon,userId);
@@ -255,7 +255,8 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         if (list!=null){
             allCount=list.size();
             for (WxCommentArray wxCommentArray : list) {
-                if (wxCommentArray.getPicUrls()!=null){
+                int length = wxCommentArray.getPicUrls().length;
+                if (length >0){
                     hasPicCount+=1;
                 }
             }
