@@ -369,4 +369,21 @@
         where is_hot = 1
         and deleted = 0
     </select>
+
+    <select id="selectGoodsByNameLike" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_goods
+        where name like #{keyword}
+        and deleted = 0
+    </select>
+
+    <select id="selectGoodsByNameLikeAndCategoryId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_goods
+        where name like #{keyword}
+        and category_id = #{categoryId}
+        and deleted = 0
+    </select>
 </mapper>
