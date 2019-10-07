@@ -63,7 +63,7 @@ public class WxIndexController {
                 Map<String, Object> member = new HashMap<>();
                 member.put("goods", goods);
                 member.put("groupon_member", grouponRules.getDiscountMember());
-                member.put("groupon_price", goods.getRetailPrice().subtract(grouponRules.getDiscount()));
+                member.put("groupon_price", goods.getCounterPrice().subtract(grouponRules.getDiscount()));
                 grouponList.add(member);
             }
         }
@@ -138,12 +138,7 @@ public class WxIndexController {
         return BaseRespVo.success(dataForVo);
     }
 
-
-    @RequestMapping("/wx/cart/goodscount")
-    public BaseRespVo goodsCount() {
-
-        return BaseRespVo.success(0);
-    }
+    
     @RequestMapping("wx/goods/related")
     public BaseRespVo goodsRelated() {
         Goods goodsList = productService.findGoodsById(3);
