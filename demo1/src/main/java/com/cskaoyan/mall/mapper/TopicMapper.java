@@ -37,4 +37,10 @@ public interface TopicMapper {
     void topicDelete(@Param("id") Integer id);
 
     List<TopicArray> findTopicLastAdd(Integer i);
+
+    List<Topic> queryWxAllTopic();
+
+    TopicArray queryTopicArrayById(@Param("id") int id);
+
+    List<TopicArray> queryWxRelatedTopic(@Param("min")int min,@Param("max")int max);
 }

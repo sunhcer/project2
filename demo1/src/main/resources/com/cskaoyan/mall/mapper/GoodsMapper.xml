@@ -361,4 +361,25 @@
             deleted       = #{deleted,jdbcType=BIT}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+    <select id="queryWxCategoryGoodsCount" resultType="int">
+        select count(id) from cskaoyan_mall_goods where category_id=#{categoryId}
+    </select>
+
+    <select id="queryWxGoodslist" resultMap="queryWxGoodslistMap">
+        select id,name,brief,pic_url,is_new,is_hot,counter_price,retail_price
+        from cskaoyan_mall_goods
+        where category_id=#{categoryId}
+        limit #{pageSize} offset #{offsetNum}
+    </select>
+    <resultMap id="queryWxGoodslistMap" type="com.cskaoyan.mall.bean.Goods">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="brief" property="brief"/>
+        <result column="pic_url" property="picUrl"/>
+        <result column="is_new" property="isNew"/>
+        <result column="is_hot" property="isHot"/>
+        <result column="counter_price" property="counterPrice"/>
+        <result column="retail_price" property="retailPrice"/>
+    </resultMap>
 </mapper>

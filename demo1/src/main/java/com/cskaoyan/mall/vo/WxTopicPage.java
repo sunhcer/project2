@@ -1,33 +1,31 @@
 package com.cskaoyan.mall.vo;
 
+import com.cskaoyan.mall.bean.Topic;
 
 import java.util.List;
 
-public class WxCouponPage<T> {
-    List<T> data;
+public class WxTopicPage {
+    List<Topic> data;
     int count;
 
-    public WxCouponPage() {
-    }
-
-    public WxCouponPage(List<T> data, int count) {
+    public WxTopicPage(List<Topic> data, int count) {
         this.data = data;
         this.count = count;
     }
 
     @Override
     public String toString() {
-        return "WxCouponPage{" +
+        return "WxTopicPage{" +
                 "data=" + data +
                 ", count=" + count +
                 '}';
     }
 
-    public List<T> getData() {
+    public List<Topic> getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(List<Topic> data) {
         this.data = data;
     }
 

@@ -34,4 +34,8 @@ public interface GoodsMapper {
     List<Goods> findGoodsIsHotLastAdd(Integer i);
 
     List<Goods> findGoodsLastAdd(Integer number);
+
+    int queryWxCategoryGoodsCount(@Param("categoryId") int categoryId);
+
+    List<Goods> queryWxGoodslist(@Param("categoryId") int categoryId,@Param("offsetNum") int offsetNum,@Param("pageSize") int size);
 }

@@ -166,4 +166,13 @@
     select id from cskaoyan_mall_coupon_user
     where user_id=#{userId} and coupon_id=#{couponId}
   </select>
+
+  <insert id="insertWxCouponUser">
+    insert into cskaoyan_mall_coupon_user (id,user_id,coupon_id,status,start_time,end_time,
+    add_time,update_time,deleted) values(
+    null,#{userId},#{coupon.id},#{coupon.status},
+    #{coupon.startTime},#{coupon.endTime},#{coupon.addTime},
+    #{coupon.updateTime},#{coupon.deleted}
+    )
+  </insert>
 </mapper>
