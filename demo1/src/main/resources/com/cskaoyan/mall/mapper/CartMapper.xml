@@ -235,4 +235,9 @@
     from cskaoyan_mall_cart
     where deleted = 0 and user_id = #{userId} and checked = 1
   </select>
+
+  <!--deleteUserAllCheckedCart-->
+  <delete id="deleteUserAllCheckedCart">
+    delete from cskaoyan_mall_cart where user_id = #{userId} and checked = 1
+  </delete>
 </mapper>

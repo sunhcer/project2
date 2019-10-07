@@ -76,6 +76,9 @@
       #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
   <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Order">
+    <selectKey resultType="int" keyColumn="id" keyProperty="id" order="AFTER">
+      select last_insert_id() as id
+    </selectKey>
     insert into cskaoyan_mall_order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

@@ -130,4 +130,14 @@ public class WxOrderController {
         OrderGoods orderGoods = wxOrderService.selectOrderGoods(orderId, goodsId);
         return BaseRespVo.success(orderGoods);
     }
+
+    ///wx/order/submit
+    @RequestMapping("/wx/order/submit")
+    public BaseRespVo submitOrder(@RequestBody Map map){
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        String addressId = map.get("addressId").toString();
+        Object message = map.get("message");
+        wxOrderService.submitOrder(userId, addressId, message);
+        return BaseRespVo.success(null);
+    }
 }
