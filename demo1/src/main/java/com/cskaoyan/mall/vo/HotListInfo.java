@@ -24,11 +24,11 @@ public class HotListInfo {
         this.keyword = keyword;
     }
 
-    public boolean isHot() {
+    public boolean getIsHot() {
         return isHot;
     }
 
-    public void setHot(boolean hot) {
+    public void setIsHot(boolean hot) {
         isHot = hot;
     }
 

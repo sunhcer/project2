@@ -1,7 +1,5 @@
 package com.cskaoyan.mall.bean;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -36,9 +34,9 @@ public class Coupon {
 
     private Short days;
 
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
-//    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+//@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     private Date addTime;

@@ -1,6 +1,5 @@
 package com.cskaoyan.mall.service.wx;
 
-import com.cskaoyan.mall.bean.Coupon;
 import com.cskaoyan.mall.bean.CouponArray;
 import com.cskaoyan.mall.bean.CouponUser;
 import com.cskaoyan.mall.mapper.CouponMapper;
