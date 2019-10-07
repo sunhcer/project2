@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.Comment;
+import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.vo.WxOrderCheckoutBean;
 import com.cskaoyan.mall.vo.WxOrderDetailData;
 import com.cskaoyan.mall.vo.WxOrderPage;
@@ -31,5 +32,7 @@ public interface WxOrderService {
 
     void commentOrder(Comment comment);
 
-    WxOrderCheckoutBean checkOrder(int cartId, int addressId, int couponId, int grouponRulesId);
+    WxOrderCheckoutBean checkOrder(int userId, int cartId, int addressId, int couponId, int grouponRulesId);
+
+    OrderGoods selectOrderGoods(int orderId, int goodsId);
 }

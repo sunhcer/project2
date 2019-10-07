@@ -14,6 +14,10 @@
     <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="deleted" jdbcType="BIT" property="deleted" />
+    <association property="province" column="province_id" select="selectProvince"/>
+    <association property="city" column="city_id" select="selectCity"/>
+    <association property="area" column="area_id" select="selectArea"/>
+
   </resultMap>
   <sql id="Base_Column_List">
     id, name, user_id, province_id, city_id, area_id, address, mobile, is_default, add_time,
@@ -287,19 +291,23 @@
         select id as provinceId from cskaoyan_mall_region where `code` =  #{province_id}
     </select>
   <select id="selectProvince" resultType="string">
-        select name as province from cskaoyan_mall_region where `code` =  #{province_id}
+        select name as province from cskaoyan_mall_region where `id` =  #{province_id}
     </select>
+
   <select id="selectCityId" resultType="int">
         select id as cityId from cskaoyan_mall_region where `code` =  #{city_id}
     </select>
+
   <select id="selectCity" resultType="string">
-        select name as city from cskaoyan_mall_region where `code` =  #{city_id}
+        select name as city from cskaoyan_mall_region where `id` =  #{city_id}
     </select>
+
   <select id="selectAreaId" resultType="int">
         select id as areaId from cskaoyan_mall_region where `code` =  #{area_id}
     </select>
+
   <select id="selectArea" resultType="string">
-        select name as area from cskaoyan_mall_region where `code` =  #{area_id}
+        select name as area from cskaoyan_mall_region where `id` =  #{area_id}
     </select>
   <!--显示所有地址-->
   <select id="queryAllAdd" resultMap="BaseResultMap">

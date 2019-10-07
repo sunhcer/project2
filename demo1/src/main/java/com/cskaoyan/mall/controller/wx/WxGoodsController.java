@@ -52,4 +52,5 @@ public class WxGoodsController {
         return BaseRespVo.success(hotListVo);
     }
 
+
 }

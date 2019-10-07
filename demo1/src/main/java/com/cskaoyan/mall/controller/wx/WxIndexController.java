@@ -83,7 +83,7 @@ public class WxIndexController {
     }
 
     @RequestMapping("wx/catalog/current")
-    public BaseRespVo currentCatalog(String id) {
+    public BaseRespVo currentCatalog(String id){
         int currentCategoryId;
         try {
             currentCategoryId = Integer.parseInt(id);

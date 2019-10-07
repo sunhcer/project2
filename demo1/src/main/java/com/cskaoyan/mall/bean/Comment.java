@@ -15,6 +15,8 @@ public class Comment {
 
     private Integer userId;
 
+    private Integer orderGoodsId;
+
     private Boolean hasPicture;
 
     private String[] picUrls;
@@ -26,6 +28,14 @@ public class Comment {
     private Date updateTime;
 
     private Boolean deleted;
+
+    public Integer getOrderGoodsId() {
+        return orderGoodsId;
+    }
+
+    public void setOrderGoodsId(Integer orderGoodsId) {
+        this.orderGoodsId = orderGoodsId;
+    }
 
     public Integer getId() {
         return id;
