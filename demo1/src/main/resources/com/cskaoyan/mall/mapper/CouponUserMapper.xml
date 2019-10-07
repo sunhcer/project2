@@ -28,6 +28,8 @@
     delete from cskaoyan_mall_coupon_user
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.CouponUser">
     insert into cskaoyan_mall_coupon_user (id, user_id, coupon_id,
       status, used_time, start_time,
@@ -38,6 +40,8 @@
       #{endTime,jdbcType=TIMESTAMP}, #{orderId,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP},
       #{updateTime,jdbcType=TIMESTAMP}, #{deleted,jdbcType=BIT})
   </insert>
+
+
   <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.CouponUser">
     insert into cskaoyan_mall_coupon_user
     <trim prefix="(" suffix=")" suffixOverrides=",">

@@ -2,6 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.bean.StatGood;
+import com.cskaoyan.mall.vo.CheckOrderGood;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -35,5 +36,10 @@ public interface GoodsMapper {
 
     List<Goods> findGoodsLastAdd(Integer number);
 
+    CheckOrderGood selectByGoodsSn(String goodsSn);
     List<Goods> selectAllHotGoods();
+
+    List<Goods> selectGoodsByNameLike(String keyword);
+
+    List<Goods> selectGoodsByNameLikeAndCategoryId(@Param("keyword") String keyword,@Param("categoryId") int categoryId);
 }

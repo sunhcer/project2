@@ -35,4 +35,6 @@ public interface WxOrderService {
     WxOrderCheckoutBean checkOrder(int userId, int cartId, int addressId, int couponId, int grouponRulesId);
 
     OrderGoods selectOrderGoods(int orderId, int goodsId);
+
+    void submitOrder(int userId, String addressId, Object message);
 }

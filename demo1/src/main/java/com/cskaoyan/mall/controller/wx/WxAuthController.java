@@ -10,6 +10,7 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.config.AliyunConfig;
 import com.cskaoyan.mall.config.SmsConfig;
+import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.admin.UserService;
 import com.cskaoyan.mall.shiro.CustomToken;
 import com.cskaoyan.mall.util.UserInfo;
@@ -47,7 +48,8 @@ public class WxAuthController {
 
     @Autowired
     UserService userService;
-
+    @Autowired
+    UserMapper userMapper;
     @RequestMapping("/wx/auth/login")
     public BaseRespVo login(@RequestBody LoginVo loginVo) {
         /*String username = JacksonUtil.parseString(body, "username");
@@ -187,5 +189,29 @@ public class WxAuthController {
         return BaseRespVo.success(map);
     }
 
+    ///wx/auth/reset
+    @RequestMapping("/wx/auth/reset")
+    public BaseRespVo resetPassword(@RequestBody User user){
+        Serializable id = SecurityUtils.getSubject().getSession().getId();
+        System.out.println("第二次进" + id);
+        String code = (String) SecurityUtils.getSubject().getSession().getAttribute("code");
+        if (code != null){
+            if (Objects.equals(user.getCode(), code)){
+                //验证码正确
+                User userFromDb = userMapper.selectUserByMobile(user.getMobile());
+                //查看是否有匹配用户
+                if (userFromDb != null){
+                    //有匹配用户
+                    userFromDb.setPassword(user.getPassword());
+                    userMapper.updateByPrimaryKeySelective(userFromDb);
+                    return BaseRespVo.success(null);
+                }else{
+                    //没有匹配用户
+                    return BaseRespVo.fail(605, "用户不存在");
+                }
+            }
+        }
+        return BaseRespVo.fail(605, "验证码错误");
+    }
 
 }

@@ -1,7 +1,6 @@
 package com.cskaoyan.mall.vo;
 
 import com.cskaoyan.mall.bean.Address;
-import com.cskaoyan.mall.bean.Goods;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -34,9 +33,18 @@ public class WxOrderCheckoutBean {
     int availableCouponLength;
     int couponId;
     double freightPrice;
-    List<Goods> checkedGoodsList;
+    List<CheckOrderGood> checkedGoodsList;
     BigDecimal goodsTotalPrice;
     int addressId;
+    String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public int getGrouponRulesId() {
         return grouponRulesId;
@@ -102,11 +110,11 @@ public class WxOrderCheckoutBean {
         this.freightPrice = freightPrice;
     }
 
-    public List<Goods> getCheckedGoodsList() {
+    public List<CheckOrderGood> getCheckedGoodsList() {
         return checkedGoodsList;
     }
 
-    public void setCheckedGoodsList(List<Goods> checkedGoodsList) {
+    public void setCheckedGoodsList(List<CheckOrderGood> checkedGoodsList) {
         this.checkedGoodsList = checkedGoodsList;
     }
 

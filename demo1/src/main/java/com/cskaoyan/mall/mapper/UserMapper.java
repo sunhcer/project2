@@ -32,4 +32,6 @@ public interface UserMapper {
     String selectPasswordByUsername(String username);
 
     User selectUserByUsername(String username);
+
+    User selectUserByMobile(String mobile);
 }

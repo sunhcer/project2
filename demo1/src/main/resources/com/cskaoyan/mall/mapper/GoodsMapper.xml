@@ -362,11 +362,47 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <resultMap id="CheckGoodsResultMap" type="com.cskaoyan.mall.vo.CheckOrderGood">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="goods_sn" jdbcType="VARCHAR" property="goodsSn"/>
+        <result column="name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="retail_price" jdbcType="VARCHAR" property="price"/>
+        <result column="checked" jdbcType="VARCHAR" property="checked"/>
+        <result column="pic_url" jdbcType="VARCHAR" property="picUrl"/>
+        <result column="add_time" jdbcType="TIMESTAMP" property="addTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="deleted" jdbcType="BIT" property="deleted"/>
+    </resultMap>
+
+    <!--selectByGoodsSn-->
+    <select id="selectByGoodsSn" resultMap="CheckGoodsResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_goods
+        where deleted != 1 and goods_sn = #{goodsSn}
+    </select>
     <select id="selectAllHotGoods" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from cskaoyan_mall_goods
         where is_hot = 1
+        and deleted = 0
+    </select>
+
+    <select id="selectGoodsByNameLike" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_goods
+        where name like #{keyword}
+        and deleted = 0
+    </select>
+
+    <select id="selectGoodsByNameLikeAndCategoryId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_goods
+        where name like #{keyword}
+        and category_id = #{categoryId}
         and deleted = 0
     </select>
 </mapper>

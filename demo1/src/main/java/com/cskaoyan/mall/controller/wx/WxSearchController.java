@@ -4,6 +4,7 @@ import com.cskaoyan.mall.bean.Keyword;
 import com.cskaoyan.mall.bean.SearchHistory;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.admin.KeywordService;
+import com.cskaoyan.mall.service.wx.WxSearchService;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.xml.crypto.Data;
 import java.util.*;
+
 
 /**
  * 类简介：
@@ -26,6 +28,9 @@ public class WxSearchController {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    WxSearchService wxSearchService;
 
     @RequestMapping("wx/search/index")
     public BaseRespVo searchIndex() {
@@ -58,4 +63,9 @@ public class WxSearchController {
         return BaseRespVo.success(data);
     }
 
+    @RequestMapping("/wx/search/helper")
+    public BaseRespVo searchHelper(String keyword) {
+        List<String> keywords = wxSearchService.searchHelper(keyword);
+        return BaseRespVo.success(keywords);
+    }
 }
