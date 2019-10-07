@@ -100,4 +100,16 @@ public class WxCoreServiceController {
         return null;
     }
 
+    @RequestMapping("/wx/coupon/selectlist")
+    public BaseRespVo wxCouponSelectList(int cartId, int grouponRulesId) {
+       /* data: {
+            couponList: [],
+            cartId: 0,
+                    couponId: 0,
+                    grouponLinkId: 0,
+                    scrollTop: 0
+        },*/
+       return BaseRespVo.success(null);
+    }
+
 }

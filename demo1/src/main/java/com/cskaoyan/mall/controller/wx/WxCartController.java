@@ -56,4 +56,11 @@ public class WxCartController {
         int goodsCount = cartListInfo.getCartTotal().getGoodsCount();
         return BaseRespVo.success(goodsCount);
     }
+
+    @RequestMapping("/wx/cart/fastadd")
+    public BaseRespVo fastAddCart(@RequestBody Cart cart) {
+        wxCartService.addCart(cart);
+        int cartId = wxCartService.getCartId();
+        return BaseRespVo.success(cartId);
+    }
 }

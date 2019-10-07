@@ -14,4 +14,8 @@ public interface WxCartService {
     void updateCart(Cart cart);
 
     void deleteCart(CheckedStatus checkedStatus);
+
+    int getCartId();
+
+    Cart selectCartById(int cartId);
 }
