@@ -137,7 +137,14 @@ public class WxOrderController {
         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
         String addressId = map.get("addressId").toString();
         Object message = map.get("message");
-        int order = wxOrderService.submitOrder(userId, addressId, message);
+
+        int order = 0;
+        if (map.get("cartId") != null){
+            order = wxOrderService.submitOrder(userId, addressId, message, map.get("cartId"));
+        }else{
+            order = wxOrderService.submitOrder(userId, addressId, message, null);
+        }
+
         HashMap<Object, Object> hashMap = new HashMap<>();
         hashMap.put("orderId", order);
         return BaseRespVo.success(hashMap);
