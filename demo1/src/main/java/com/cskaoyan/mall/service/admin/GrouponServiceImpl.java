@@ -26,6 +26,8 @@ import java.util.List;
  */
 @Service
 public class GrouponServiceImpl implements GrouponService {
+    @Value("${myfile.img-prefix}")
+    String imgPrefix;
     @Autowired
     GrouponMapper grouponMapper;
     @Autowired
@@ -109,6 +111,21 @@ public class GrouponServiceImpl implements GrouponService {
 
     @Override
     public List<GrouponRules> findGrouponRuleList(Integer start, Integer end) {
-        return grouponRulesMapper.selectByAddTimeWithLimit(end-start,start);
+        List<GrouponRules> grouponRules = grouponRulesMapper.selectByAddTimeWithLimit(end - start, start);
+        for (GrouponRules grouponRule : grouponRules) {
+            if (grouponRule.getPicUrl() != null)
+                grouponRule.setPicUrl(imgPrefix + grouponRule.getPicUrl());
+        }
+        return grouponRules;
+    }
+
+    @Override
+    public List<GrouponRules> findGrouponRuleListByGoodsId(int goodsId) {
+        List<GrouponRules> grouponRuleList = grouponRulesMapper.findGrouponRuleListByGoodsId(goodsId);
+        for (GrouponRules grouponRule : grouponRuleList) {
+            if (grouponRule.getPicUrl() != null)
+                grouponRule.setPicUrl(imgPrefix + grouponRule.getPicUrl());
+        }
+        return grouponRuleList;
     }
 }

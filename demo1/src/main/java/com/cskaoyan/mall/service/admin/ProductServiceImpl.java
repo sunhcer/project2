@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service.admin;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.bo.GoodsList;
 import com.cskaoyan.mall.mapper.*;
+import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,7 +23,7 @@ import java.util.List;
  */
 @Service
 public class ProductServiceImpl implements ProductService {
-    @Value("myfile.img-prefix")
+    @Value("${myfile.img-prefix}")
     String imgPrefix;
 
     @Autowired
@@ -72,8 +73,8 @@ public class ProductServiceImpl implements ProductService {
     public List<Goods> findAllGoods() {
         List<Goods> allGoods = goodsMapper.findAllGoods();
         for (Goods good : allGoods) {
-            if(good.getPicUrl()!=null){
-                good.setPicUrl(imgPrefix+good.getPicUrl());
+            if (good.getPicUrl() != null) {
+                good.setPicUrl(imgPrefix + good.getPicUrl());
             }
         }
         return allGoods;
@@ -109,8 +110,8 @@ public class ProductServiceImpl implements ProductService {
         }
         PageInfo<Goods> goodsPageInfo = new PageInfo<>(goods);
         for (Goods good : goods) {
-            if(good.getPicUrl()!=null)
-                good.setPicUrl(imgPrefix+good.getPicUrl());
+            if (good.getPicUrl() != null)
+                good.setPicUrl(imgPrefix + good.getPicUrl());
         }
         long total = goodsPageInfo.getTotal();
         GoodsList goodsList = new GoodsList();
@@ -136,8 +137,8 @@ public class ProductServiceImpl implements ProductService {
             comments = commentMapper.findAllComments();
         }
         for (Comment comment : comments) {
-            if (comment.getPicUrls()!=null)
-                comment.setPicUrls(imgPrefix+comment.getContent());
+            if (comment.getPicUrls() != null)
+                comment.setPicUrls(imgPrefix + comment.getContent());
         }
         PageInfo<Comment> commentsPageInfo = new PageInfo<>(comments);
         long total = commentsPageInfo.getTotal();
@@ -156,8 +157,8 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Comment findCommentById(Integer commentId) {
         Comment comment = commentMapper.selectByPrimaryKey(commentId);
-        if(comment.getPicUrls()!=null)
-            comment.setPicUrls(imgPrefix+comment.getContent());
+        if (comment!=null&&comment.getPicUrls() != null)
+            comment.setPicUrls(imgPrefix + comment.getContent());
         return comment;
     }
 
@@ -176,6 +177,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 根据id删除留言信息
+     *
      * @param comment 留言信息
      * @return 删除条数
      */
@@ -186,18 +188,20 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 新增商品
+     *
      * @param goods 商品信息
      * @return 新增条数
      */
     @Override
     public Integer addGoods(Goods goods) {
-        if(goods.getPicUrl()!=null)
-            goods.setPicUrl(goods.getPicUrl().replace(imgPrefix,""));
+        if (goods.getPicUrl() != null)
+            goods.setPicUrl(goods.getPicUrl().replace(imgPrefix, ""));
         return goodsMapper.insertSelective(goods);
     }
 
     /**
      * 新增商品参数
+     *
      * @param goodsAttribute 商品参数信息
      * @return 新增条数
      */
@@ -208,43 +212,47 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 新增商品规格信息
+     *
      * @param goodsSpecification 商品规格
      * @return 新增条数
      */
     @Override
     public Integer addGoodsSpecification(GoodsSpecification goodsSpecification) {
-        if(goodsSpecification.getPicUrl()!=null)
-            goodsSpecification.setPicUrl(goodsSpecification.getPicUrl().replace(imgPrefix,""));
+        if (goodsSpecification.getPicUrl() != null)
+            goodsSpecification.setPicUrl(goodsSpecification.getPicUrl().replace(imgPrefix, ""));
         return goodsSpecificationMapper.insertSelective(goodsSpecification);
     }
 
     /**
      * 新增商品货物信息
+     *
      * @param goodsProduct 商品货物信息
      * @return 新增条数
      */
     @Override
     public Integer addGoodsProduct(GoodsProduct goodsProduct) {
-        if(goodsProduct.getUrl()!=null)
-            goodsProduct.setUrl(goodsProduct.getUrl().replace(imgPrefix,""));
+        if (goodsProduct.getUrl() != null)
+            goodsProduct.setUrl(goodsProduct.getUrl().replace(imgPrefix, ""));
         return goodsProductMapper.insertSelective(goodsProduct);
     }
 
     /**
      * 根据商品id查找商品
+     *
      * @param id 商品ID
      * @return 新增条数
      */
     @Override
     public Goods findGoodsById(int id) {
         Goods goods = goodsMapper.selectByPrimaryKey(id);
-        if(goods.getPicUrl()!=null)
-            goods.setPicUrl(imgPrefix+goods.getPicUrl());
+        if (goods!=null&&goods.getPicUrl() != null)
+            goods.setPicUrl(imgPrefix + goods.getPicUrl());
         return goods;
     }
 
     /**
      * 根据商品id查找商品参数
+     *
      * @param goodsId 商品id
      * @return 商品参数集合
      */
@@ -255,15 +263,16 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 根据商品id查找对应货物信息
+     *
      * @param goodsId 商品id
      * @return 货物信息
      */
     @Override
     public List<GoodsProduct> findGoodsProductsByGoodsId(int goodsId) {
-        List<GoodsProduct> goodsProducts= goodsProductMapper.findGoodsProductsByGoodsId(goodsId);
+        List<GoodsProduct> goodsProducts = goodsProductMapper.findGoodsProductsByGoodsId(goodsId);
         for (GoodsProduct goodsProduct : goodsProducts) {
-            if(goodsProduct.getUrl()!=null){
-                goodsProduct.setUrl(imgPrefix+goodsProduct.getUrl());
+            if (goodsProduct.getUrl() != null) {
+                goodsProduct.setUrl(imgPrefix + goodsProduct.getUrl());
             }
         }
         return goodsProducts;
@@ -271,6 +280,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 根据商品id查找对应的规格信息
+     *
      * @param goodsId 商品id
      * @return 规格信息
      */
@@ -278,8 +288,8 @@ public class ProductServiceImpl implements ProductService {
     public List<GoodsSpecification> findGoodsSpecificationsByGoodsId(int goodsId) {
         List<GoodsSpecification> goodsSpecifications = goodsSpecificationMapper.findGoodsSpecificationsByGoodsId(goodsId);
         for (GoodsSpecification goodsSpecification : goodsSpecifications) {
-            if(goodsSpecification.getPicUrl()!=null){
-                goodsSpecification.setPicUrl(imgPrefix+goodsSpecification.getPicUrl());
+            if (goodsSpecification.getPicUrl() != null) {
+                goodsSpecification.setPicUrl(imgPrefix + goodsSpecification.getPicUrl());
             }
         }
         return goodsSpecifications;
@@ -287,18 +297,20 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 更新商品信息
+     *
      * @param goods 商品信息
      * @return 更新条数
      */
     @Override
     public int updateGoods(Goods goods) {
-        if(goods.getPicUrl()!=null)
-            goods.setPicUrl(goods.getPicUrl().replace(imgPrefix,""));
+        if (goods.getPicUrl() != null)
+            goods.setPicUrl(goods.getPicUrl().replace(imgPrefix, ""));
         return goodsMapper.updateByPrimaryKeySelective(goods);
     }
 
     /**
      * 根据id查找商品参数
+     *
      * @param id 参数id
      * @return 商品参数
      */
@@ -309,6 +321,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 根据参数id 修改商品参数
+     *
      * @param goodsAttribute 商品参数
      * @return 更新条数
      */
@@ -319,54 +332,58 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 根据id查找商品规格参数
+     *
      * @param id 商品规格id
      * @return 商品规格信息
      */
     @Override
     public GoodsSpecification findGoodsSpecificationById(Integer id) {
         GoodsSpecification goodsSpecification = goodsSpecificationMapper.selectByPrimaryKey(id);
-        if(goodsSpecification.getPicUrl()!=null){
-            goodsSpecification.setPicUrl(imgPrefix+goodsSpecification.getPicUrl());
+        if (goodsSpecification!=null&&goodsSpecification.getPicUrl() != null) {
+            goodsSpecification.setPicUrl(imgPrefix + goodsSpecification.getPicUrl());
         }
         return goodsSpecification;
     }
 
     /**
      * 根据id修改商品规格
+     *
      * @param goodsSpecification 商品规格
      * @return 修改条数
      */
     @Override
     public int updateGoodsSpecification(GoodsSpecification goodsSpecification) {
-        if(goodsSpecification.getPicUrl()!=null){
-            goodsSpecification.setPicUrl(goodsSpecification.getPicUrl().replace(imgPrefix,""));
+        if (goodsSpecification.getPicUrl() != null) {
+            goodsSpecification.setPicUrl(goodsSpecification.getPicUrl().replace(imgPrefix, ""));
         }
         return goodsSpecificationMapper.updateByPrimaryKeySelective(goodsSpecification);
     }
 
     /**
      * 根据货物id查找货物信息
+     *
      * @param id 货物id
      * @return 货物信息
      */
     @Override
     public GoodsProduct findGoodsProductsById(Integer id) {
         GoodsProduct goodsProduct = goodsProductMapper.selectByPrimaryKey(id);
-        if(goodsProduct.getUrl()!=null){
-            goodsProduct.setUrl(imgPrefix+goodsProduct.getUrl());
+        if (goodsProduct!=null&&goodsProduct.getUrl() != null) {
+            goodsProduct.setUrl(imgPrefix + goodsProduct.getUrl());
         }
         return goodsProduct;
     }
 
     /**
      * 根据货物id修改货物信息
+     *
      * @param goodsProduct 货物信息
      * @return 修改条数
      */
     @Override
     public int updateGoodsProducts(GoodsProduct goodsProduct) {
-        if (goodsProduct.getUrl()!=null) {
-            goodsProduct.setUrl(goodsProduct.getUrl().replace(imgPrefix,""));
+        if (goodsProduct.getUrl() != null) {
+            goodsProduct.setUrl(goodsProduct.getUrl().replace(imgPrefix, ""));
         }
         return goodsProductMapper.updateByPrimaryKeySelective(goodsProduct);
     }
@@ -380,11 +397,11 @@ public class ProductServiceImpl implements ProductService {
     public List<Category> findAllCategories() {
         List<Category> l1 = categoryMapper.findAllCateGoriesByLevel("L1");
         for (Category category : l1) {
-            if(!category.getIconUrl().startsWith("http")){
-                category.setIconUrl(imgPrefix+category.getIconUrl());
+            if (!category.getIconUrl().startsWith("http")) {
+                category.setIconUrl(imgPrefix + category.getIconUrl());
             }
-            if(!category.getPicUrl().startsWith("http")){
-                category.setPicUrl(imgPrefix+category.getPicUrl());
+            if (!category.getPicUrl().startsWith("http")) {
+                category.setPicUrl(imgPrefix + category.getPicUrl());
             }
         }
         return l1;
@@ -392,6 +409,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * 根据类别返回商品，首页专用
+     *
      * @param id
      * @return
      */
@@ -399,12 +417,12 @@ public class ProductServiceImpl implements ProductService {
     public List<Goods> findGoodsByCategoryIdForIndex(Integer id) {
         List<Goods> goodsByCategoryId = goodsMapper.findGoodsByCategoryId(id);
         for (Goods goods : goodsByCategoryId) {
-            if(!goods.getPicUrl().startsWith("http")){
-                goods.setPicUrl(imgPrefix+goods.getPicUrl());
+            if (!goods.getPicUrl().startsWith("http")) {
+                goods.setPicUrl(imgPrefix + goods.getPicUrl());
             }
         }
-        if (goodsByCategoryId.size()>10) {
-            return goodsByCategoryId.subList(0,10);
+        if (goodsByCategoryId.size() > 10) {
+            return goodsByCategoryId.subList(0, 10);
         }
         return goodsByCategoryId;
         //返回前面十个商品，此处可改进
@@ -414,19 +432,39 @@ public class ProductServiceImpl implements ProductService {
     public List<Goods> findGoodsLastAdd(Integer number) {
         List<Goods> goodsLastAdd = goodsMapper.findGoodsLastAdd(number);
         for (Goods goods : goodsLastAdd) {
-            if(goods.getPicUrl()!=null&&!goods.getPicUrl().startsWith("http")){
-                goods.setPicUrl(imgPrefix+goods.getPicUrl());
+            if (goods.getPicUrl() != null && !goods.getPicUrl().startsWith("http")) {
+                goods.setPicUrl(imgPrefix + goods.getPicUrl());
             }
         }
         return goodsLastAdd;
     }
 
     @Override
+    public Brand findBrandById(Integer brandId) {
+        Brand brand = brandMapper.selectByPrimaryKey(brandId);
+        if (brand!=null&&brand.getPicUrl() != null ){
+            brand.setPicUrl(imgPrefix + brand.getPicUrl());
+        }
+        return brand;
+    }
+
+    @Override
+    public List<Comment> findCommentByGoodsId(Integer goodsId) {//当前数据库评论并无商品id，故无法返回需要的数据
+        List<Comment> commentsByGoodsId = commentMapper.findCommentsByGoodsId(goodsId);
+        for (Comment comment : commentsByGoodsId) {
+            if(comment!=null&&comment.getPicUrls()!=null){
+                comment.setPicUrls(imgPrefix+comment.getPicUrls());
+            }
+        }
+        return null;
+    }
+
+    @Override
     public List<Goods> findGoodsIsHotLastAdd(Integer i) {
         List<Goods> goodsIsHotLastAdd = goodsMapper.findGoodsIsHotLastAdd(i);
         for (Goods goods : goodsIsHotLastAdd) {
-            if(goods.getPicUrl()!=null&&!goods.getPicUrl().startsWith("http")){
-                goods.setPicUrl(imgPrefix+goods.getPicUrl());
+            if (goods.getPicUrl() != null && !goods.getPicUrl().startsWith("http")) {
+                goods.setPicUrl(imgPrefix + goods.getPicUrl());
             }
         }
         return goodsIsHotLastAdd;
