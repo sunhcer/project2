@@ -4,11 +4,13 @@ import com.cskaoyan.mall.bean.Address;
 import com.cskaoyan.mall.bean.Region;
 import com.cskaoyan.mall.service.wx.AddressManageService;
 import com.cskaoyan.mall.vo.BaseRespVo;
+import com.cskaoyan.mall.vo.WxAddressPjVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,9 +20,13 @@ public class WxAddressManagerController {
 
      @RequestMapping("wx/address/list")
      public BaseRespVo queryAllAdd(){
-         //Map<String,Object> data =new HashMap<String, Object>();
-         List<Address> wxAddressBeans = addressManageService.queryAllAddress();
-         BaseRespVo success = BaseRespVo.success(wxAddressBeans);
+         List<Address> addresses = addressManageService.queryAllAddress();
+         ArrayList<Object> list = new ArrayList<>();
+         for(Address address:addresses){
+             WxAddressPjVo wxAddressPjVo = new WxAddressPjVo(address);
+             list.add(wxAddressPjVo);
+         }
+         BaseRespVo success = BaseRespVo.success(list);
          return success;
      }
      @RequestMapping("wx/region/list")

@@ -34,7 +34,7 @@ public class AddressManageServiceImpl implements AddressManageService {
         int insert = addressMapper.insert(address);
         return insert;
     }
-    //编辑时显示地址信息（未完善）
+    //编辑时显示地址信息
     @Override
     public List<Region> queryById(int id) {
         List<Region> regions = regionMapper.selectAllProvince();
@@ -43,6 +43,8 @@ public class AddressManageServiceImpl implements AddressManageService {
     //删除地址（未完善）
     @Override
     public void deleteAddressById(Integer id) {
-         addressMapper.deleteByPrimaryKey(id);
+        addressMapper.deleteByPrimaryKey(id);
     }
+
+
 }

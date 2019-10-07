@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface FeedbackMapper {
     int deleteByPrimaryKey(Integer id);
-
-    int insert(Feedback record);
+    //
+    void insert(Feedback record);
 
     int insertSelective(Feedback record);
 
