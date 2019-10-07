@@ -54,4 +54,5 @@ public interface GoodsMapper {
 
     List<Goods> selectGoodsByNameLikeAndCategoryId(@Param("keyword") String keyword,@Param("categoryId") int categoryId);
 
+    List<Goods> selectGoodsByBrandId(Integer brandId);
 }

@@ -1,5 +1,6 @@
 package com.cskaoyan.mall.controller.wx;
 
+import com.cskaoyan.mall.bean.Goods;
 import com.cskaoyan.mall.mapper.GoodsMapper;
 import com.cskaoyan.mall.service.admin.KeywordService;
 import com.cskaoyan.mall.service.admin.ProductService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,4 +66,11 @@ public class WxGoodsController {
         return BaseRespVo.success(hotListVo);
     }
 
+    @RequestMapping("/wx/goods/related")
+    public BaseRespVo goodsRelated(int id) {
+        List<Goods> goods = wxGoodService.selectGoodsRelated(id);
+        Map<String, Object> goodsRelated = new HashMap<String, Object>();//comment
+        goodsRelated.put("goodsList", goods);
+        return BaseRespVo.success(goodsRelated);
+    }
 }

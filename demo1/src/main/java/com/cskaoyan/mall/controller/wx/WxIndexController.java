@@ -159,14 +159,6 @@ public class WxIndexController {
     }
 
 
-    @RequestMapping("wx/goods/related")
-    public BaseRespVo goodsRelated() {
-        Goods goodsList = productService.findGoodsById(3);
-        Map<String, Goods> data=new HashMap<>();
-        data.put("goodsList",goodsList);
-        return BaseRespVo.success(data);
-    }
-
     @RequestMapping("wx/catalog/index")
     public BaseRespVo catelogIndex() {
         Map data = new HashMap();

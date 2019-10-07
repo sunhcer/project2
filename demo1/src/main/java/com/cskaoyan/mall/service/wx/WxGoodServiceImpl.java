@@ -105,4 +105,12 @@ public class WxGoodServiceImpl implements WxGoodService {
         hotListVo.setFilterCategoryList(filterCategoryList);
         return hotListVo;
     }
+
+    @Override
+    public List<Goods> selectGoodsRelated(int id) {
+        Goods goods = goodsMapper.selectByPrimaryKey(id);
+        Integer brandId = goods.getBrandId();
+        List<Goods> goodsList = goodsMapper.selectGoodsByBrandId(brandId);
+        return goodsList;
+    }
 }
