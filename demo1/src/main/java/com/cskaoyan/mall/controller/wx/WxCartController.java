@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 public class WxCartController {
 
@@ -44,10 +42,18 @@ public class WxCartController {
         return BaseRespVo.success(cartListInfo);
     }
 
-    //用來方便数据的插入
-    @RequestMapping("/carthello")
-    public String add(@RequestBody Cart cart) {
+    @RequestMapping("/wx/cart/goodscount")
+    public BaseRespVo showGoodsCount() {
+        CartListInfo cartListInfo = wxCartService.selectCartList();
+        int goodsCount = cartListInfo.getCartTotal().getGoodsCount();
+        return BaseRespVo.success(goodsCount);
+    }
+
+    @RequestMapping("/wx/cart/add")
+    public BaseRespVo addCart(@RequestBody Cart cart) {
         wxCartService.addCart(cart);
-        return "ok";
+        CartListInfo cartListInfo = wxCartService.selectCartList();
+        int goodsCount = cartListInfo.getCartTotal().getGoodsCount();
+        return BaseRespVo.success(goodsCount);
     }
 }

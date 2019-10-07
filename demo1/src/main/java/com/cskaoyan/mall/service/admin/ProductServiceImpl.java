@@ -137,8 +137,13 @@ public class ProductServiceImpl implements ProductService {
             comments = commentMapper.findAllComments();
         }
         for (Comment comment : comments) {
-            if (comment.getPicUrls() != null)
-                comment.setPicUrls(imgPrefix + comment.getContent());
+            if (comment.getPicUrls() != null) {
+                String[] picUrls = comment.getPicUrls();
+                for (int i = 0; i < picUrls.length; i++) {
+                    picUrls[i] = imgPrefix + picUrls[i];
+                }
+                comment.setPicUrls(picUrls);
+            }
         }
         PageInfo<Comment> commentsPageInfo = new PageInfo<>(comments);
         long total = commentsPageInfo.getTotal();
@@ -157,8 +162,13 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Comment findCommentById(Integer commentId) {
         Comment comment = commentMapper.selectByPrimaryKey(commentId);
-        if (comment!=null&&comment.getPicUrls() != null)
-            comment.setPicUrls(imgPrefix + comment.getContent());
+        if (comment.getPicUrls() != null) {
+            String[] picUrls = comment.getPicUrls();
+            for (int i = 0; i < picUrls.length; i++) {
+                picUrls[i] = imgPrefix + picUrls[i];
+            }
+            comment.setPicUrls(picUrls);
+        }
         return comment;
     }
 
@@ -170,8 +180,13 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public int updateComment(Comment comment) {
-        if (comment.getPicUrls() != null)
-            comment.setPicUrls(comment.getPicUrls().replace(imgPrefix, ""));
+        if (comment.getPicUrls() != null) {
+            String[] picUrls = comment.getPicUrls();
+            for (int i = 0; i < picUrls.length; i++) {
+                picUrls[i] = picUrls[i].replace(imgPrefix, "");
+            }
+            comment.setPicUrls(picUrls);
+        }
         return commentMapper.updateByPrimaryKeySelective(comment);
     }
 
@@ -245,7 +260,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Goods findGoodsById(int id) {
         Goods goods = goodsMapper.selectByPrimaryKey(id);
-        if (goods!=null&&goods.getPicUrl() != null)
+        if (goods != null && goods.getPicUrl() != null)
             goods.setPicUrl(imgPrefix + goods.getPicUrl());
         return goods;
     }
@@ -339,7 +354,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public GoodsSpecification findGoodsSpecificationById(Integer id) {
         GoodsSpecification goodsSpecification = goodsSpecificationMapper.selectByPrimaryKey(id);
-        if (goodsSpecification!=null&&goodsSpecification.getPicUrl() != null) {
+        if (goodsSpecification != null && goodsSpecification.getPicUrl() != null) {
             goodsSpecification.setPicUrl(imgPrefix + goodsSpecification.getPicUrl());
         }
         return goodsSpecification;
@@ -368,7 +383,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public GoodsProduct findGoodsProductsById(Integer id) {
         GoodsProduct goodsProduct = goodsProductMapper.selectByPrimaryKey(id);
-        if (goodsProduct!=null&&goodsProduct.getUrl() != null) {
+        if (goodsProduct != null && goodsProduct.getUrl() != null) {
             goodsProduct.setUrl(imgPrefix + goodsProduct.getUrl());
         }
         return goodsProduct;
@@ -442,7 +457,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Brand findBrandById(Integer brandId) {
         Brand brand = brandMapper.selectByPrimaryKey(brandId);
-        if (brand!=null&&brand.getPicUrl() != null ){
+        if (brand != null && brand.getPicUrl() != null) {
             brand.setPicUrl(imgPrefix + brand.getPicUrl());
         }
         return brand;
@@ -452,8 +467,11 @@ public class ProductServiceImpl implements ProductService {
     public List<Comment> findCommentByGoodsId(Integer goodsId) {//当前数据库评论并无商品id，故无法返回需要的数据
         List<Comment> commentsByGoodsId = commentMapper.findCommentsByGoodsId(goodsId);
         for (Comment comment : commentsByGoodsId) {
-            if(comment!=null&&comment.getPicUrls()!=null){
-                comment.setPicUrls(imgPrefix+comment.getPicUrls());
+            if (comment != null && comment.getPicUrls() != null) {
+                String[] urls=comment.getPicUrls();
+                for (int i=0;i<urls.length;i++) {
+                    urls[i]=imgPrefix+urls[i];
+                }
             }
         }
         return null;

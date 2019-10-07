@@ -4,6 +4,7 @@ package com.cskaoyan.mall.controller.admin;
 import com.cskaoyan.mall.service.admin.AdminService;
 import com.cskaoyan.mall.service.admin.DashBoardService;
 import com.cskaoyan.mall.service.admin.PermissionService;
+import com.cskaoyan.mall.shiro.CustomToken;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.DashBoard;
 import com.cskaoyan.mall.vo.LoginVo;
@@ -46,7 +47,7 @@ public class AuthController {
 
         String username = loginVo.getUsername();
         String password = loginVo.getPassword();
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        UsernamePasswordToken token = new CustomToken(username, password, "user");
         Subject subject = SecurityUtils.getSubject();
 
         if(subject != null) {

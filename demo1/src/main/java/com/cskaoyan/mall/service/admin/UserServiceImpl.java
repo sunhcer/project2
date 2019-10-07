@@ -166,4 +166,24 @@ public class UserServiceImpl implements UserService {
         return  userFeedbackInfo;
     }
 
+    //selectUserInfoByUsername
+
+
+    @Override
+    public User selectUserInfoByUsername(String username) {
+        return userMapper.selectUserByUsername(username);
+    }
+
+    @Override
+    public boolean registertUser(User user) {
+        User userExists = userMapper.selectUserByUsername(user.getUsername());
+        if (userExists != null){
+            //说明账号存在  返回注册失败
+            return false;
+        }
+
+        userMapper.insertSelective(user);
+
+        return true;        //返回注册成功
+    }
 }
