@@ -14,6 +14,16 @@ public class HotListInfo {
 
     private int categoryId;
 
+    private String keyword;
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
     public boolean isHot() {
         return isHot;
     }
