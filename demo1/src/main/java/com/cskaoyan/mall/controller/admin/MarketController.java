@@ -5,12 +5,15 @@ import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.service.admin.*;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.CatAndBrandVo;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -39,7 +42,8 @@ public class MarketController {
     StorageService storageService;
     @Autowired
     KeywordService keywordService;
-
+    @Autowired
+    LogService logService;
 
     @RequestMapping("/admin/region/list")
     public BaseRespVo region() {
@@ -134,24 +138,34 @@ public class MarketController {
     }
 
     ///admin/order/ship
+    //发货
     @RequestMapping("/admin/order/ship")
-    public BaseRespVo addOrderShip(@RequestBody Order order){
+    public BaseRespVo addOrderShip(@RequestBody Order order, HttpServletRequest request){
+
         order.setId(order.getOrderId());
         order.setOrderStatus(301);
         order.setUpdateTime(new Date());
         orderService.updateOrder(order);
+        //log
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        String remoteHost = request.getRemoteHost();
+        logService.addLog(remoteHost,username,2,"发货",true,new Date());
         return BaseRespVo.success(null);
     }
 
     ///admin/order/refund
     @RequestMapping("/admin/order/refund")
-    public BaseRespVo orderRefund(@RequestBody Map map){
+    public BaseRespVo orderRefund(@RequestBody Map map, HttpServletRequest request){
         Order order = new Order();
         order.setOrderStatus(203);
         order.setId(Integer.parseInt(map.get("orderId").toString()));
         //退款的钱存在哪个表里
         order.setUpdateTime(new Date());
         orderService.updateOrder(order);
+        //log
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        String remoteHost = request.getRemoteHost();
+        logService.addLog(remoteHost,username,2,"退款",true,new Date());
         return BaseRespVo.success(null);
     }
 

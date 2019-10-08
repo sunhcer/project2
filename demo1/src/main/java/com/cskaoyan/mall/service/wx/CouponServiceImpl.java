@@ -25,7 +25,7 @@ public class CouponServiceImpl implements CouponService{
         int status = wxCouponPage.getStatus();
         PageHelper.startPage(page,size);
         //先定userid 是100
-        List<Coupon> list = couponMapper.queryMyCouponList(status, 100);
+        List<Coupon> list = couponMapper.queryMyCouponList(status, userId);
         PageInfo<Coupon> couponPageInfo = new PageInfo<>(list);
         long total = couponPageInfo.getTotal();
         WxCouponInfo couponInfo = new WxCouponInfo();

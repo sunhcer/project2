@@ -3,6 +3,7 @@ package com.cskaoyan.mall.controller.admin;
 
 import com.cskaoyan.mall.service.admin.AdminService;
 import com.cskaoyan.mall.service.admin.DashBoardService;
+import com.cskaoyan.mall.service.admin.LogService;
 import com.cskaoyan.mall.service.admin.PermissionService;
 import com.cskaoyan.mall.shiro.CustomToken;
 import com.cskaoyan.mall.vo.BaseRespVo;
@@ -15,11 +16,14 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
+import java.util.Date;
 
 
 /**
@@ -42,23 +46,29 @@ public class AuthController {
     @Autowired
     PermissionService permissionService;
 
+    @Autowired
+    LogService logService;
+
     @RequestMapping("admin/auth/login")
-    public BaseRespVo login(@RequestBody LoginVo loginVo){
+    public BaseRespVo login(@RequestBody LoginVo loginVo, HttpServletRequest request){
 
         String username = loginVo.getUsername();
         String password = loginVo.getPassword();
         UsernamePasswordToken token = new CustomToken(username, password, "user");
         Subject subject = SecurityUtils.getSubject();
-
+        String remoteHost = request.getRemoteHost();
         if(subject != null) {
             try {
                 subject.login(token);
             } catch (AuthenticationException e) {
+                logService.addLog(remoteHost,username,0,"登录",false,new Date());
                 return BaseRespVo.fail(605, "用户帐号或密码不正确");
             }
             Serializable id = subject.getSession().getId();
+            logService.addLog(remoteHost,username,1,"登录",true,new Date());
             return BaseRespVo.success(id);
         } else
+            logService.addLog(remoteHost,username,0,"登录",false,new Date());
             return BaseRespVo.fail(605,"账号不存在");
 
     }
