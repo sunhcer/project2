@@ -263,7 +263,8 @@
   <select id="queryCurrentPageCouponByPageAndLimit" resultType="com.cskaoyan.mall.bean.Coupon">
     select id,name,`desc`,tag,total,discount,min,`limit`,type,status,
     goods_type,goods_value,time_type,days,add_time,update_time,deleted
-    from cskaoyan_mall_coupon limit #{limit} offset #{offsetNum}
+    from cskaoyan_mall_coupon order by add_time
+    limit #{limit} offset #{offsetNum}
   </select>
   <select id="selectLikeCouponAmount" resultType="int">
     select count(id)

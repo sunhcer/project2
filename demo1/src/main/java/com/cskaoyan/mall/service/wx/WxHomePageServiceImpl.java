@@ -61,11 +61,11 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         int total=grouponRulesMapper.queryGrouponRulesAmount();
         int offsetNum=(page-1)*size;
         List<WxGrouponRuleData> list=grouponRulesMapper.queryGrouponRulesDataList(size,offsetNum);
-        //遍历更改"groupon_price": 11.90,团购单价=零售价-团购优惠
+        //遍历更改"groupon_price": 11.90,团购单价=总价-团购优惠
         for (WxGrouponRuleData wxGrouponRuleData : list) {
             BigDecimal discount = wxGrouponRuleData.getGrouponPrice();
             Goods goods = wxGrouponRuleData.getGoods();
-            BigDecimal realGrouponPrice = goods.getRetailPrice().subtract(discount);
+            BigDecimal realGrouponPrice = goods.getCounterPrice().subtract(discount);
             wxGrouponRuleData.setGrouponPrice(realGrouponPrice);
             //拼接goods的url前缀
             String picUrl=imgPrefix+goods.getPicUrl();
@@ -86,12 +86,16 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         List<CouponUser> couponUser= couponUserMapper.queryCouponUserByUserCouponId(userId,couponId);
         //找到该劵的每人限制领取的数量;判断是否多领了
         int limit=couponMapper.queryCouponLimitByCouponId(couponId);
-        //找到该劵的剩余总数
+        //找到该劵的剩余总数//从Coupon表找出始末时间
         Coupon coupon=couponMapper.queryCouponByCouponId(couponId);
         int restTotal=coupon.getTotal();
         if (couponUser.size()<limit||limit==0){//该用户持有的该劵数量没有超过限制
             if (restTotal>0) {//仓库还有该劵的剩余
                 //向Coupon-user表中插入一条数据,并且减少Coupon表中的total
+                //优惠劵领取时间,更新时间
+                Date date = new Date();
+                coupon.setAddTime(date);
+                coupon.setUpdateTime(date);
                 couponUserMapper.insertWxCouponUser(coupon,userId);
                 couponMapper.updateWxCouponTotal(restTotal-1,couponId);
                 objectBaseRespVo.setErrno(0);
@@ -200,6 +204,16 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         int count=commentMapper.queryWxTopicCommentAmount(typeId,valueId);
         //分页
         List<WxUserComment> list=commentMapper.querywxTopicCommentList(typeId,valueId,pagesize,offsetNum);
+        //拼接url
+        for (WxUserComment wxUserComment : list) {
+            String[] picUrls=wxUserComment.getPicList();
+            int len=picUrls.length;
+            if (len>0){
+                for (int i = 0; i <len ; i++) {
+                    picUrls[i]=imgPrefix+picUrls[i];
+                }
+            }
+        }
         WxUserCommentPage<WxUserComment> wxUserCommentPage = new WxUserCommentPage<>(list, count, currentPage);
         BaseRespVo success = BaseRespVo.success(wxUserCommentPage);
         return success;
@@ -215,6 +229,16 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         //查询总数量
         int count=commentMapper.queryWxTopicCommentAmount(typeId,valueId);
         List<WxUserComment> list=commentMapper.querywxTopicCommentList(typeId,valueId,pagesize,offsetNum);
+        //拼接url
+        for (WxUserComment wxUserComment : list) {
+            String[] picUrls=wxUserComment.getPicList();
+            int len=picUrls.length;
+            if (len>0){
+                for (int i = 0; i <len ; i++) {
+                    picUrls[i]=imgPrefix+picUrls[i];
+                }
+            }
+        }
         WxUserCommentPage<WxUserComment> wxUserCommentPage = new WxUserCommentPage<>(list, count, currentPage);
         BaseRespVo success = BaseRespVo.success(wxUserCommentPage);
         return success;
@@ -228,17 +252,27 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         wxCommentArray.setAddTime(date);
         wxCommentArray.setUpdateTime(date);
         String [] picUrls=wxCommentArray.getPicUrls();
+        int len=picUrls.length;
         Boolean hasPicture=true;
-        if (picUrls==null){
-            hasPicture=false;
-        }else{
+        if (len>0){
             hasPicture=true;
+            for (int i = 0; i < len; i++) {
+                picUrls[i]=picUrls[i].replace(imgPrefix,"");
+            }
+        }else{
+            hasPicture=false;
         }
         wxCommentArray.setHasPicture(hasPicture);
         //得到userId
         int id = userMapper.queryUserIdByUsername(username);
         wxCommentArray.setUserId(id);
         commentMapper.insertwxCommentPost(wxCommentArray,id);
+        //拼接url返回给前端
+        if (len>0){
+            for (int i = 0; i < len; i++) {
+                picUrls[i]=imgPrefix+picUrls[i];
+            }
+        }
         BaseRespVo success = BaseRespVo.success(wxCommentArray);
         return success;
     }
@@ -273,23 +307,41 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         //查找pid,如果pid=0,则为往下找子目录,如果不为0,先找到父目录
 //        int pid=currentCategory.getPid();
         Category parentCategory=categoryMapper.queryWxParentCategory(id);
+        List<Category> brotherCategory=null;
+        Category currentCategory=null;
         if(parentCategory.getPid()==0){//当前为父目录编号
         //查找兄弟类目--老师返回的兄弟list包含自己,并且将第一个设置为当前分类
-        List<Category> brotherCategory=categoryMapper.queryWxBrotherCategory(id,id);
+            brotherCategory=categoryMapper.queryWxBrotherCategory(id,id);
         //查找当前类目---老师的category表说明的keywords字段是json,但是自己前端接收的又是String
-        Category currentCategory=brotherCategory.get(0);
+            currentCategory=brotherCategory.get(0);
+        }else{
+             parentCategory=categoryMapper.queryWxParentCategory(parentCategory.getPid());
+            brotherCategory=categoryMapper.queryWxBrotherCategory(parentCategory.getPid(),parentCategory.getPid());
+//            Category currentCategory=brotherCategory.get(0);
+           currentCategory=categoryMapper.queryWxParentCategory(id);
+        }
+        //拼接父url
+        String ppicUrl=imgPrefix+parentCategory.getPicUrl();
+        parentCategory.setPicUrl(ppicUrl);
+        String piconUrl=imgPrefix+parentCategory.getIconUrl();
+        parentCategory.setIconUrl(piconUrl);
+        //拼接当前分类url
+        String cpicUrl=imgPrefix+currentCategory.getPicUrl();
+        currentCategory.setPicUrl(cpicUrl);
+        String ciconUrl=imgPrefix+currentCategory.getIconUrl();
+        currentCategory.setIconUrl(ciconUrl);
+        //拼接兄弟分类的url
+        if(brotherCategory!=null){
+            for (Category category : brotherCategory) {
+                String bpicUrl=imgPrefix+category.getPicUrl();
+                category.setPicUrl(bpicUrl);
+                String biconUrl=imgPrefix+category.getIconUrl();
+                category.setIconUrl(biconUrl);
+            }
+        }
         WxGoodsCategoryPage<Category> categoryWxGoodsCategoryPage = new WxGoodsCategoryPage<>(parentCategory, currentCategory, brotherCategory);
         BaseRespVo success = BaseRespVo.success(categoryWxGoodsCategoryPage);
         return success;
-        }else{
-            Category realParentCategory=categoryMapper.queryWxParentCategory(parentCategory.getPid());
-            List<Category> brotherCategory=categoryMapper.queryWxBrotherCategory(parentCategory.getPid(),parentCategory.getPid());
-//            Category currentCategory=brotherCategory.get(0);
-            Category currentCategory=categoryMapper.queryWxParentCategory(id);
-            WxGoodsCategoryPage<Category> categoryWxGoodsCategoryPage = new WxGoodsCategoryPage<>(parentCategory, currentCategory, brotherCategory);
-            BaseRespVo success = BaseRespVo.success(categoryWxGoodsCategoryPage);
-            return success;
-        }
     }
 
     @Override
@@ -300,6 +352,10 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         //找商品分页列表
         int offsetNum=(page-1)*size;
         List<Goods> goodsList=goodsMapper.queryWxGoodslist(categoryId,offsetNum,size);
+        for (Goods goods : goodsList) {
+            String picUrl=imgPrefix+goods.getPicUrl();
+            goods.setPicUrl(picUrl);
+        }
         WxGoodsListPage<Goods> goodsWxGoodsListPage = new WxGoodsListPage<>(count, goodsList);
         BaseRespVo success = BaseRespVo.success(goodsWxGoodsListPage);
         return success;
