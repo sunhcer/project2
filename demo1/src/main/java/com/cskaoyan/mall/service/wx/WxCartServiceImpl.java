@@ -53,7 +53,7 @@ public class WxCartServiceImpl implements WxCartService {
         //设置price
         cart.setPrice(goodsProduct.getPrice());
         //设置pic_url
-        cart.setPicUrl(imgPrefix + goods.getPicUrl());
+        cart.setPicUrl(goods.getPicUrl());
         //设置specifications
         cart.setSpecifications(goodsProduct.getSpecifications());
         //设置add,update time
