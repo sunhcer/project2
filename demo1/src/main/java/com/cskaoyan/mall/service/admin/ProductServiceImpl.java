@@ -475,7 +475,7 @@ public class ProductServiceImpl implements ProductService {
                     }
                 }*/
             }
-        }
+
         if (goodsByCategoryId.size() > 10) {
             return goodsByCategoryId.subList(0, 10);
         }
