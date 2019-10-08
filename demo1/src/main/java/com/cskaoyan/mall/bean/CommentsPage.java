@@ -11,8 +11,10 @@ import javax.lang.model.element.NestingKind;
 public class CommentsPage {
   private int page;
   private int limit;
-  private String userId;
-  private String valueId;
+//  private String userId;
+  private Integer userId;
+//  private String valueId;
+  private Integer valueId;
   private String sort;
   private String order;
 
@@ -32,19 +34,19 @@ public class CommentsPage {
         this.limit = limit;
     }
 
-    public String getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
-    public String getValueId() {
+    public Integer getValueId() {
         return valueId;
     }
 
-    public void setValueId(String valueId) {
+    public void setValueId(Integer valueId) {
         this.valueId = valueId;
     }
 
@@ -69,8 +71,8 @@ public class CommentsPage {
         return "CommentsPage{" +
                 "page=" + page +
                 ", limit=" + limit +
-                ", userId='" + userId + '\'' +
-                ", valueId='" + valueId + '\'' +
+                ", userId=" + userId +
+                ", valueId=" + valueId +
                 ", sort='" + sort + '\'' +
                 ", order='" + order + '\'' +
                 '}';
