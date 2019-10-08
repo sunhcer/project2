@@ -122,6 +122,7 @@ public class AdServiceImpl implements AdService {
         ad.setUrl(url);
         ad.setAddTime(date);
         ad.setUpdateTime(date);
+        ad.setDeleted(false);
         //判断前端传来的link是否为null,这个和修改传的link默认空串不一样,是null
         int ref=0;
         if (ad.getLink()!=null) {
@@ -186,6 +187,8 @@ public class AdServiceImpl implements AdService {
 //        String url=IpUtils.SplicePreIp(preUrl);
         String url=preUrl.replace(imgprefix,"");
         ad.setUrl(url);
+        Date date = new Date();
+        ad.setUpdateTime(date);
         adMapper.updateAdById(ad);
         //返回带前缀的url
         ad.setUrl(preUrl);
@@ -237,6 +240,7 @@ public class AdServiceImpl implements AdService {
         Date date = new Date();
         coupon.setAddTime(date);
         coupon.setUpdateTime(date);
+        coupon.setDeleted(false);
         int ref=couponMapper.insertCouponByAll(coupon);
         BaseRespVo success = BaseRespVo.success(coupon);
         return success;
@@ -320,6 +324,7 @@ public class AdServiceImpl implements AdService {
         Date date = new Date();
         topicArray.setAddTime(date);
         topicArray.setUpdateTime(date);
+        topicArray.setDeleted(false);
         //after
         //剪切url
         String url=topicArray.getPicUrl().replace(imgprefix,"");
@@ -338,6 +343,8 @@ public class AdServiceImpl implements AdService {
         //剪切url
         String url=topicArray.getPicUrl().replace(imgprefix,"");
         topicArray.setPicUrl(url);
+        topicArray.setUpdateTime(new Date());
+        topicArray.setDeleted(false);
         topicMapper.topicUpdate(topicArray);
         //拼接url
         url=imgprefix+topicArray.getPicUrl();
