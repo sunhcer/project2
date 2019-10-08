@@ -83,6 +83,14 @@ public class WxGoodServiceImpl implements WxGoodService {
         long count = adminPageInfo.getTotal();
         HotListVo hotListVo = new HotListVo();
         hotListVo.setCount(count);
+        for (Goods good : goods) {
+            good.setPicUrl(imgPrefix + good.getPicUrl());
+            String[] gallery = good.getGallery();
+            for (int i = 0; i < gallery.length; i++) {
+                gallery[i] = imgPrefix + gallery[i];
+            }
+            good.setGallery(gallery);
+        }
         hotListVo.setGoodsList(goods);
         hotListVo.setFilterCategoryList(categories);
         return hotListVo;
@@ -128,6 +136,9 @@ public class WxGoodServiceImpl implements WxGoodService {
         Goods goods = goodsMapper.selectByPrimaryKey(id);
         Integer brandId = goods.getBrandId();
         List<Goods> goodsList = goodsMapper.selectGoodsByBrandId(brandId);
+        for (Goods goods1 : goodsList) {
+            goods1.setPicUrl(imgPrefix + goods1.getPicUrl());
+        }
         return goodsList;
     }
 }
