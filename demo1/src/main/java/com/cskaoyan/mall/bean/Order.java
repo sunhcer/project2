@@ -62,7 +62,17 @@ public class Order {
 
     private Boolean deleted;
 
+    String orderStatusText;
+
     HandleOption handleOption;
+
+    public String getOrderStatusText() {
+        return orderStatusText;
+    }
+
+    public void setOrderStatusText(String orderStatusText) {
+        this.orderStatusText = orderStatusText;
+    }
 
     public HandleOption getHandleOption() {
         return handleOption;

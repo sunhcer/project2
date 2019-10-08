@@ -10,12 +10,16 @@ import com.cskaoyan.mall.vo.HotListVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class WxGoodServiceImpl implements WxGoodService {
+
+    @Value("${myfile.img-prefix}")
+    String imgPrefix;
 
     @Autowired
     GoodsMapper goodsMapper;
@@ -97,6 +101,11 @@ public class WxGoodServiceImpl implements WxGoodService {
         }else{
             //返回选定分类
             goodsList=goodsMapper.queryWXCurrentNewGoodsList(categoryId,isNew, order, sort, size, offsetNum);
+        }
+        //拼接url
+        for (Goods goods : goodsList) {
+            String picUrl=imgPrefix+goods.getPicUrl();
+            goods.setPicUrl(picUrl);
         }
         List<Category> filterCategoryList=categoryMapper.queryWxFilterCategoryList();
         HotListVo hotListVo = new HotListVo();

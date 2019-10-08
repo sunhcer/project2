@@ -32,11 +32,12 @@
         from cskaoyan_mall_goods_product
         where deleted !=1 and  goods_id = #{goodsId,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
-        from cskaoyan_mall_goods_product
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update
+         cskaoyan_mall_goods_product
+        set deleted =1
         where id = #{id,jdbcType=INTEGER}
-    </delete>
+    </update>
     <insert id="insert" parameterType="com.cskaoyan.mall.bean.GoodsProduct">
         insert into cskaoyan_mall_goods_product (id, goods_id, specifications,
                                                  price, number, url,

@@ -194,11 +194,12 @@
         from cskaoyan_mall_comment  c left join cskaoyan_mall_user u
         on c.user_id=u.id
         where c.type=#{type} and value_id=#{valueId}
-        limit #{pageSize} offset #{offsetNum}
+         limit #{pageSize} offset #{offsetNum}
     </select>
+
     <resultMap id="querywxTopicCommentListMap" type="com.cskaoyan.mall.vo.WxUserComment">
         <result column="add_time" property="addTime"/>
-        <result column="pic_list" property="picList" typeHandler="com.cskaoyan.mall.util.StringArrayHandlerUtil"/>
+        <result column="pic_urls" property="picList" typeHandler="com.cskaoyan.mall.util.StringArrayHandlerUtil"/>
         <result column="content" property="content"/>
         <association property="userInfo" column="user_id" javaType="com.cskaoyan.mall.vo.WxUserInfo">
             <result column="nickname" property="nickName"/>
