@@ -172,4 +172,12 @@
         <foreach collection="orderPage.orderList" item="orderId" separator="," open="(" close=")">#{orderId}</foreach>
     </if>
   </select>
+
+  <select id="queryGrouponByUserId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_groupon
+    where deleted = 0 and user_id=#{userId}
+  </select>
+
 </mapper>

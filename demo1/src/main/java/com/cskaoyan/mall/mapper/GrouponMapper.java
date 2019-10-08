@@ -20,4 +20,7 @@ public interface GrouponMapper {
     int updateByPrimaryKey(Groupon record);
 
     List<Groupon> selectGrouponByCondition(@Param("orderPage") OrderPage orderPage);
+
+    List<Groupon> queryGrouponByUserId(@Param("userId")int userId);
+
 }

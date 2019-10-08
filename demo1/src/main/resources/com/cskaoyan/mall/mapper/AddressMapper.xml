@@ -291,7 +291,7 @@
         select id as provinceId from cskaoyan_mall_region where `code` =  #{province_id}
     </select>
   <select id="selectProvince" resultType="string">
-        select name as province from cskaoyan_mall_region where `id` =  #{province_id}
+        select name as province from cskaoyan_mall_region where `code` =  #{province_id}
     </select>
 
   <select id="selectCityId" resultType="int">
@@ -299,7 +299,7 @@
     </select>
 
   <select id="selectCity" resultType="string">
-        select name as city from cskaoyan_mall_region where `id` =  #{city_id}
+        select name as city from cskaoyan_mall_region where `code` =  #{city_id}
     </select>
 
   <select id="selectAreaId" resultType="int">
@@ -307,8 +307,12 @@
     </select>
 
   <select id="selectArea" resultType="string">
-        select name as area from cskaoyan_mall_region where `id` =  #{area_id}
+        select name as area from cskaoyan_mall_region where `code` =  #{area_id}
     </select>
+
+
+
+
   <!--显示所有地址-->
   <select id="queryAllAdd" resultMap="BaseResultMap">
     select
