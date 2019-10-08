@@ -171,4 +171,27 @@
     where deleted = 0
     <if test="goodsId != null">and goods_id = #{goodsId}</if>
   </select>
+
+  <select id="queryGrouponRulesAmount" resultType="int">
+    select count(id) from cskaoyan_mall_groupon_rules
+  </select>
+  <select id="queryGrouponRulesDataList" resultMap="queryGrouponRulesDataListMap">
+    select gr.goods_id as grid,gr.discount as groupon_price,gr.discount_member,
+    g.id,g.name,g.brief,g.pic_url,
+    g.counter_price,g.retail_price from cskaoyan_mall_groupon_rules gr
+    left join cskaoyan_mall_goods g on gr.goods_id=g.id
+    limit #{pagesize} offset #{offsetNum}
+  </select>
+  <resultMap id="queryGrouponRulesDataListMap" type="com.cskaoyan.mall.vo.WxGrouponRuleData">
+    <result column="groupon_price" property="grouponPrice"/>
+    <result column="discount_member" property="grouponMember"/>
+    <association property="goods" column="grid" javaType="com.cskaoyan.mall.bean.Goods">
+      <result column="id" property="id"/>
+      <result column="name" property="name"/>
+      <result column="brief" property="brief"/>
+      <result column="pic_url" property="picUrl"/>
+      <result column="counter_price" property="counterPrice"/>
+      <result column="retail_price" property="retailPrice"/>
+    </association>
+  </resultMap>
 </mapper>

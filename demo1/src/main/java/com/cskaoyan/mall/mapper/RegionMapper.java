@@ -23,4 +23,5 @@ public interface RegionMapper {
     //查省
     List<Region> selectAllProvince2(@Param("pid")Integer pid);
 
+    String selectAddressByCode(Integer provinceId);
 }

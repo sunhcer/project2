@@ -12,6 +12,7 @@ public class Collect {
     private Integer valueId;
 
     private Byte type;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date addTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

@@ -19,4 +19,11 @@ public interface KeywordMapper {
     int updateByPrimaryKey(Keyword record);
 
     List<Keyword> selectKeyWordByCondition(OrderPage orderPage);
+
+    List<Keyword> selectKeyWordIsDefault();
+
+    List<Keyword> selectKeyWordIsHot();
+
+    List<String> selectKeywordsByKeywordLike(String keyword);
+
 }

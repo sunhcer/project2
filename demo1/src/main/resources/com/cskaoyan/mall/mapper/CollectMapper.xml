@@ -28,6 +28,12 @@
       and deleted = 0
     </where>
   </select>
+  <!--查询所有vaLueId-->
+  <select id="queryAllCollect2" resultType="Integer">
+    select value_id
+    from cskaoyan_mall_collect
+  </select>
+
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -39,14 +45,21 @@
     delete from cskaoyan_mall_collect
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.cskaoyan.mall.bean.Collect">
-    insert into cskaoyan_mall_collect (id, user_id, value_id,
-      type, add_time, update_time,
-      deleted)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{valueId,jdbcType=INTEGER},
-      #{type,jdbcType=TINYINT}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP},
-      #{deleted,jdbcType=BIT})
+  <!--delete-->
+  <delete id="deleteValueId">
+       delete from cskaoyan_mall_collect
+    where value_id = #{valueId}
+  </delete>
+  <!--insert-->
+  <insert id="insert" >
+    insert into cskaoyan_mall_collect (
+      type,value_id
+   )
+    values (   #{type}, #{valueId}
+
+    )
   </insert>
+
   <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Collect">
     insert into cskaoyan_mall_collect
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -130,7 +143,7 @@
       deleted = #{deleted,jdbcType=BIT}
     where id = #{id,jdbcType=INTEGER}
   </update>
-
+  
   <resultMap id="WxCollect" type="com.cskaoyan.mall.vo.WxCollect">
     <result column="brief" property="brief"/>
     <result column="pic_url" property="picUrl"/>

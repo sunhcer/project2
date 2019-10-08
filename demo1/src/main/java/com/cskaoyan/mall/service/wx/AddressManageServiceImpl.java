@@ -42,9 +42,10 @@ public class AddressManageServiceImpl implements AddressManageService {
         return address;
 
     }
-    //删除地址（未完善）
+    //删除地址
     @Override
     public void deleteAddressById(DeleteAddVo deleteAddVo) {
+
         addressMapper.deleteByPrimaryKey(deleteAddVo.getId());
     }
 

@@ -15,6 +15,12 @@
   <sql id="Base_Column_List">
     id, keyword, url, is_hot, is_default, sort_order, add_time, update_time, deleted
   </sql>
+  <select id="selectKeywordsByKeywordLike" resultType="string">
+    select keyword
+    from cskaoyan_mall_keyword
+    where keyword like #{keyword}
+    and deleted = 0
+  </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -147,5 +153,18 @@
     where deleted = 0
     <if test="url != null">and url like #{url}</if>
     <if test="keyword != null">and keyword like #{keyword}</if>
+  </select>
+
+  <select id="selectKeyWordIsDefault" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_keyword
+    where deleted = 0 and is_default = 1
+  </select>
+  <select id="selectKeyWordIsHot" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_keyword
+    where deleted = 0 and is_hot = 1
   </select>
 </mapper>

@@ -262,27 +262,48 @@ public class ProductController {
         List<GoodsAttribute> goodsAttributes = goodsInfo.getAttributes();
         List<GoodsProduct> goodsProducts = goodsInfo.getProducts();
         List<GoodsSpecification> goodsSpecifications = goodsInfo.getSpecifications();
-        if (goodsAttributes != null)
+        if (goodsAttributes != null) {
+            List<GoodsAttribute> oldAttributes = productService.findGoodsAttributesByGoodsId(goods.getId());
+            for (GoodsAttribute oldAttribute : oldAttributes) {
+                if(oldAttribute!=null&&oldAttribute.getId()!=null) {
+                    productService.deleteGoodsAttributeById(oldAttribute.getId());
+                }
+            }
             for (GoodsAttribute goodsAttribute : goodsAttributes) {
                 if (productService.findGoodsAttributesById(goodsAttribute.getId()) != null) {
                     goodsAttribute.setUpdateTime(new Date());
                     productService.updateGoodsAttribute(goodsAttribute);
                 }
             }
-        if (goodsSpecifications != null)
+        }
+        if (goodsSpecifications != null) {
+            List<GoodsSpecification> oldSpecifications=productService.findGoodsSpecificationsByGoodsId(goods.getId());
+            for (GoodsSpecification oldSpecification : oldSpecifications) {
+                if(oldSpecification!=null&&oldSpecification.getId()!=null){
+                productService.deleteGoodsSpecificationById(oldSpecification.getId());
+            }
+            }
             for (GoodsSpecification goodsSpecification : goodsSpecifications) {
                 if (productService.findGoodsSpecificationById(goodsSpecification.getId()) != null) {
                     goodsSpecification.setUpdateTime(new Date());
                     productService.updateGoodsSpecification(goodsSpecification);
                 }
             }
-        if (goodsProducts != null)
+        }
+        if (goodsProducts != null) {
+            List<GoodsProduct> oldProducts=productService.findGoodsProductsByGoodsId(goods.getId());
+            for (GoodsProduct oldProduct : oldProducts) {
+                if(oldProduct!=null&&oldProduct.getId()!=null){
+                    productService.deleteGoodsProductById(oldProduct.getId());
+                }
+            }
             for (GoodsProduct goodsProduct : goodsProducts) {
                 if (productService.findGoodsProductsById(goodsProduct.getId()) != null) {
                     goodsProduct.setUpdateTime(new Date());
                     productService.updateGoodsProducts(goodsProduct);
                 }
             }
+        }
         return BaseRespVo.success(null);
     }
 }

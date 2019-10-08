@@ -140,4 +140,11 @@
 </select>
 
     <!--根据type寻找-->
+    <!--selectAddressByCode-->
+    <select id="selectAddressByCode" resultType="string">
+            select
+            name
+            from cskaoyan_mall_region
+            where code = #{code}
+    </select>
 </mapper>

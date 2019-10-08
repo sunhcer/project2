@@ -11,8 +11,6 @@ import java.util.List;
 public interface CollectMapper {
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Collect record);
-
     int insertSelective(Collect record);
 
     Collect selectByPrimaryKey(Integer id);
@@ -23,5 +21,13 @@ public interface CollectMapper {
 
     List<UserCollect> queryAllCollect(UserPage userPage);
 
+    //query all valueId
+    List<Integer> queryAllCollect2();
+    //add valueID
+    void insert(@Param("type") int type,@Param("valueId") int valueId);
+    //delete valueID
+    void deleteValueId(@Param("valueId") int valueId);
+
     List<WxCollect> queryMyCollect(@Param("type") int type,@Param("userId") int userId);
+
 }

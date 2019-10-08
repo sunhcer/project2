@@ -73,9 +73,7 @@ public class ProductServiceImpl implements ProductService {
     public List<Goods> findAllGoods() {
         List<Goods> allGoods = goodsMapper.findAllGoods();
         for (Goods good : allGoods) {
-            if (good.getPicUrl() != null) {
-                good.setPicUrl(imgPrefix + good.getPicUrl());
-            }
+            goodsUrlConnect(good);
         }
         return allGoods;
     }
@@ -110,14 +108,43 @@ public class ProductServiceImpl implements ProductService {
         }
         PageInfo<Goods> goodsPageInfo = new PageInfo<>(goods);
         for (Goods good : goods) {
-            if (good.getPicUrl() != null)
-                good.setPicUrl(imgPrefix + good.getPicUrl());
+            goodsUrlConnect(good);
         }
         long total = goodsPageInfo.getTotal();
         GoodsList goodsList = new GoodsList();
         goodsList.setItems(goods);
         goodsList.setTotal(total);
         return goodsList;
+    }
+
+    /**
+     * 消除 商品 url 前缀
+     * @param good 商品信息
+     */
+    private void goodsUrlReplace(Goods good) {
+        if (good!=null&&good.getPicUrl() != null)
+            good.setPicUrl(good.getPicUrl().replace(imgPrefix, ""));
+        if(good!=null&&good.getGallery()!=null){
+            for(int i=0;i<good.getGallery().length;i++){
+                if(good.getGallery()[i]!=null){
+                    good.getGallery()[i]=good.getGallery()[i].replace(imgPrefix,"");
+                }
+            }
+        }
+
+    }
+
+
+    private void goodsUrlConnect(Goods good) {
+        if (good!=null&&good.getPicUrl() != null)
+            good.setPicUrl(imgPrefix + good.getPicUrl());
+        if(good!=null&&good.getGallery()!=null){
+            for(int i=0;i<good.getGallery().length;i++) {
+                if (good.getGallery()[i] != null ) {
+                    good.getGallery()[i] = imgPrefix + good.getGallery()[i];
+                }
+            }
+        }
     }
 
     /**
@@ -137,13 +164,7 @@ public class ProductServiceImpl implements ProductService {
             comments = commentMapper.findAllComments();
         }
         for (Comment comment : comments) {
-            if (comment.getPicUrls() != null) {
-                String[] picUrls = comment.getPicUrls();
-                for (int i = 0; i < picUrls.length; i++) {
-                    picUrls[i] = imgPrefix + picUrls[i];
-                }
-                comment.setPicUrls(picUrls);
-            }
+            commentUrlConnect(comment);
         }
         PageInfo<Comment> commentsPageInfo = new PageInfo<>(comments);
         long total = commentsPageInfo.getTotal();
@@ -162,6 +183,11 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Comment findCommentById(Integer commentId) {
         Comment comment = commentMapper.selectByPrimaryKey(commentId);
+        commentUrlConnect(comment);
+        return comment;
+    }
+
+    private void commentUrlConnect(Comment comment) {
         if (comment.getPicUrls() != null) {
             String[] picUrls = comment.getPicUrls();
             for (int i = 0; i < picUrls.length; i++) {
@@ -169,7 +195,6 @@ public class ProductServiceImpl implements ProductService {
             }
             comment.setPicUrls(picUrls);
         }
-        return comment;
     }
 
     /**
@@ -180,14 +205,24 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public int updateComment(Comment comment) {
+        commentUrlReplace(comment);
+        return commentMapper.updateByPrimaryKeySelective(comment);
+    }
+
+    /**
+     * 消除comment url前缀
+     * @param comment comment信息
+     */
+    public void commentUrlReplace(Comment comment) {
         if (comment.getPicUrls() != null) {
             String[] picUrls = comment.getPicUrls();
             for (int i = 0; i < picUrls.length; i++) {
-                picUrls[i] = picUrls[i].replace(imgPrefix, "");
+                if (picUrls[i] != null ) {
+                    picUrls[i] = picUrls[i].replace(imgPrefix, "");
+                }
             }
             comment.setPicUrls(picUrls);
         }
-        return commentMapper.updateByPrimaryKeySelective(comment);
     }
 
     /**
@@ -209,8 +244,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public Integer addGoods(Goods goods) {
-        if (goods.getPicUrl() != null)
-            goods.setPicUrl(goods.getPicUrl().replace(imgPrefix, ""));
+        goodsUrlReplace(goods);
         return goodsMapper.insertSelective(goods);
     }
 
@@ -221,7 +255,7 @@ public class ProductServiceImpl implements ProductService {
      * @return 新增条数
      */
     @Override
-    public Integer addGoodsAttribute(GoodsAttribute goodsAttribute) {
+    public Integer addGoodsAttribute(GoodsAttribute goodsAttribute) {//无url
         return goodsAttributeMapper.insertSelective(goodsAttribute);
     }
 
@@ -260,8 +294,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Goods findGoodsById(int id) {
         Goods goods = goodsMapper.selectByPrimaryKey(id);
-        if (goods != null && goods.getPicUrl() != null)
-            goods.setPicUrl(imgPrefix + goods.getPicUrl());
+        goodsUrlConnect(goods);
         return goods;
     }
 
@@ -272,7 +305,7 @@ public class ProductServiceImpl implements ProductService {
      * @return 商品参数集合
      */
     @Override
-    public List<GoodsAttribute> findGoodsAttributesByGoodsId(int goodsId) {
+    public List<GoodsAttribute> findGoodsAttributesByGoodsId(int goodsId) {//无url
         return goodsAttributeMapper.findGoodsAttributesByGoodsId(goodsId);
     }
 
@@ -318,8 +351,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public int updateGoods(Goods goods) {
-        if (goods.getPicUrl() != null)
-            goods.setPicUrl(goods.getPicUrl().replace(imgPrefix, ""));
+        goodsUrlReplace(goods);
         return goodsMapper.updateByPrimaryKeySelective(goods);
     }
 
@@ -405,17 +437,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Brand> findAllBrand() {
-        return brandMapper.findAllBrandDetail();
+        List<Brand> allBrandDetail = brandMapper.findAllBrandDetail();
+        for (Brand brand : allBrandDetail) {
+            if(brand!=null&&brand.getPicUrl()!=null)
+                brand.setPicUrl(imgPrefix+brand.getPicUrl());
+        }
+        return allBrandDetail;
     }
 
     @Override
     public List<Category> findAllCategories() {
         List<Category> l1 = categoryMapper.findAllCateGoriesByLevel("L1");
         for (Category category : l1) {
-            if (!category.getIconUrl().startsWith("http")) {
+            if (category.getIconUrl()!=null) {
                 category.setIconUrl(imgPrefix + category.getIconUrl());
             }
-            if (!category.getPicUrl().startsWith("http")) {
+            if (category.getPicUrl()!=null) {
                 category.setPicUrl(imgPrefix + category.getPicUrl());
             }
         }
@@ -425,17 +462,32 @@ public class ProductServiceImpl implements ProductService {
     /**
      * 根据类别返回商品，首页专用
      *
-     * @param id
-     * @return
+     * @param id 商品类别id
+     * @return 商品列表
      */
     @Override
     public List<Goods> findGoodsByCategoryIdForIndex(Integer id) {
         List<Goods> goodsByCategoryId = goodsMapper.findGoodsByCategoryId(id);
-        for (Goods goods : goodsByCategoryId) {
-            if (!goods.getPicUrl().startsWith("http")) {
-                goods.setPicUrl(imgPrefix + goods.getPicUrl());
+        List<Category> subCategories = categoryMapper.findByParentId(id);
+        for (Category subCategory : subCategories) {
+            if(subCategory!=null&&subCategory.getId()!=null) {
+                List<Goods> goodsAppend = goodsMapper.findGoodsByCategoryId(subCategory.getId());
+                goodsByCategoryId.addAll(goodsAppend);
             }
         }
+
+        for (Goods goods : goodsByCategoryId) {
+            goodsUrlConnect(goods);
+            /*if (goods.getPicUrl()!=null) {
+                goods.setPicUrl(imgPrefix + goods.getPicUrl());
+            }
+            if(goods.getGallery()!=null){
+                for(int i=0;i<goods.getGallery().length;i++){
+                    if(goods.getGallery()[i]!=null){
+                        goods.getGallery()[i]=imgPrefix+goods.getGallery()[i];
+                    }
+                }*/
+            }
         if (goodsByCategoryId.size() > 10) {
             return goodsByCategoryId.subList(0, 10);
         }
@@ -446,11 +498,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Goods> findGoodsLastAdd(Integer number) {
         List<Goods> goodsLastAdd = goodsMapper.findGoodsLastAdd(number);
-        for (Goods goods : goodsLastAdd) {
-            if (goods.getPicUrl() != null && !goods.getPicUrl().startsWith("http")) {
+        return urlConnect(goodsLastAdd);
+    }
+
+    private List<Goods> urlConnect(List<Goods> goodsLastAdd) {
+        for (Goods goods : goodsLastAdd) {//拼接picurl
+            goodsUrlConnect(goods);
+            /*if (goods.getPicUrl() != null && !goods.getPicUrl().startsWith("http")) {
                 goods.setPicUrl(imgPrefix + goods.getPicUrl());
             }
-        }
+            if(goods.getGallery()!=null){//拼接gallery
+                for (int j=0;j< goods.getGallery().length;j++) {
+                    if (goods.getGallery()[j] != null && !goods.getGallery()[j].startsWith("http")) {
+                        goods.getGallery()[j]=imgPrefix + goods.getGallery()[j];
+                    }
+                }*/
+            }
         return goodsLastAdd;
     }
 
@@ -474,17 +537,32 @@ public class ProductServiceImpl implements ProductService {
                 }
             }
         }
-        return null;
+        return commentsByGoodsId;
     }
 
     @Override
+    public Integer deleteGoodsAttributeById(Integer id) {
+        return goodsAttributeMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer deleteGoodsProductById(Integer id) {
+        return goodsProductMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer deleteGoodsSpecificationById(Integer id) {
+        return goodsSpecificationMapper.deleteByPrimaryKey(id);
+    }
+
+    /**
+     * 找到最新热销商品
+     * @param i 数量
+     * @return 商品表
+     */
+    @Override
     public List<Goods> findGoodsIsHotLastAdd(Integer i) {
         List<Goods> goodsIsHotLastAdd = goodsMapper.findGoodsIsHotLastAdd(i);
-        for (Goods goods : goodsIsHotLastAdd) {
-            if (goods.getPicUrl() != null && !goods.getPicUrl().startsWith("http")) {
-                goods.setPicUrl(imgPrefix + goods.getPicUrl());
-            }
-        }
-        return goodsIsHotLastAdd;
+        return urlConnect(goodsIsHotLastAdd);
     }
 }

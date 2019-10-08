@@ -82,7 +82,7 @@ public class WxOrderController {
     @RequestMapping("/wx/order/prepay")
     public BaseRespVo prepay(@RequestBody Order order){
         wxOrderService.prepayOrder(order.getOrderId());
-        return BaseRespVo.success(null);
+        return BaseRespVo.success(0);
     }
 
     ///wx/order/refund
@@ -130,4 +130,25 @@ public class WxOrderController {
         OrderGoods orderGoods = wxOrderService.selectOrderGoods(orderId, goodsId);
         return BaseRespVo.success(orderGoods);
     }
+
+    ///wx/order/submit
+    @RequestMapping("/wx/order/submit")
+    public BaseRespVo submitOrder(@RequestBody Map map){
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        String addressId = map.get("addressId").toString();
+        Object message = map.get("message");
+
+        int order = 0;
+        if (map.get("cartId") != null){
+            order = wxOrderService.submitOrder(userId, addressId, message, map.get("cartId"));
+        }else{
+            order = wxOrderService.submitOrder(userId, addressId, message, null);
+        }
+
+        HashMap<Object, Object> hashMap = new HashMap<>();
+        hashMap.put("orderId", order);
+        return BaseRespVo.success(hashMap);
+    }
+
+    //
 }
