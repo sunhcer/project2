@@ -23,7 +23,7 @@ pagehelper:
   helper-dialect: mysql
 myfile:
   img-path: d:/wx/storage/
-  img-prefix: http://localhost
+  img-prefix: http://192.168.3.39
 aliyun:
   access-key-id: LTAI4Fr5gfYhcVjLMqeRGbuT
   access-secret: IrkcHu6dZyrjPZRushgO76P5392HJ1
