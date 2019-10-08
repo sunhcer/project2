@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.admin;
 
 import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.bean.AdminListInfo;
+import com.cskaoyan.mall.bean.PasswordProfile;
 import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.mapper.PermissionMapper;
 import com.cskaoyan.mall.mapper.RoleMapper;
@@ -151,6 +152,19 @@ public class AdminServiceImpl implements AdminService {
         userInfo.setPerms(strings);
 
         return userInfo;
+    }
+
+    @Override
+    public boolean profilePassword(PasswordProfile passwordProfile,String username) {
+        String oldPassword = passwordProfile.getOldPassword();
+        String newPassword = passwordProfile.getNewPassword();
+        Admin admin = adminMapper.selectAdminByName(username);
+        if(admin.getPassword().equals(oldPassword)) {
+            admin.setPassword(newPassword);
+            adminMapper.updateByPrimaryKey(admin);
+            return true;
+        } else
+            return false;
     }
 
 
