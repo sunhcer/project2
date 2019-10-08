@@ -136,6 +136,9 @@ public class WxGoodServiceImpl implements WxGoodService {
         Goods goods = goodsMapper.selectByPrimaryKey(id);
         Integer brandId = goods.getBrandId();
         List<Goods> goodsList = goodsMapper.selectGoodsByBrandId(brandId);
+        for (Goods goods1 : goodsList) {
+            goods1.setPicUrl(imgPrefix + goods1.getPicUrl());
+        }
         return goodsList;
     }
 }
