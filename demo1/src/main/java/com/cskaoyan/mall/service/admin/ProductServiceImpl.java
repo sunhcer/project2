@@ -540,6 +540,21 @@ public class ProductServiceImpl implements ProductService {
         return commentsByGoodsId;
     }
 
+    @Override
+    public Integer deleteGoodsAttributeById(Integer id) {
+        return goodsAttributeMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer deleteGoodsProductById(Integer id) {
+        return goodsProductMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer deleteGoodsSpecificationById(Integer id) {
+        return goodsSpecificationMapper.deleteByPrimaryKey(id);
+    }
+
     /**
      * 找到最新热销商品
      * @param i 数量
