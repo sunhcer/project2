@@ -214,4 +214,13 @@
     insert into cskaoyan_mall_label_permission
     (permission,label,api) values (#{permission},#{label},#{api})
   </insert>
+
+  <!--selectAdminByNameAccuracy-->
+  <select id="selectAdminByNameAccuracy" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from cskaoyan_mall_admin
+    where username = #{username}
+    and deleted = 0
+  </select>
 </mapper>

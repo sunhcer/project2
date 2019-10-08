@@ -44,12 +44,12 @@ public class UserRealm  extends AuthorizingRealm {
         return authenticationInfo;
     }
 
-    /**
-     * 完成认证之后
-     * 获得授权信息
-     * @param principalCollection
-     * @return
-     */
+//    *
+//     * 完成认证之后
+//     * 获得授权信息
+//     * @param principalCollection
+//     * @return
+
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         //获得doGetAuthenticationInfo方法的返回值的第一个参数
@@ -73,4 +73,5 @@ public class UserRealm  extends AuthorizingRealm {
         return authorizationInfo;
     }
 
-}
+    }
+

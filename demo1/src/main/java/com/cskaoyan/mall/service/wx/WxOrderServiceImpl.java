@@ -122,6 +122,10 @@ public class WxOrderServiceImpl implements WxOrderService {
 
         WxOrderDetailData wxOrderDetailData = new WxOrderDetailData();
         HandleOption handleOption = handleOption(order);
+        HashMap<Object, Object> map = new HashMap<>();
+        map.put("shipperName", order.getShipChannel());
+        map.put("logisticCode", order.getShipSn());
+        wxOrderDetailData.setExpressInfo(map);
 
         order.setHandleOption(handleOption);
         order.setOrderStatusText(TransferCodeToText.transferStatusCodeToString(order.getOrderStatus()+""));
@@ -386,6 +390,7 @@ public class WxOrderServiceImpl implements WxOrderService {
             orderGoods.setAddTime(new Date());
             orderGoods.setChecked(true);
             orderGoods.setOrderId(orderId);
+            orderGoods.setGoodsName(checkOrderGood.getGoodsName());
             if (checkOrderGood.getId() != null){
                 orderGoods.setGoodsId(checkOrderGood.getId());
             }

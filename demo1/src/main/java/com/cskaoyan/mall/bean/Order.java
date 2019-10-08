@@ -39,6 +39,26 @@ public class Order {
 
     private BigDecimal actualPrice;
 
+    String shipperName;
+
+    String logisticCode;
+
+    public String getShipperName() {
+        return shipperName;
+    }
+
+    public void setShipperName(String shipperName) {
+        this.shipperName = shipperName;
+    }
+
+    public String getLogisticCode() {
+        return logisticCode;
+    }
+
+    public void setLogisticCode(String logisticCode) {
+        this.logisticCode = logisticCode;
+    }
+
     private String payId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date payTime;
