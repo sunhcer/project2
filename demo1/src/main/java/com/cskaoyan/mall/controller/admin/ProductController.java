@@ -101,10 +101,11 @@ public class ProductController {
      **/
     @RequestMapping("admin/comment/list")
     public BaseRespVo productList(CommentsPage page) {
-        int i;
+ /*       int i;
         if (page.getUserId() != null) {
             try {//尝试将userId转化成int，失败则返回error信息
                 i = Integer.parseInt(page.getUserId());
+                page.setUserid(i);
             } catch (Exception e) {
                 return BaseRespVo.error(null, 402, "参数错误");
             }
@@ -112,10 +113,11 @@ public class ProductController {
         if (page.getValueId() != null) {
             try {//尝试将valueId转化成int，失败则返回error信息
                 i = Integer.parseInt(page.getValueId());
+                page.setValueid(i);
             } catch (Exception e) {
                 return BaseRespVo.error(null, 402, "参数错误");
             }
-        }
+        }*/
         CommentsList data = productService.findCommentsByPage(page);
         return BaseRespVo.success(data);
     }

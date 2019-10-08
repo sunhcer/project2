@@ -42,14 +42,14 @@
     <select id="findCommentsByValueIdAndUserId" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from cskaoyan_mall_goods
+        from cskaoyan_mall_comment
         <where>
             deleted != 1
-            <if test="valueId !=null and valueId !=''">
-                value_id = #{valueId}
+            <if test="valueId !=null">
+             and   value_id = #{valueId}
             </if>
-            <if test="userId !=null and userId !=''">
-                user_id = #{userId}
+            <if test="userId !=null">
+             and  user_id = #{userId}
             </if>
         </where>
     </select>
