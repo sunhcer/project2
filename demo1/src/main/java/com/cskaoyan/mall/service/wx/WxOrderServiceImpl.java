@@ -7,6 +7,7 @@ import com.cskaoyan.mall.util.TransferCodeToText;
 import com.cskaoyan.mall.vo.*;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
@@ -179,7 +180,12 @@ public class WxOrderServiceImpl implements WxOrderService {
 
     @Override
     public void prepayOrder(Integer orderId) {
-        orderMapper.setOrderStatus(orderId, 201);
+//        orderMapper.setOrderStatus(orderId, 201);
+        Order order = new Order();
+        order.setId(orderId);
+        order.setPayTime(new Date());
+        order.setOrderStatus(201);
+        orderMapper.updateByPrimaryKeySelective(order);
     }
 
     @Override
@@ -217,18 +223,19 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public WxOrderCheckoutBean checkOrder(int userId, Integer cartId, int addressId, int couponId, int grouponRulesId) {
+    public WxOrderCheckoutBean checkOrder(int userId, WxSubmitOrderIdBean orderIdBean) {
         List<Cart> cartList = null;
-        if (cartId == null || cartId == 0) {
+        if (orderIdBean.getCartId() == null || orderIdBean.getCartId() == 0) {
             cartList = cartMapper.selectUserAllCheckedCart(userId);
         }else{
             cartList = new ArrayList<>();
-            cartList.add(cartMapper.selectByPrimaryKey(cartId));
+            //购物车id不是0并且不是null   则按id寻找
+            cartList.add(cartMapper.selectByPrimaryKey(orderIdBean.getCartId()));
         }
 
-        Coupon coupon = couponMapper.selectByPrimaryKey(couponId);
-        GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(grouponRulesId);
-        Address address = addressMapper.selectByPrimaryKey(addressId);
+        Coupon coupon = couponMapper.selectByPrimaryKey(orderIdBean.getCouponId());
+        GrouponRules grouponRules = grouponRulesMapper.selectByPrimaryKey(orderIdBean.getGrouponRulesId());
+        Address address = addressMapper.selectByPrimaryKey(orderIdBean.getAddressId());
         WxOrderCheckoutBean wxOrderCheckoutBean = new WxOrderCheckoutBean();
 
         //先算总价
@@ -250,17 +257,24 @@ public class WxOrderServiceImpl implements WxOrderService {
         wxOrderCheckoutBean.setCheckedGoodsList(goodsList);
 
         //优惠券不知道怎设置
-        wxOrderCheckoutBean.setCouponId(couponId);
+        wxOrderCheckoutBean.setCouponId(orderIdBean.getCouponId());
+
         if (coupon != null) {
-            wxOrderCheckoutBean.setCouponId(couponId);
-            wxOrderCheckoutBean.setCouponPrice(coupon.getDiscount().doubleValue());
+            //如果优惠券没过期 并且总钱数大于最低限额
+            if (compare2Time(coupon.getEndTime(), new Date()) && TransferBig2Double.big2Double(coupon.getMin()) < totalMoney) {
+                wxOrderCheckoutBean.setCouponId(orderIdBean.getCouponId());
+                wxOrderCheckoutBean.setCouponPrice(coupon.getDiscount().doubleValue());
+            }else{
+                wxOrderCheckoutBean.setCouponId(0);
+                wxOrderCheckoutBean.setCouponPrice(0);
+            }
         }else{
             wxOrderCheckoutBean.setCouponId(0);
             wxOrderCheckoutBean.setCouponPrice(0);
         }
 
         //团购设置
-        wxOrderCheckoutBean.setGrouponRulesId(grouponRulesId);
+        wxOrderCheckoutBean.setGrouponRulesId(orderIdBean.getGrouponRulesId());
         if (grouponRules != null) {
             wxOrderCheckoutBean.setGrouponPrice(grouponRules.getDiscount());
         }else{
@@ -268,7 +282,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         }
 
         //地址设置
-        wxOrderCheckoutBean.setAddressId(addressId);
+        wxOrderCheckoutBean.setAddressId(orderIdBean.getAddressId());
         if (address != null) {
             wxOrderCheckoutBean.setCheckedAddress(address);
         }
@@ -295,6 +309,17 @@ public class WxOrderServiceImpl implements WxOrderService {
         return wxOrderCheckoutBean;
     }
 
+    private boolean compare2Time(Date endTime, Date date) {
+        //大于0  代表优惠券没有过期
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        String endTimeString = "";
+        if (endTime != null){
+            endTimeString = dateFormat.format(endTime);
+        }
+        String nowTimeString = dateFormat.format(date);
+        return endTimeString.compareTo(nowTimeString) > 0;
+    }
+
     @Override
     public OrderGoods selectOrderGoods(int orderId, int goodsId) {
         OrderGoods orderGoods = orderGoodsMapper.selectOrderGoodsByOrderIdAndGoodsId(orderId, goodsId);
@@ -303,18 +328,17 @@ public class WxOrderServiceImpl implements WxOrderService {
     }
 
     @Override
-    public int submitOrder(int userId, String addressId, Object message, Object cartId) {
-        int addressIdnum = Integer.parseInt(addressId);
+    public int submitOrder(int userId, WxSubmitOrderIdBean orderIdBean) {
+        int addressIdnum = orderIdBean.getAddressId();
         WxOrderCheckoutBean wxOrderCheckoutBean;
-        if (cartId == null) {
-             wxOrderCheckoutBean = checkOrder(userId, 0, addressIdnum, 0, 0);
+        if (orderIdBean.getCartId() == null || orderIdBean.getCartId() == 0) {
+             wxOrderCheckoutBean = checkOrder(userId, orderIdBean);
             //删除选中的购物车
             cartMapper.deleteUserAllCheckedCart(userId);
         }else{
-            int parseInt = Integer.parseInt(cartId.toString());
-            wxOrderCheckoutBean = checkOrder(userId, parseInt, addressIdnum, 0, 0);
+            wxOrderCheckoutBean = checkOrder(userId, orderIdBean);
             //删除选中的
-            int cartIdNum = Integer.parseInt(cartId.toString());
+            int cartIdNum = orderIdBean.getCartId();
             cartMapper.deleteByPrimaryKey(cartIdNum);
         }
 
@@ -323,12 +347,18 @@ public class WxOrderServiceImpl implements WxOrderService {
         Order order = new Order();
         order.setUserId(userId);
         order.setActualPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getActualPrice()));
+        order.setCouponPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getCouponPrice()));
         order.setOrderSn(getRandom());
         order.setOrderStatus(101);
         order.setConsignee(address.getName());
         order.setMobile(address.getMobile());
         order.setGoodsPrice(wxOrderCheckoutBean.getGoodsTotalPrice());
         order.setGrouponPrice(wxOrderCheckoutBean.getGrouponPrice());
+
+        order.setFreightPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getFreightPrice()));
+        order.setOrderPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getOrderTotalPrice()));
+        //用户积分减免  ????
+        order.setIntegralPrice(BigDecimal.valueOf(0));
 
         //地址
         String province = regionMapper.selectAddressByCode(address.getProvinceId());
@@ -337,20 +367,9 @@ public class WxOrderServiceImpl implements WxOrderService {
         order.setAddress(province + " " + city + " " + area);
 
 
-        if (message != null){
-            order.setMessage(message.toString());
+        if (orderIdBean.getMessage() != null){
+            order.setMessage(order.getMessage());
         }
-
-        order.setGoodsPrice(wxOrderCheckoutBean.getGoodsTotalPrice());
-        order.setFreightPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getFreightPrice()));
-        order.setCouponPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getCouponPrice()));
-        //double orderPrice = wxOrderCheckoutBean.getGoodsTotalPrice().doubleValue() + wxOrderCheckoutBean.getFreightPrice() - wxOrderCheckoutBean.getCouponPrice();
-//        order.setOrderPrice(BigDecimal.valueOf(orderPrice));
-        order.setOrderPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getOrderTotalPrice()));
-        //用户积分减免  ????
-        order.setIntegralPrice(BigDecimal.valueOf(0));
-        order.setGoodsPrice(wxOrderCheckoutBean.getGrouponPrice());
-        order.setActualPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getActualPrice()));
 
         //orderPrice订单费用， = goods_price + freight_price - coupon_price
         List<CheckOrderGood> list = wxOrderCheckoutBean.getCheckedGoodsList();

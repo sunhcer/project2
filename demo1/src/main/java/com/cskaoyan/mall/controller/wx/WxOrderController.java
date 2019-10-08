@@ -118,9 +118,10 @@ public class WxOrderController {
 
     ///wx/cart/checkout?cartId=0&addressId=0&couponId=0&grouponRulesId=0
     @RequestMapping("/wx/cart/checkout")
-    public BaseRespVo checkoutGoods(int cartId, int addressId, int couponId, int grouponRulesId){
+//    public BaseRespVo checkoutGoods(int cartId, int addressId, int couponId, int grouponRulesId){
+    public BaseRespVo checkoutGoods(WxSubmitOrderIdBean orderIdBean){
         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
-        WxOrderCheckoutBean wxOrderCheckoutBean = wxOrderService.checkOrder(userId, cartId, addressId, couponId, grouponRulesId);
+        WxOrderCheckoutBean wxOrderCheckoutBean = wxOrderService.checkOrder(userId, orderIdBean);
         return BaseRespVo.success(wxOrderCheckoutBean);
     }
 
@@ -133,20 +134,22 @@ public class WxOrderController {
 
     ///wx/order/submit
     @RequestMapping("/wx/order/submit")
-    public BaseRespVo submitOrder(@RequestBody Map map){
+    public BaseRespVo submitOrder(@RequestBody WxSubmitOrderIdBean orderIdBean){
         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
-        String addressId = map.get("addressId").toString();
-        Object message = map.get("message");
+        Integer addressId = orderIdBean.getAddressId();
+        String message = orderIdBean.getMessage();
+        Integer cartId = orderIdBean.getCartId();
 
-        int order = 0;
-        if (map.get("cartId") != null){
-            order = wxOrderService.submitOrder(userId, addressId, message, map.get("cartId"));
+        int orderId = 0;
+        if (cartId != null && cartId != 0){
+//            orderId = wxOrderService.submitOrder(userId, addressId, message, map.get("cartId"));
+            orderId = wxOrderService.submitOrder(userId, orderIdBean);
         }else{
-            order = wxOrderService.submitOrder(userId, addressId, message, null);
+            orderId = wxOrderService.submitOrder(userId, orderIdBean);
         }
 
         HashMap<Object, Object> hashMap = new HashMap<>();
-        hashMap.put("orderId", order);
+        hashMap.put("orderId", orderId);
         return BaseRespVo.success(hashMap);
     }
 
