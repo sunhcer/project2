@@ -320,4 +320,13 @@
     from cskaoyan_mall_address
   </select>
 
+    <!--编辑-->
+    <select id="queryByID" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from cskaoyan_mall_address
+        where
+        id=#{id}
+    </select>
+
 </mapper>

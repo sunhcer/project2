@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface AddressMapper {
     //删除地址
-    void deleteByPrimaryKey(@Param("id")Integer id);
+    void deleteByPrimaryKey(@Param("id") int id);
     //插入地址
     int insert(Address address);
 
@@ -24,9 +24,7 @@ public interface AddressMapper {
     List<UserAddress> queryUsersAddress(UserPage userPage);
     //显示所有地址
     List<Address> queryAllAdd();
-   //
-    Address selectProvince();
-    Address selectCity();
-    Address selectArea();
+    //
+    Address queryByID(@Param("id")Integer id);
 
 }
