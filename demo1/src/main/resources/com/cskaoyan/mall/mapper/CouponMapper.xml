@@ -281,14 +281,15 @@
           select last_insert_id() as id
       </selectKey>
     insert into cskaoyan_mall_coupon (id,name,`desc`,tag,total,discount,min,`limit`,type,status,
-    goods_type,goods_value,time_type,days,add_time,update_time,deleted,start_time,end_time) values
+    goods_type,goods_value,time_type,days,add_time,update_time,deleted,start_time,end_time,code) values
     (null,#{coupon.name},#{coupon.desc},#{coupon.tag},#{coupon.total},
     #{coupon.discount},#{coupon.min},#{coupon.limit},#{coupon.type},
     #{coupon.status},#{coupon.goodsType},
     #{coupon.goodsValue,typeHandler=com.cskaoyan.mall.util.StringArrayHandlerUtil},
     #{coupon.timeType},
     #{coupon.days},#{coupon.addTime},#{coupon.updateTime},#{coupon.deleted},#{coupon.startTime},
-    #{coupon.endTime})
+    #{coupon.endTime},
+    #{coupon.code})
   </insert>
 
   <resultMap id="selectByIdMap" type="com.cskaoyan.mall.bean.CouponArray">
@@ -311,11 +312,11 @@
     <result column="deleted" property="deleted"/>
     <result column="start_time" property="startTime"/>
     <result column="end_time" property="endTime" />
-
+    <result column="code" property="code"/>
   </resultMap>
   <select id="selectById" resultMap="selectByIdMap">
     select id,name,`desc`,tag,total,discount,min,`limit`,type,status,
-    goods_type,goods_value,time_type,days,add_time,update_time,deleted,start_time,end_time from
+    goods_type,goods_value,time_type,days,add_time,update_time,deleted,start_time,end_time,code from
      cskaoyan_mall_coupon
     where id=#{id}
   </select>
