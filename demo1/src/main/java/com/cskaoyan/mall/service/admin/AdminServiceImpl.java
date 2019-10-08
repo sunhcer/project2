@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.admin;
 
 import com.cskaoyan.mall.bean.Admin;
 import com.cskaoyan.mall.bean.AdminListInfo;
+import com.cskaoyan.mall.bean.PasswordProfile;
 import com.cskaoyan.mall.mapper.AdminMapper;
 import com.cskaoyan.mall.mapper.PermissionMapper;
 import com.cskaoyan.mall.mapper.RoleMapper;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -71,6 +73,8 @@ public class AdminServiceImpl implements AdminService {
         String avatar = admin.getAvatar();
         avatar = avatar.replace(prefix,"");
         admin.setAvatar(avatar);
+        admin.setAddTime(new Date());
+        admin.setUpdateTime(new Date());
         adminMapper.insertSelective(admin);
     }
 
@@ -148,6 +152,19 @@ public class AdminServiceImpl implements AdminService {
         userInfo.setPerms(strings);
 
         return userInfo;
+    }
+
+    @Override
+    public boolean profilePassword(PasswordProfile passwordProfile,String username) {
+        String oldPassword = passwordProfile.getOldPassword();
+        String newPassword = passwordProfile.getNewPassword();
+        Admin admin = adminMapper.selectAdminByName(username);
+        if(admin.getPassword().equals(oldPassword)) {
+            admin.setPassword(newPassword);
+            adminMapper.updateByPrimaryKey(admin);
+            return true;
+        } else
+            return false;
     }
 
 

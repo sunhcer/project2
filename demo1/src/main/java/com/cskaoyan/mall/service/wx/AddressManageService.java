@@ -2,6 +2,7 @@ package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.Address;
 import com.cskaoyan.mall.bean.Region;
+import com.cskaoyan.mall.vo.DeleteAddVo;
 
 import java.util.List;
 
@@ -17,8 +18,8 @@ public interface AddressManageService {
      //新建地址（插入地址）
      int  insertAddress(Address address);
      //编辑时显示地址信息
-     List<Region> queryById(int id);
+     Address queryById(Integer id);
      //删除地址
-     void deleteAddressById(Integer id);
+     void deleteAddressById(DeleteAddVo deleteAddVo);
 
  }
