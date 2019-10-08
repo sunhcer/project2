@@ -445,4 +445,11 @@
         and deleted = 0
 
     </select>
+
+    <select id="selectGoodsByBrandId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from cskaoyan_mall_goods
+        where brand_id = #{brandId}
+    </select>
 </mapper>

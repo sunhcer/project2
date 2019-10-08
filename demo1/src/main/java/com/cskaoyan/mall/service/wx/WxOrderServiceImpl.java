@@ -11,14 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.System;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Description:
@@ -212,7 +207,6 @@ public class WxOrderServiceImpl implements WxOrderService {
             }
             comment.setPicUrls(picUrls);
         }
-
         //将订单商品表中的comment改成10
         orderGoodsMapper.updateComment(comment.getOrderGoodsId(), 10);
         //并且订单表中的comments字段-1
