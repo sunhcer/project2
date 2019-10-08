@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.controller.admin;
 
 
+import com.cskaoyan.mall.bean.PasswordProfile;
 import com.cskaoyan.mall.service.admin.AdminService;
 import com.cskaoyan.mall.service.admin.DashBoardService;
 import com.cskaoyan.mall.service.admin.LogService;
@@ -111,5 +112,18 @@ public class AuthController {
         Subject subject = SecurityUtils.getSubject();
         subject.logout();
         return BaseRespVo.success(null);
+    }
+
+    @RequestMapping("/admin/profile/password")
+    public BaseRespVo profilePassword(@RequestBody PasswordProfile passwordProfile) {
+
+        Subject subject = SecurityUtils.getSubject();
+        String username = (String) subject.getPrincipal();
+        boolean b = adminService.profilePassword(passwordProfile,username);
+        if(b) {
+            subject.logout();
+            return BaseRespVo.success(null);
+        }
+        return BaseRespVo.fail(605,"账号密码不对");
     }
 }

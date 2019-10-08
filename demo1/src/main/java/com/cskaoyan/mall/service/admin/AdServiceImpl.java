@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AdServiceImpl implements AdService {
@@ -241,6 +242,8 @@ public class AdServiceImpl implements AdService {
         coupon.setAddTime(date);
         coupon.setUpdateTime(date);
         coupon.setDeleted(false);
+        String s = UUID.randomUUID().toString().replace("-","");
+        coupon.setCode(s);
         int ref=couponMapper.insertCouponByAll(coupon);
         BaseRespVo success = BaseRespVo.success(coupon);
         return success;
