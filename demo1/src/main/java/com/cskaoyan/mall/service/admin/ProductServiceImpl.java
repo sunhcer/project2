@@ -136,11 +136,11 @@ public class ProductServiceImpl implements ProductService {
 
 
     private void goodsUrlConnect(Goods good) {
-        if (good!=null&&good.getPicUrl() != null&&!good.getPicUrl().startsWith("http"))
+        if (good!=null&&good.getPicUrl() != null)
             good.setPicUrl(imgPrefix + good.getPicUrl());
         if(good!=null&&good.getGallery()!=null){
             for(int i=0;i<good.getGallery().length;i++) {
-                if (good.getGallery()[i] != null && !good.getGallery()[i].startsWith("http")) {
+                if (good.getGallery()[i] != null ) {
                     good.getGallery()[i] = imgPrefix + good.getGallery()[i];
                 }
             }
@@ -217,7 +217,7 @@ public class ProductServiceImpl implements ProductService {
         if (comment.getPicUrls() != null) {
             String[] picUrls = comment.getPicUrls();
             for (int i = 0; i < picUrls.length; i++) {
-                if (picUrls[i] != null && !picUrls[i].startsWith("http")) {
+                if (picUrls[i] != null ) {
                     picUrls[i] = picUrls[i].replace(imgPrefix, "");
                 }
             }
@@ -437,17 +437,22 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Brand> findAllBrand() {
-        return brandMapper.findAllBrandDetail();
+        List<Brand> allBrandDetail = brandMapper.findAllBrandDetail();
+        for (Brand brand : allBrandDetail) {
+            if(brand!=null&&brand.getPicUrl()!=null)
+                brand.setPicUrl(imgPrefix+brand.getPicUrl());
+        }
+        return allBrandDetail;
     }
 
     @Override
     public List<Category> findAllCategories() {
         List<Category> l1 = categoryMapper.findAllCateGoriesByLevel("L1");
         for (Category category : l1) {
-            if (!category.getIconUrl().startsWith("http")) {
+            if (category.getIconUrl()!=null) {
                 category.setIconUrl(imgPrefix + category.getIconUrl());
             }
-            if (!category.getPicUrl().startsWith("http")) {
+            if (category.getPicUrl()!=null) {
                 category.setPicUrl(imgPrefix + category.getPicUrl());
             }
         }
@@ -463,18 +468,26 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Goods> findGoodsByCategoryIdForIndex(Integer id) {
         List<Goods> goodsByCategoryId = goodsMapper.findGoodsByCategoryId(id);
+        List<Category> subCategories = categoryMapper.findByParentId(id);
+        for (Category subCategory : subCategories) {
+            if(subCategory!=null&&subCategory.getId()!=null) {
+                List<Goods> goodsAppend = goodsMapper.findGoodsByCategoryId(subCategory.getId());
+                goodsByCategoryId.addAll(goodsAppend);
+            }
+        }
+
         for (Goods goods : goodsByCategoryId) {
-            if (!goods.getPicUrl().startsWith("http")) {
+            goodsUrlConnect(goods);
+            /*if (goods.getPicUrl()!=null) {
                 goods.setPicUrl(imgPrefix + goods.getPicUrl());
             }
             if(goods.getGallery()!=null){
                 for(int i=0;i<goods.getGallery().length;i++){
-                    if(goods.getGallery()[i]!=null&&!goods.getPicUrl().startsWith("http")){
+                    if(goods.getGallery()[i]!=null){
                         goods.getGallery()[i]=imgPrefix+goods.getGallery()[i];
                     }
-                }
+                }*/
             }
-        }
         if (goodsByCategoryId.size() > 10) {
             return goodsByCategoryId.subList(0, 10);
         }
@@ -525,6 +538,21 @@ public class ProductServiceImpl implements ProductService {
             }
         }
         return commentsByGoodsId;
+    }
+
+    @Override
+    public Integer deleteGoodsAttributeById(Integer id) {
+        return goodsAttributeMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer deleteGoodsProductById(Integer id) {
+        return goodsProductMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer deleteGoodsSpecificationById(Integer id) {
+        return goodsSpecificationMapper.deleteByPrimaryKey(id);
     }
 
     /**

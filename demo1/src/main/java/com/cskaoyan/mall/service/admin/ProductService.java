@@ -75,4 +75,10 @@ public interface ProductService {
     Brand findBrandById(Integer brandId);
 
     List<Comment> findCommentByGoodsId(Integer goodsId);
+
+    Integer deleteGoodsAttributeById(Integer id);
+
+    Integer deleteGoodsProductById(Integer id);
+
+    Integer deleteGoodsSpecificationById(Integer id);
 }
