@@ -186,6 +186,7 @@ public class AdServiceImpl implements AdService {
 //        String url=IpUtils.SplicePreIp(preUrl);
         String url=preUrl.replace(imgprefix,"");
         ad.setUrl(url);
+        ad.setUpdateTime(new Date());
         adMapper.updateAdById(ad);
         //返回带前缀的url
         ad.setUrl(preUrl);
