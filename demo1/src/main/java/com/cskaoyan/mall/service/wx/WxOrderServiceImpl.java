@@ -124,8 +124,10 @@ public class WxOrderServiceImpl implements WxOrderService {
         HandleOption handleOption = handleOption(order);
 
         order.setHandleOption(handleOption);
+        order.setOrderStatusText(TransferCodeToText.transferStatusCodeToString(order.getOrderStatus()+""));
 
         wxOrderDetailData.setOrderInfo(order);
+
 
         wxOrderDetailData.setOrderGoods(orderGoods);
         return wxOrderDetailData;
@@ -145,7 +147,7 @@ public class WxOrderServiceImpl implements WxOrderService {
         int unpaidNum = orderMapper.selectCountByOrderStatus(userId, unpaidStatusId);
         int unshipNum = orderMapper.selectCountByOrderStatus(userId, unshipStatusId);
         int unrecvNum = orderMapper.selectCountByOrderStatus(userId, unrecvStatusId);
-        int uncommentNum = orderMapper.selectCountByOrderStatus(userId, uncommentStatusId);
+        int uncommentNum = orderMapper.selectUnCommentCountByOrderStatus(userId, uncommentStatusId);
         HashMap<String, Integer> order = new HashMap<>();
         order.put("unrecv", unrecvNum);
         order.put("unship", unshipNum);

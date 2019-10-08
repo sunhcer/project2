@@ -162,5 +162,20 @@
     WHERE c.user_id=#{userId} and c.type = #{type}
   </select>
 
+  <select id="queryMyCollectByUserIdAndValueId" resultType="int">
+    SELECT COUNT(*) FROM
+    cskaoyan_mall_collect WHERE user_id=#{userId} AND value_id=#{valueId}
+  </select>
+
+  <insert id="insertMyCollect">
+    INSERT INTO cskaoyan_mall_collect
+    (user_id,value_id,`type`,add_time,deleted) VALUES
+    (#{userId},#{valueId},0,#{addTime},0)
+  </insert>
+
+  <delete id="deleteMyCollectByUserIdAndValueId">
+    delete from cskaoyan_mall_collect
+    where user_id=#{userId} AND value_id=#{valueId}
+  </delete>
 
 </mapper>

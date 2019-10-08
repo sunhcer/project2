@@ -50,7 +50,7 @@ public class ProductController {
     @RequestMapping("/admin/goods/catAndBrand")
     public BaseRespVo catAndBrand() {
         List<CatAndBrandVo> brands = productService.findAllBrandToVo();
-        List<CatAndBrandVo> categories = productService.findAllCategoriesToVo();
+        List<CatAndBrandVo> categories = productService.findAllCategoriesToVoByLevel();
 /*        无法自动封装为date.brands和date.categories
         List<List> dateList=new ArrayList<List>();
         dateList.add(brands);

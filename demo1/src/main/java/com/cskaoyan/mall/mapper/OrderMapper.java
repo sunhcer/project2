@@ -39,4 +39,6 @@ public interface OrderMapper {
     void setOrderStatus(@Param("orderId")int orderId,@Param("statusId") int statusId);
 
     void updateComments(Integer orderId);
+
+    int selectUnCommentCountByOrderStatus(@Param("userId") int userId, @Param("uncommentStatusId") String uncommentStatusId);
 }

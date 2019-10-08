@@ -562,6 +562,17 @@ public class ProductServiceImpl implements ProductService {
         return goodsMapper.deleteByPrimaryKey(id);
     }
 
+    @Override
+    public List<CatAndBrandVo> findAllCategoriesToVoByLevel() {
+        List<CatAndBrandVo> level1Categories = categoryMapper.findLevel1Categories();
+        for (CatAndBrandVo level1Category : level1Categories) {
+            if(level1Category!=null&&level1Category.getValue()!=null){
+                level1Category.setChildren(categoryMapper.findCategoriesVoByPid(level1Category.getValue()));
+            }
+        }
+        return level1Categories;
+    }
+
     /**
      * 找到最新热销商品
      * @param i 数量

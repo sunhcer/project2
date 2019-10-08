@@ -58,7 +58,7 @@ public class WxCoreServiceController {
         //先写userId
         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
         String code = wxCouponPage.getCode();
-        String message = couponService.exchangeCoupon(code, 100);
+        String message = couponService.exchangeCoupon(code, userId);
         BaseRespVo<Object> objectBaseRespVo = new BaseRespVo<>();
         if(message.equals("成功")){
             objectBaseRespVo.setErrmsg("成功");
