@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.Storage;
+import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.mapper.GoodsProductMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.admin.StorageService;
 import com.cskaoyan.mall.service.wx.WxOrderService;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +41,10 @@ public class WxOrderController {
     StorageService storageService;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    GoodsMapper goodsMapper;
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
     ///wx/order/list
     @RequestMapping("/wx/order/list")
     public BaseRespVo order(WxOrderPage page){
@@ -122,6 +129,14 @@ public class WxOrderController {
     public BaseRespVo checkoutGoods(WxSubmitOrderIdBean orderIdBean){
         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
         WxOrderCheckoutBean wxOrderCheckoutBean = wxOrderService.checkOrder(userId, orderIdBean);
+/*        List<CheckOrderGood> goodsList = wxOrderCheckoutBean.getCheckedGoodsList();
+        boolean flag = true;
+        for (CheckOrderGood checkOrderGood : goodsList) {
+            if ((goodsMapper.selectNumByGoodsId(checkOrderGood.getGoodsId(), checkOrderGood.getProductId()) > checkOrderGood.getNumber()){
+
+            }
+        }*/
+
         return BaseRespVo.success(wxOrderCheckoutBean);
     }
 
