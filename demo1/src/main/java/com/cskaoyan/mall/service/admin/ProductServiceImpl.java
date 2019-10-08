@@ -557,6 +557,11 @@ public class ProductServiceImpl implements ProductService {
         return goodsSpecificationMapper.deleteByPrimaryKey(id);
     }
 
+    @Override
+    public Integer deleteGoodsByid(Integer id) {
+        return goodsMapper.deleteByPrimaryKey(id);
+    }
+
     /**
      * 找到最新热销商品
      * @param i 数量

@@ -99,11 +99,11 @@
         from cskaoyan_mall_order_goods
         group by `day`
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-        delete
-        from cskaoyan_mall_goods
+    <update id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        update cskaoyan_mall_goods
+        set deleted = 1
         where id = #{id,jdbcType=INTEGER}
-    </delete>
+    </update>
     <insert id="insert" parameterType="com.cskaoyan.mall.bean.Goods">
         insert into cskaoyan_mall_goods (id, goods_sn, name,
                                          category_id, brand_id, gallery,
