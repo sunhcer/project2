@@ -6,6 +6,7 @@ import com.cskaoyan.mall.vo.UserPage;
 import com.cskaoyan.mall.vo.WxCollect;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface CollectMapper {
@@ -30,4 +31,11 @@ public interface CollectMapper {
 
     List<WxCollect> queryMyCollect(@Param("type") int type,@Param("userId") int userId);
 
+    int queryMyCollectByUserIdAndValueId(@Param("userId") int userId,@Param("valueId") int valueId);
+
+    int insertMyCollect
+            (@Param("userId") int userId, @Param("valueId") int valueId, @Param("addTime")Date time);
+
+    int deleteMyCollectByUserIdAndValueId
+            (@Param("userId") int userId,@Param("valueId") int valueId);
 }
