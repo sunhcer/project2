@@ -284,7 +284,6 @@ public class WxOrderServiceImpl implements WxOrderService {
         double freight_value = Double.parseDouble(systemMapper.selectKey("cskaoyan_mall_express_freight_value"));
 
         wxOrderCheckoutBean.setOrderTotalPrice(totalMoney);
-        wxOrderCheckoutBean.setActualPrice(totalMoney);
         wxOrderCheckoutBean.setGoodsTotalPrice(TransferBig2Double.double2Big(totalMoney));
 
         if (totalMoney < freightMin) {
@@ -293,6 +292,11 @@ public class WxOrderServiceImpl implements WxOrderService {
         }else{
             wxOrderCheckoutBean.setFreightPrice(0);
         }
+        double couponPrice = 0;
+        if (coupon != null){
+            couponPrice = TransferBig2Double.big2Double(coupon.getDiscount());
+        }
+        wxOrderCheckoutBean.setActualPrice(totalMoney + wxOrderCheckoutBean.getFreightPrice() - couponPrice);
 
         return wxOrderCheckoutBean;
     }
@@ -346,8 +350,9 @@ public class WxOrderServiceImpl implements WxOrderService {
         order.setGoodsPrice(wxOrderCheckoutBean.getGoodsTotalPrice());
         order.setFreightPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getFreightPrice()));
         order.setCouponPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getCouponPrice()));
-        double orderPrice = wxOrderCheckoutBean.getGoodsTotalPrice().doubleValue() + wxOrderCheckoutBean.getFreightPrice() - wxOrderCheckoutBean.getCouponPrice();
-        order.setOrderPrice(BigDecimal.valueOf(orderPrice));
+        //double orderPrice = wxOrderCheckoutBean.getGoodsTotalPrice().doubleValue() + wxOrderCheckoutBean.getFreightPrice() - wxOrderCheckoutBean.getCouponPrice();
+//        order.setOrderPrice(BigDecimal.valueOf(orderPrice));
+        order.setOrderPrice(TransferBig2Double.double2Big(wxOrderCheckoutBean.getOrderTotalPrice()));
         //用户积分减免  ????
         order.setIntegralPrice(BigDecimal.valueOf(0));
         order.setGoodsPrice(wxOrderCheckoutBean.getGrouponPrice());
