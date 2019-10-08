@@ -44,7 +44,9 @@ public class StorageServiceImpl implements StorageService {
         file.transferTo(file1);
         Storage storage = new Storage();
         storage.setKey(randmPath);
-        storage.setUrl(myprefix + randmPath);
+
+        storage.setUrl(myprefix + storage.getKey());
+
         storage.setName(file.getOriginalFilename());
         storage.setSize((int) file.getSize());
         storage.setAddTime(new Date());
@@ -70,6 +72,9 @@ public class StorageServiceImpl implements StorageService {
 
         storages = storageMapper.selectAllStorages(key, name);
 
+        for (Storage storage : storages) {
+            storage.setUrl(myprefix + storage.getKey());
+        }
         PageInfo<Storage> storagePageInfo = new PageInfo<>(storages);
         long total = storagePageInfo.getTotal();
         StorageListInfo storageListInfo = new StorageListInfo();
