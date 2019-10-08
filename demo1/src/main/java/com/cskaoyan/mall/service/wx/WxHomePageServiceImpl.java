@@ -86,12 +86,16 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         List<CouponUser> couponUser= couponUserMapper.queryCouponUserByUserCouponId(userId,couponId);
         //找到该劵的每人限制领取的数量;判断是否多领了
         int limit=couponMapper.queryCouponLimitByCouponId(couponId);
-        //找到该劵的剩余总数
+        //找到该劵的剩余总数//从Coupon表找出始末时间
         Coupon coupon=couponMapper.queryCouponByCouponId(couponId);
         int restTotal=coupon.getTotal();
         if (couponUser.size()<limit||limit==0){//该用户持有的该劵数量没有超过限制
             if (restTotal>0) {//仓库还有该劵的剩余
                 //向Coupon-user表中插入一条数据,并且减少Coupon表中的total
+                //优惠劵领取时间,更新时间
+                Date date = new Date();
+                coupon.setAddTime(date);
+                coupon.setUpdateTime(date);
                 couponUserMapper.insertWxCouponUser(coupon,userId);
                 couponMapper.updateWxCouponTotal(restTotal-1,couponId);
                 objectBaseRespVo.setErrno(0);
