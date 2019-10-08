@@ -1,7 +1,9 @@
 package com.cskaoyan.mall.controller.wx;
 
-import com.cskaoyan.mall.bean.Collect2;
+import com.cskaoyan.mall.bean.WxAddOrDeletePage;
+import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.wx.WxAddOrDeleteService;
+import com.cskaoyan.mall.util.ShiroUtils;
 import com.cskaoyan.mall.vo.AddOrDeleteVo;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,12 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class WxAddOrDeleteController {
     @Autowired
     WxAddOrDeleteService wxAddOrDeleteService;
+    @Autowired
+    UserMapper userMapper;
 
     @RequestMapping("wx/collect/addordelete")
-    public BaseRespVo addDelete(@RequestBody Collect2 collect2) {
-       //int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+    public BaseRespVo addDelete(@RequestBody WxAddOrDeletePage page) {
+        int type = page.getType();
+        int valueId = page.getValueId();
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        AddOrDeleteVo addOrDeleteVo = wxAddOrDeleteService.addOrDelete(valueId,userId);
 
-        AddOrDeleteVo addOrDeleteVo = wxAddOrDeleteService.addOrDelete(collect2.getType(),collect2.getValueId());
         BaseRespVo success = BaseRespVo.success(addOrDeleteVo);
         return success;
     }

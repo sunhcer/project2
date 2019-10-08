@@ -39,4 +39,5 @@ public interface CategoryMapper {
 
     List<Category> selectAllCategory();
 
+    List<CatAndBrandVo> findCategoriesVoByPid(Integer pid);
 }

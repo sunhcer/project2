@@ -81,4 +81,8 @@ public interface ProductService {
     Integer deleteGoodsProductById(Integer id);
 
     Integer deleteGoodsSpecificationById(Integer id);
+
+    Integer deleteGoodsByid(Integer id);
+
+    List<CatAndBrandVo> findAllCategoriesToVoByLevel();
 }

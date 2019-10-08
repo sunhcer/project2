@@ -30,20 +30,8 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> categoryList = categoryMapper.findAllCateGoriesByLevel("L1");
 
 
-        for (Category category : categoryList) {
-            category.setPicUrl(imgPrefix + category.getPicUrl());
-            category.setIconUrl(imgPrefix + category.getIconUrl());
-            List<Category> children = category.getChildren();
-            if (children != null){
-                for (Category childrenCategory : children) {
-                    childrenCategory.setPicUrl(imgPrefix + childrenCategory.getPicUrl());
-                    childrenCategory.setIconUrl(imgPrefix + childrenCategory.getIconUrl());
-                }
-            }
-        }
-
-
-        return categoryList;
+        List<Category> categories = insertUrlToCategories(categoryList);
+        return categories;
 
     }
 
@@ -128,7 +116,8 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findCategoryByPid(Integer Pid) {
         List<Category> categoryList = categoryMapper.findByParentId(Pid);
-        return insertUrlToCategories(categoryList);
+        List<Category> categories = insertUrlToCategories(categoryList);
+        return categories;
     }
 
     private List<Category> insertUrlToCategories(List<Category> categoryList) {
@@ -139,10 +128,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     private void insertUrlToCategory(Category category) {
-        if (!category.getPicUrl().startsWith("http"))
+        if (category!=null&&category.getPicUrl()!=null)
             category.setPicUrl(imgPrefix + category.getPicUrl());
-        if (!category.getIconUrl().startsWith("http"))
+        if (category!=null&&category.getIconUrl()!=null)
             category.setIconUrl(imgPrefix + category.getIconUrl());
+        if(category!=null&&category.getChildren()!=null){
+            category.setChildren(insertUrlToCategories(category.getChildren()));
+        }
     }
 
     /**
@@ -154,6 +146,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> findAllCateGoriesByLevel(String level) {
         List<Category> categoryList = categoryMapper.findAllCateGoriesByLevel(level);
-        return insertUrlToCategories(categoryList);
+        List<Category> categories = insertUrlToCategories(categoryList);
+        return categories;
+
     }
+
+
 }

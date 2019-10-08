@@ -2,10 +2,7 @@ package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.OrderGoods;
-import com.cskaoyan.mall.vo.WxOrderCheckoutBean;
-import com.cskaoyan.mall.vo.WxOrderDetailData;
-import com.cskaoyan.mall.vo.WxOrderPage;
-import com.cskaoyan.mall.vo.WxOrderVo;
+import com.cskaoyan.mall.vo.*;
 
 import java.util.Map;
 
@@ -32,9 +29,9 @@ public interface WxOrderService {
 
     void commentOrder(Comment comment);
 
-    WxOrderCheckoutBean checkOrder(int userId, Integer cartId, int addressId, int couponId, int grouponRulesId);
+    WxOrderCheckoutBean checkOrder(int userId, WxSubmitOrderIdBean orderIdBean);
 
     OrderGoods selectOrderGoods(int orderId, int goodsId);
 
-    int submitOrder(int userId, String addressId, Object message, Object cartId);
+    int submitOrder(int userId, WxSubmitOrderIdBean orderIdBean);
 }

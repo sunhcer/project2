@@ -4,6 +4,8 @@ import com.cskaoyan.mall.bean.Comment;
 import com.cskaoyan.mall.bean.Order;
 import com.cskaoyan.mall.bean.OrderGoods;
 import com.cskaoyan.mall.bean.Storage;
+import com.cskaoyan.mall.mapper.GoodsMapper;
+import com.cskaoyan.mall.mapper.GoodsProductMapper;
 import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.admin.StorageService;
 import com.cskaoyan.mall.service.wx.WxOrderService;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,6 +41,10 @@ public class WxOrderController {
     StorageService storageService;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    GoodsMapper goodsMapper;
+    @Autowired
+    GoodsProductMapper goodsProductMapper;
     ///wx/order/list
     @RequestMapping("/wx/order/list")
     public BaseRespVo order(WxOrderPage page){
@@ -118,9 +125,18 @@ public class WxOrderController {
 
     ///wx/cart/checkout?cartId=0&addressId=0&couponId=0&grouponRulesId=0
     @RequestMapping("/wx/cart/checkout")
-    public BaseRespVo checkoutGoods(int cartId, int addressId, int couponId, int grouponRulesId){
+//    public BaseRespVo checkoutGoods(int cartId, int addressId, int couponId, int grouponRulesId){
+    public BaseRespVo checkoutGoods(WxSubmitOrderIdBean orderIdBean){
         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
-        WxOrderCheckoutBean wxOrderCheckoutBean = wxOrderService.checkOrder(userId, cartId, addressId, couponId, grouponRulesId);
+        WxOrderCheckoutBean wxOrderCheckoutBean = wxOrderService.checkOrder(userId, orderIdBean);
+/*        List<CheckOrderGood> goodsList = wxOrderCheckoutBean.getCheckedGoodsList();
+        boolean flag = true;
+        for (CheckOrderGood checkOrderGood : goodsList) {
+            if ((goodsMapper.selectNumByGoodsId(checkOrderGood.getGoodsId(), checkOrderGood.getProductId()) > checkOrderGood.getNumber()){
+
+            }
+        }*/
+
         return BaseRespVo.success(wxOrderCheckoutBean);
     }
 
@@ -133,20 +149,22 @@ public class WxOrderController {
 
     ///wx/order/submit
     @RequestMapping("/wx/order/submit")
-    public BaseRespVo submitOrder(@RequestBody Map map){
+    public BaseRespVo submitOrder(@RequestBody WxSubmitOrderIdBean orderIdBean){
         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
-        String addressId = map.get("addressId").toString();
-        Object message = map.get("message");
+        Integer addressId = orderIdBean.getAddressId();
+        String message = orderIdBean.getMessage();
+        Integer cartId = orderIdBean.getCartId();
 
-        int order = 0;
-        if (map.get("cartId") != null){
-            order = wxOrderService.submitOrder(userId, addressId, message, map.get("cartId"));
+        int orderId = 0;
+        if (cartId != null && cartId != 0){
+//            orderId = wxOrderService.submitOrder(userId, addressId, message, map.get("cartId"));
+            orderId = wxOrderService.submitOrder(userId, orderIdBean);
         }else{
-            order = wxOrderService.submitOrder(userId, addressId, message, null);
+            orderId = wxOrderService.submitOrder(userId, orderIdBean);
         }
 
         HashMap<Object, Object> hashMap = new HashMap<>();
-        hashMap.put("orderId", order);
+        hashMap.put("orderId", orderId);
         return BaseRespVo.success(hashMap);
     }
 

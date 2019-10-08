@@ -3,6 +3,7 @@ package com.cskaoyan.mall.service.wx;
 import com.cskaoyan.mall.bean.*;
 import com.cskaoyan.mall.mapper.*;
 import com.cskaoyan.mall.vo.*;
+import com.cskaoyan.mall.vo.WxUserInfo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -173,7 +174,6 @@ public class WxHomePageServiceImpl implements WxHomePageService {
         String url=imgPrefix+topicArray;
 //        String[] goods=new String[100];
         topicArray.setPicUrl(url);
-
         BaseRespVo success = BaseRespVo.success(topicDetailWxPage);
         return success;
     }
@@ -213,6 +213,10 @@ public class WxHomePageServiceImpl implements WxHomePageService {
                     picUrls[i]=imgPrefix+picUrls[i];
                 }
             }
+            WxUserInfo userInfo = wxUserComment.getUserInfo();
+            String avatarUrl=imgPrefix+userInfo.getAvatarUrl();
+            userInfo.setAvatarUrl(avatarUrl);
+            wxUserComment.setUserInfo(userInfo);
         }
         WxUserCommentPage<WxUserComment> wxUserCommentPage = new WxUserCommentPage<>(list, count, currentPage);
         BaseRespVo success = BaseRespVo.success(wxUserCommentPage);
@@ -238,6 +242,10 @@ public class WxHomePageServiceImpl implements WxHomePageService {
                     picUrls[i]=imgPrefix+picUrls[i];
                 }
             }
+            WxUserInfo userInfo = wxUserComment.getUserInfo();
+            String avatarUrl=imgPrefix+userInfo.getAvatarUrl();
+            userInfo.setAvatarUrl(avatarUrl);
+            wxUserComment.setUserInfo(userInfo);
         }
         WxUserCommentPage<WxUserComment> wxUserCommentPage = new WxUserCommentPage<>(list, count, currentPage);
         BaseRespVo success = BaseRespVo.success(wxUserCommentPage);

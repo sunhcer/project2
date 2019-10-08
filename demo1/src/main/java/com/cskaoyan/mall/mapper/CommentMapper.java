@@ -20,7 +20,7 @@ public interface CommentMapper {
 
     int updateByPrimaryKey(Comment record);
 
-    List<Comment> findCommentsByValueIdAndUserId(@Param("valueId") String valueId,@Param("userId")  String userId);
+    List<Comment> findCommentsByValueIdAndUserId(@Param("valueId") Integer valueId,@Param("userId")  Integer userId);
 
     List<Comment> findAllComments();
 

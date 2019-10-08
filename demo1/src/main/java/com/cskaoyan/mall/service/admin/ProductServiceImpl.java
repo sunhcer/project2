@@ -99,9 +99,9 @@ public class ProductServiceImpl implements ProductService {
         PageHelper.startPage(page.getPage(), page.getLimit(), page.getSort() + " " + page.getOrder());
         //sort代表要查的子列，order代表排序规则，二者之间需要空格
         List<Goods> goods;
-        page.setName(page.getName() == null ? null : page.getName().trim());
-        page.setGoodsSn(page.getGoodsSn() == null ? null : page.getGoodsSn().trim());
-        if (page.getName() != null || page.getGoodsSn() != null) {//改进版：去除前后空格
+        page.setName(page.getName() == null ? "" : "".equals(page.getName().trim())?"":page.getName().trim());
+        page.setGoodsSn(page.getGoodsSn() == null ? "" : "".equals(page.getGoodsSn().trim())?"":page.getGoodsSn().trim());
+        if (!"".equals(page.getName())||!"".equals(page.getGoodsSn())) {//改进版：去除前后空格
             goods = goodsMapper.findGoodsByNameAndGoodsSn("%" + page.getName() + "%", page.getGoodsSn());
         } else {
             goods = goodsMapper.findAllGoods();
@@ -158,8 +158,10 @@ public class ProductServiceImpl implements ProductService {
         PageHelper.startPage(page.getPage(), page.getLimit(), page.getSort() + " " + page.getOrder());
         //sort代表要查的子列，order代表排序规则，二者之间需要空格
         List<Comment> comments;
-        if (page.getValueId() != null || page.getUserId() != null) {//改进版：去除前后空格
-            comments = commentMapper.findCommentsByValueIdAndUserId(page.getValueId().trim(), page.getValueId().trim());
+//        page.setValueId(page.getValueId()==null?"":"".equals(page.getValueId().trim())?"":page.getValueId().trim());
+//        page.setUserId(page.getUserId()==null?"":"".equals(page.getUserId().trim())?"":page.getUserId().trim());
+        if (page.getUserId()!=null||page.getValueId()!=null) {//改进版：去除前后空格
+            comments = commentMapper.findCommentsByValueIdAndUserId(page.getValueId(), page.getUserId());
         } else {
             comments = commentMapper.findAllComments();
         }
@@ -553,6 +555,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Integer deleteGoodsSpecificationById(Integer id) {
         return goodsSpecificationMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public Integer deleteGoodsByid(Integer id) {
+        return goodsMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public List<CatAndBrandVo> findAllCategoriesToVoByLevel() {
+        List<CatAndBrandVo> level1Categories = categoryMapper.findLevel1Categories();
+        for (CatAndBrandVo level1Category : level1Categories) {
+            if(level1Category!=null&&level1Category.getValue()!=null){
+                level1Category.setChildren(categoryMapper.findCategoriesVoByPid(level1Category.getValue()));
+            }
+        }
+        return level1Categories;
     }
 
     /**

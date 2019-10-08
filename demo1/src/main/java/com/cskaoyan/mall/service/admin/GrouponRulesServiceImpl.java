@@ -40,7 +40,7 @@ public class GrouponRulesServiceImpl implements GrouponRulesService {
 
         for (GrouponRules grouponRules : grouponList) {
             if (grouponRules.getPicUrl() != null) {
-                String url = grouponRules.getPicUrl().replace(img_prefix, "");
+                String url = img_prefix + grouponRules.getPicUrl();
                 grouponRules.setPicUrl(url);
             }
         }
@@ -69,7 +69,7 @@ public class GrouponRulesServiceImpl implements GrouponRulesService {
         grouponRules.setAddTime(new Date());
         grouponRules.setUpdateTime(new Date());
         grouponRules.setGoodsName(goods.getName());
-        grouponRules.setPicUrl(goods.getPicUrl());
+        grouponRules.setPicUrl(goods.getPicUrl().replace(img_prefix, ""));
         int inserNum = grouponRulesMapper.insertSelective(grouponRules);
         return true;    //插入成功
     }

@@ -158,8 +158,8 @@ public class WxAuthController {
         Session session = SecurityUtils.getSubject().getSession();
         Serializable sessionId = session.getId();
         System.out.println("第一次进" + sessionId);
-//        String code = sendMessage(mobile);
-        String code = "666999";
+        String code = sendMessage(mobile);
+//        String code = "666999";
         session.setAttribute("code", code);
         return BaseRespVo.success(sessionId);
     }
@@ -169,7 +169,8 @@ public class WxAuthController {
     public BaseRespVo register(@RequestBody User user) {
         //代表是否注册成功
         boolean flag = false;
-
+        user.setAddTime(new Date());
+        user.setBirthday(new Date());
         Session session = SecurityUtils.getSubject().getSession();
         Serializable sessionId = session.getId();
         System.out.println("第二次进" + sessionId);
