@@ -437,7 +437,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Brand> findAllBrand() {
-        return brandMapper.findAllBrandDetail();
+        List<Brand> allBrandDetail = brandMapper.findAllBrandDetail();
+        for (Brand brand : allBrandDetail) {
+            if(brand!=null&&brand.getPicUrl()!=null)
+                brand.setPicUrl(imgPrefix+brand.getPicUrl());
+        }
+        return allBrandDetail;
     }
 
     @Override
@@ -463,6 +468,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Goods> findGoodsByCategoryIdForIndex(Integer id) {
         List<Goods> goodsByCategoryId = goodsMapper.findGoodsByCategoryId(id);
+        List<Category> subCategories = categoryMapper.findByParentId(id);
+        for (Category subCategory : subCategories) {
+            if(subCategory!=null&&subCategory.getId()!=null) {
+                List<Goods> goodsAppend = goodsMapper.findGoodsByCategoryId(subCategory.getId());
+                goodsByCategoryId.addAll(goodsAppend);
+            }
+        }
+
         for (Goods goods : goodsByCategoryId) {
             goodsUrlConnect(goods);
             /*if (goods.getPicUrl()!=null) {
@@ -475,7 +488,6 @@ public class ProductServiceImpl implements ProductService {
                     }
                 }*/
             }
-
         if (goodsByCategoryId.size() > 10) {
             return goodsByCategoryId.subList(0, 10);
         }
