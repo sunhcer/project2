@@ -17,9 +17,12 @@ public interface AddressManageService {
      List<Region>  queryByPid(Integer pid);
      //新建地址（插入地址）
      int  insertAddress(Address address,int userId);
+
      //编辑时显示地址信息
      Address queryById(Integer id);
      //删除地址
      void deleteAddressById(DeleteAddVo deleteAddVo);
 
- }
+     //修改
+     int updateByPrimaryKey(Address address);
+}

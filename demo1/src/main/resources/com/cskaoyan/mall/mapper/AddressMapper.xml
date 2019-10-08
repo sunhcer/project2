@@ -24,6 +24,7 @@
     update_time, deleted
   </sql>
 
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -39,12 +40,18 @@
   <!--插入地址-->
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.Address">
     insert into cskaoyan_mall_address ( id, `name`, user_id,province_id, city_id, area_id,address, mobile, is_default, add_time, update_time, deleted)
-    values (#{id}, #{name}, #{userId},
+    values (null, #{name}, #{userId},
       #{provinceId}, #{cityId}, #{areaId},
       #{address}, #{mobile}, #{isDefault},
       #{addTime}, #{updateTime}, #{deleted}
       )
   </insert>
+    <!--修改地址-->
+ <update id="update" >
+     update cskaoyan_mall_address
+     set address=#{address},area_id=#{areaId},city_id=#{cityId},is_default=#{isDefault},mobile=#{mobile},name=#{name}
+     where id=#{id}
+ </update>
 
   <insert id="insertSelective" parameterType="com.cskaoyan.mall.bean.Address">
     insert into cskaoyan_mall_address
@@ -291,7 +298,7 @@
         select id as provinceId from cskaoyan_mall_region where `code` =  #{province_id}
     </select>
   <select id="selectProvince" resultType="string">
-        select name as province from cskaoyan_mall_region where `code` =  #{province_id}
+        select name as province from cskaoyan_mall_region where `id` =  #{province_id}
     </select>
 
   <select id="selectCityId" resultType="int">
@@ -299,7 +306,7 @@
     </select>
 
   <select id="selectCity" resultType="string">
-        select name as city from cskaoyan_mall_region where `code` =  #{city_id}
+        select name as city from cskaoyan_mall_region where `id` =  #{city_id}
     </select>
 
   <select id="selectAreaId" resultType="int">
@@ -307,7 +314,7 @@
     </select>
 
   <select id="selectArea" resultType="string">
-        select name as area from cskaoyan_mall_region where `code` =  #{area_id}
+        select name as area from cskaoyan_mall_region where `id` =  #{area_id}
     </select>
 
 

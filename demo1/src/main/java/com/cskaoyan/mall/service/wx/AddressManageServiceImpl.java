@@ -38,9 +38,10 @@ public class AddressManageServiceImpl implements AddressManageService {
     @Override
     public int insertAddress(Address address,int userId) {
         User user=userMapper.selectByPrimaryKey(userId);
-        String name=user.getUsername();//拿到名字
-        address.setName(name);
+        //String name=user.getUsername();//拿到名字
+        //address.setName(name);
         address.setUserId(userId);
+        address.setIsDefault(false);
         int insert = addressMapper.insert(address);
 
 
@@ -58,6 +59,12 @@ public class AddressManageServiceImpl implements AddressManageService {
     public void deleteAddressById(DeleteAddVo deleteAddVo) {
 
         addressMapper.deleteByPrimaryKey(deleteAddVo.getId());
+    }
+
+    @Override
+    public int updateByPrimaryKey(Address address) {
+        int i = addressMapper.updateByPrimaryKey(address);
+        return i;
     }
 
 

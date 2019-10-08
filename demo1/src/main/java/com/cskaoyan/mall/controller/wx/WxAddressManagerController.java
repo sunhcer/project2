@@ -28,7 +28,9 @@ public class WxAddressManagerController {
      @RequestMapping("wx/address/list")
      public BaseRespVo queryAllAdd(){
          List<Address> addresses = addressManageService.queryAllAddress();
+
          ArrayList<Object> list = new ArrayList<>();
+
          for(Address address:addresses){
              WxAddressPjVo wxAddressPjVo = new WxAddressPjVo(address);
              list.add(wxAddressPjVo);
@@ -45,7 +47,13 @@ public class WxAddressManagerController {
      @RequestMapping("wx/address/save")
     public BaseRespVo insertAdd(@RequestBody Address address){
          int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
-         int i = addressManageService.insertAddress(address,userId);
+         int i = 0;
+         int id=address.getId();
+         if(id==0){
+             i = addressManageService.insertAddress(address,userId);
+         }else {
+             i = addressManageService.updateByPrimaryKey(address);
+         }
          BaseRespVo success = BaseRespVo.success(i);
          return success;
      }
