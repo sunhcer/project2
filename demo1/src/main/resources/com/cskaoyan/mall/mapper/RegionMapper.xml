@@ -23,9 +23,11 @@
             </collection>
         </collection>
     </resultMap>
+
     <sql id="Base_Column_List">
     id, pid, name, type, code
-  </sql>
+    </sql>
+
     <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>

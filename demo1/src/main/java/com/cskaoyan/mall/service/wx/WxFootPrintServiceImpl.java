@@ -1,6 +1,7 @@
 package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.mapper.FootprintMapper;
+import com.cskaoyan.mall.vo.DeleteFootVo;
 import com.cskaoyan.mall.vo.WxCollectPage;
 import com.cskaoyan.mall.vo.WxFoot;
 import com.cskaoyan.mall.vo.WxFootInfo;
@@ -41,5 +42,11 @@ public class WxFootPrintServiceImpl implements WxFootPrintService {
         wxFootInfo.setFootprintList(list);
         wxFootInfo.setTotalPages(pages);
         return wxFootInfo;
+    }
+
+    @Override
+    public void footDeleteById(DeleteFootVo deleteFootVo) {
+       footprintMapper.deleteByPrimaryKey(deleteFootVo.getId());
+
     }
 }

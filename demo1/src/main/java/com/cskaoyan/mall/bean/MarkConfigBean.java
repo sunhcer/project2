@@ -1,5 +1,7 @@
 package com.cskaoyan.mall.bean;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 //商场配置 bean
@@ -10,7 +12,9 @@ public class MarkConfigBean {
     String cskaoyan_mall_mall_phone;
     String cskaoyan_mall_mall_qq;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     Date addTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     Date updateTime;
 
     public MarkConfigBean() {
