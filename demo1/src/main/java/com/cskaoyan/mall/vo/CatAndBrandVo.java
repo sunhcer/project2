@@ -1,5 +1,7 @@
 package com.cskaoyan.mall.vo;
 
+import java.util.List;
+
 /**
  * 类简介：
  * 当前方法：
@@ -10,6 +12,24 @@ package com.cskaoyan.mall.vo;
 public class CatAndBrandVo {
     Integer value;
     String label;
+    List<CatAndBrandVo> children;
+
+    public List<CatAndBrandVo> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<CatAndBrandVo> children) {
+        this.children = children;
+    }
+
+    @Override
+    public String toString() {
+        return "CatAndBrandVo{" +
+                "value=" + value +
+                ", label='" + label + '\'' +
+                ", children=" + children +
+                '}';
+    }
 
     public Integer getValue() {
         return value;
