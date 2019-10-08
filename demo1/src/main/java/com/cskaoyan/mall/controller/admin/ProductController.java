@@ -160,9 +160,26 @@ public class ProductController {
      * @date 2019-10-02 16:40:27
      **/
     @RequestMapping("admin/comment/delete")
-    public BaseRespVo replyComment(@RequestBody Comment comment) {
+    public BaseRespVo deleteComment(@RequestBody Comment comment) {
         productService.deleteCommentById(comment);
         return BaseRespVo.success(null);
+    }
+    /**
+     * 处理请求：删除商品
+     * 方法用途：删除指定的商品
+     * 操作简介：逻辑删除指定商品
+     *
+     * @param comment 商品信息
+     * @return 返回给前端的数据
+     * @author EGGE
+     * @date 2019-10-02 16:40:27
+     **/
+    @RequestMapping("admin/goods/delete")
+    public BaseRespVo deleteGoods(@RequestBody Goods goods) {
+        if(goods!=null&&goods.getId()!=null){
+        productService.deleteGoodsByid(goods.getId());
+        return BaseRespVo.success(null);}
+        return BaseRespVo.error(null,403,"参数有误");
     }
 
     /**
