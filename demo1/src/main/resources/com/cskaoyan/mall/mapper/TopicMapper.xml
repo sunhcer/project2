@@ -277,4 +277,55 @@
   <delete id="topicDelete">
     delete from cskaoyan_mall_topic where id=#{id}
   </delete>
+
+  <select id="queryWxAllTopic" resultMap="queryWxAllTopicMap">
+    select id,title,subtitle,price,read_count,pic_url from cskaoyan_mall_topic
+  </select>
+  <resultMap id="queryWxAllTopicMap" type="com.cskaoyan.mall.bean.Topic">
+    <result column="id" property="id"/>
+    <result column="title" property="title"/>
+    <result column="subtitle" property="subtitle"/>
+    <result column="price" property="price"/>
+    <result column="read_count" property="readCount"/>
+    <result column="pic_url" property="picUrl"/>
+  </resultMap>
+
+  <select id="queryTopicArrayById" resultMap="queryTopicArrayByIdMap">
+    select id,title,subtitle,price,read_count,pic_url,sort_order,goods,
+    add_time,update_time,deleted,content from  cskaoyan_mall_topic where id=#{id}
+  </select>
+  <resultMap id="queryTopicArrayByIdMap" type="com.cskaoyan.mall.bean.TopicArray">
+    <result column="id" property="id"/>
+    <result column="title" property="title"/>
+    <result column="subtitle" property="subtitle"/>
+    <result column="price" property="price"/>
+    <result column="read_count" property="readCount"/>
+    <result column="pic_url" property="picUrl"/>
+    <result column="sort_order" property="sortOrder"/>
+    <result column="goods" property="goods" typeHandler="com.cskaoyan.mall.util.StringArrayHandlerUtil"/>
+    <result column="add_time" property="addTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="deleted" property="deleted"/>
+    <result column="content" property="content"/>
+  </resultMap>
+
+  <select id="queryWxRelatedTopic" resultMap="queryWxRelatedTopicMap">
+    select  id,title,subtitle,price,read_count,pic_url,sort_order,goods,
+    add_time,update_time,deleted,content from  cskaoyan_mall_topic where id
+    between #{min} and #{max} order by update_time
+  </select>
+  <resultMap id="queryWxRelatedTopicMap" type="com.cskaoyan.mall.bean.TopicArray">
+    <result column="id" property="id"/>
+    <result column="title" property="title"/>
+    <result column="subtitle" property="subtitle"/>
+    <result column="price" property="price"/>
+    <result column="read_count" property="readCount"/>
+    <result column="pic_url" property="picUrl"/>
+    <result column="sort_order" property="sortOrder"/>
+    <result column="goods" property="goods" typeHandler="com.cskaoyan.mall.util.StringArrayHandlerUtil"/>
+    <result column="add_time" property="addTime"/>
+    <result column="update_time" property="updateTime"/>
+    <result column="deleted" property="deleted"/>
+    <result column="content" property="content"/>
+  </resultMap>
 </mapper>

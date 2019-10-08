@@ -62,4 +62,10 @@ public class CouponServiceImpl implements CouponService{
         }
         return null;
     }
+
+    @Override
+    public List<Coupon> selectCoupons() {
+        List<Coupon> allCoupon = couponMapper.findAllCoupon();
+        return allCoupon;
+    }
 }

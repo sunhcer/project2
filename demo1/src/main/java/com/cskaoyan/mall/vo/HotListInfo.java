@@ -4,6 +4,8 @@ public class HotListInfo {
 
     private boolean isHot;
 
+    private boolean isNew;
+
     private int page;
 
     private int size;
@@ -15,6 +17,28 @@ public class HotListInfo {
     private int categoryId;
 
     private String keyword;
+
+    @Override
+    public String toString() {
+        return "HotListInfo{" +
+                "isHot=" + isHot +
+                ", isNew=" + isNew +
+                ", page=" + page +
+                ", size=" + size +
+                ", order='" + order + '\'' +
+                ", sort='" + sort + '\'' +
+                ", categoryId=" + categoryId +
+                ", keyword='" + keyword + '\'' +
+                '}';
+    }
+
+    public boolean getIsNew() {
+        return this.isNew;
+    }
+
+    public void setIsNew(boolean isNew) {
+        this.isNew = isNew;
+    }
 
     public String getKeyword() {
         return keyword;
@@ -28,8 +52,10 @@ public class HotListInfo {
         return isHot;
     }
 
-    public void setIsHot(boolean hot) {
-        isHot = hot;
+
+    public void setIsHot(boolean isHot) {
+        this.isHot = isHot;
+
     }
 
     public int getPage() {

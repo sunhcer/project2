@@ -2,6 +2,7 @@ package com.cskaoyan.mall.mapper;
 
 import com.cskaoyan.mall.bean.GrouponRules;
 import com.cskaoyan.mall.bean.OrderPage;
+import com.cskaoyan.mall.vo.WxGrouponRuleData;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,5 +24,10 @@ public interface GrouponRulesMapper {
 
     List<GrouponRules> selectByAddTimeWithLimit(@Param("limit") Integer limit, @Param("offset") Integer offset);
 
+    int queryGrouponRulesAmount();
+
+    List<WxGrouponRuleData> queryGrouponRulesDataList(@Param("pagesize") int size,@Param("offsetNum") int offsetNum);
+
     List<GrouponRules> findGrouponRuleListByGoodsId(int goodsId);
+
 }

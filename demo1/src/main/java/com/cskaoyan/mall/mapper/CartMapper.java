@@ -27,4 +27,9 @@ public interface CartMapper {
     void deleteByProductId(Integer productId);
 
     List<Cart> selectUserAllCheckedCart(@Param("userId") int userId);
+
+    int selectLastAddCartId();
+
+    void deleteUserAllCheckedCart(int userId);
+
 }

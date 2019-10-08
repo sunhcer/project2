@@ -3,7 +3,12 @@ package com.cskaoyan.mall.service.admin;
 import com.cskaoyan.mall.bean.BrandList;
 import com.cskaoyan.mall.bean.Keyword;
 import com.cskaoyan.mall.bean.OrderPage;
+import com.cskaoyan.mall.bean.SearchHistory;
 import com.cskaoyan.mall.mapper.KeywordMapper;
+import com.cskaoyan.mall.mapper.SearchHistoryMapper;
+import com.cskaoyan.mall.mapper.UserMapper;
+import com.cskaoyan.mall.util.ShiroUtils;
+import com.cskaoyan.mall.util.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +26,13 @@ import java.util.List;
 @Service
 public class KeywordServiceImpl implements KeywordService {
     @Autowired
+    UserMapper userMapper;
+
+    @Autowired
     KeywordMapper keywordMapper;
+
+    @Autowired
+    SearchHistoryMapper searchHistoryMapper;
 
     @Override
     public BrandList<Keyword> selectKeyWordByCondition(OrderPage orderPage) {
@@ -71,4 +82,59 @@ public class KeywordServiceImpl implements KeywordService {
         keyword.setUpdateTime(new Date());
         keywordMapper.updateByPrimaryKeySelective(keyword);
     }
+
+    @Override
+    public List<Keyword> selectKeyWordIsDefault() {
+
+        return keywordMapper.selectKeyWordIsDefault();
+    }
+
+    @Override
+    public List<SearchHistory> getLastHistoryKeywords(Integer number) {
+        if(number==null){
+            number=0;
+        }
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        return searchHistoryMapper.getLastHistoryKeywords(number,userId);
+    }
+
+    @Override
+    public List<Keyword> selectKeyWordIsHot() {
+        return keywordMapper.selectKeyWordIsHot();
+    }
+
+    @Override
+    public Integer deleteHistory() {
+        int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+        return searchHistoryMapper.deleteByUserId(userId);
+    }
+
+    @Override
+    public Integer addHistoryKeywords(String keyword) {
+        SearchHistory searchHistory=new SearchHistory();
+        searchHistory.setId(null);
+        searchHistory.setAddTime(new Date());
+        searchHistory.setUserId(userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName()));
+        searchHistory.setKeyword(keyword);
+        return searchHistoryMapper.insertSelective(searchHistory);
+    }
+
+   /* @Override
+    public Keyword searchKeyWord(Keyword keyword) {
+        keyword.setId(null);
+        keyword.setKeyword("%"+StringUtils.removeEmpty(keyword.getKeyword())+"%");
+        keyword.setUrl("%"+StringUtils.removeEmpty(keyword.getUrl())+"%");
+        if (keyword.getIsDefault()==null){
+            keyword.setIsDefault(false);
+        }
+        if(keyword.getIsHot()==null){
+            keyword.setIsHot(false);
+        }
+        if
+
+
+        return null;
+    }
+    逻辑与所需不匹配，废案
+    */
 }

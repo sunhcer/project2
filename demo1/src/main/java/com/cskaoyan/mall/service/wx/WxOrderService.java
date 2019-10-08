@@ -32,7 +32,9 @@ public interface WxOrderService {
 
     void commentOrder(Comment comment);
 
-    WxOrderCheckoutBean checkOrder(int userId, int cartId, int addressId, int couponId, int grouponRulesId);
+    WxOrderCheckoutBean checkOrder(int userId, Integer cartId, int addressId, int couponId, int grouponRulesId);
 
     OrderGoods selectOrderGoods(int orderId, int goodsId);
+
+    int submitOrder(int userId, String addressId, Object message, Object cartId);
 }
