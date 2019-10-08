@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -71,6 +72,8 @@ public class AdminServiceImpl implements AdminService {
         String avatar = admin.getAvatar();
         avatar = avatar.replace(prefix,"");
         admin.setAvatar(avatar);
+        admin.setAddTime(new Date());
+        admin.setUpdateTime(new Date());
         adminMapper.insertSelective(admin);
     }
 

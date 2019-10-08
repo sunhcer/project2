@@ -10,7 +10,7 @@ public class StatGood {
 
     private int orders;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date day;
 
     private int products;

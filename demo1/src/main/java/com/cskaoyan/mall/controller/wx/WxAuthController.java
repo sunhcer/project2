@@ -50,6 +50,7 @@ public class WxAuthController {
     UserService userService;
     @Autowired
     UserMapper userMapper;
+
     @RequestMapping("/wx/auth/login")
     public BaseRespVo login(@RequestBody LoginVo loginVo) {
         /*String username = JacksonUtil.parseString(body, "username");
@@ -179,7 +180,7 @@ public class WxAuthController {
             flag = userService.registertUser(user);
         }
 
-        if (!flag){
+        if (!flag) {
             return BaseRespVo.fail(608, "账号已存在");
         }
         user.setNickname(user.getUsername());
@@ -189,29 +190,41 @@ public class WxAuthController {
         return BaseRespVo.success(map);
     }
 
-    ///wx/auth/reset
-    @RequestMapping("/wx/auth/reset")
-    public BaseRespVo resetPassword(@RequestBody User user){
-        Serializable id = SecurityUtils.getSubject().getSession().getId();
-        System.out.println("第二次进" + id);
-        String code = (String) SecurityUtils.getSubject().getSession().getAttribute("code");
-        if (code != null){
-            if (Objects.equals(user.getCode(), code)){
-                //验证码正确
-                User userFromDb = userMapper.selectUserByMobile(user.getMobile());
-                //查看是否有匹配用户
-                if (userFromDb != null){
-                    //有匹配用户
-                    userFromDb.setPassword(user.getPassword());
-                    userMapper.updateByPrimaryKeySelective(userFromDb);
-                    return BaseRespVo.success(null);
-                }else{
-                    //没有匹配用户
-                    return BaseRespVo.fail(605, "用户不存在");
+
+    /**
+     * wx/auth/bindPhone
+     * written by yanhua
+     */
+    @RequestMapping("wx/auth/bindPhone")
+    public BaseRespVo bind() {
+        return BaseRespVo.fail(502, "系统内部错误");
+    }
+        ///wx/auth/reset
+        @RequestMapping("/wx/auth/reset")
+        public BaseRespVo resetPassword(@RequestBody User user){
+
+            Serializable id = SecurityUtils.getSubject().getSession().getId();
+            System.out.println("第二次进" + id);
+            String code = (String) SecurityUtils.getSubject().getSession().getAttribute("code");
+            if (code != null) {
+                if (Objects.equals(user.getCode(), code)) {
+                    //验证码正确
+                    User userFromDb = userMapper.selectUserByMobile(user.getMobile());
+                    //查看是否有匹配用户
+                    if (userFromDb != null) {
+                        //有匹配用户
+                        userFromDb.setPassword(user.getPassword());
+                        userMapper.updateByPrimaryKeySelective(userFromDb);
+                        return BaseRespVo.success(null);
+                    } else {
+                        //没有匹配用户
+                        return BaseRespVo.fail(605, "用户不存在");
+                    }
                 }
             }
+            return BaseRespVo.fail(605, "验证码错误");
+
         }
-        return BaseRespVo.fail(605, "验证码错误");
+
     }
 
-}
