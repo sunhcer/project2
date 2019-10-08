@@ -44,7 +44,7 @@ public class StorageServiceImpl implements StorageService {
         file.transferTo(file1);
         Storage storage = new Storage();
         storage.setKey(randmPath);
-        storage.setUrl(randmPath);
+        storage.setUrl(myprefix+randmPath);
         storage.setName(file.getOriginalFilename());
         storage.setSize((int) file.getSize());
         storage.setAddTime(new Date());

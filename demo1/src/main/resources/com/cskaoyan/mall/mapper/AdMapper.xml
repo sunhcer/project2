@@ -201,7 +201,7 @@
         <selectKey resultType="int" keyProperty="ad.id" keyColumn="id" order="AFTER">
             select last_insert_id() as id
         </selectKey>
-        insert into cskaoyan_mall_ad (id,name,link,enabled,url,position,content,add_time,update_time) values(
+        insert into cskaoyan_mall_ad (id,name,link,enabled,url,position,content,add_time,update_time,deleted) values(
         null,#{ad.name},
         #{ad.link},
         #{ad.enabled},
@@ -209,21 +209,23 @@
         #{ad.position},
         #{ad.content},
         #{ad.addTime},
-        #{ad.updateTime}
+        #{ad.updateTime},
+        #{ad.deleted}
         )
     </insert>
   <insert id="addAdWithoutLink">
     <selectKey resultType="int" keyProperty="ad.id" keyColumn="id" order="AFTER">
       select last_insert_id() as id
     </selectKey>
-    insert into cskaoyan_mall_ad (id,name,enabled,url,position,content,add_time,update_time) values(
+    insert into cskaoyan_mall_ad (id,name,enabled,url,position,content,add_time,update_time,deleted) values(
     null,#{ad.name},
     #{ad.enabled},
     #{ad.url},
     #{ad.position},
     #{ad.content},
     #{ad.addTime},
-    #{ad.updateTime}
+    #{ad.updateTime},
+    #{ad.deleted}
     )
   </insert>
   <select id="queryPageListAdByPageAndLimit" resultType="com.cskaoyan.mall.bean.Ad">
@@ -254,7 +256,7 @@
   </select>
   <update id="updateAdById">
     update cskaoyan_mall_ad set name=#{ad.name},link=#{ad.link},url=#{ad.url},position=#{ad.position},
-    content=#{ad.content},enabled=#{ad.enabled},add_time=#{ad.addTime},update_time=#{ad.updateTime},deleted=#{ad.deleted}
+    content=#{ad.content},enabled=#{ad.enabled},add_time=#{ad.addTime},update_time=#{ad.updateTime}
     where id=#{ad.id}
   </update>
 
