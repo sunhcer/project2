@@ -2,7 +2,9 @@ package com.cskaoyan.mall.controller.wx;
 
 import com.cskaoyan.mall.bean.Address;
 import com.cskaoyan.mall.bean.Region;
+import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.service.wx.AddressManageService;
+import com.cskaoyan.mall.util.ShiroUtils;
 import com.cskaoyan.mall.vo.BaseRespVo;
 import com.cskaoyan.mall.vo.DeleteAddVo;
 import com.cskaoyan.mall.vo.WxAddressPjVo;
@@ -19,6 +21,9 @@ import java.util.List;
 public class WxAddressManagerController {
      @Autowired
      AddressManageService addressManageService;
+
+     @Autowired
+     UserMapper userMapper;
 
      @RequestMapping("wx/address/list")
      public BaseRespVo queryAllAdd(){
@@ -39,7 +44,8 @@ public class WxAddressManagerController {
      }
      @RequestMapping("wx/address/save")
     public BaseRespVo insertAdd(@RequestBody Address address){
-         int i = addressManageService.insertAddress(address);
+         int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+         int i = addressManageService.insertAddress(address,userId);
          BaseRespVo success = BaseRespVo.success(i);
          return success;
      }

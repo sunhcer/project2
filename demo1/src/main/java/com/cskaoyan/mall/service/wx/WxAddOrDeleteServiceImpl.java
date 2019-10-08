@@ -14,7 +14,9 @@ public class WxAddOrDeleteServiceImpl implements WxAddOrDeleteService {
 
     @Override
     public AddOrDeleteVo addOrDelete(int type, int valueId) {
+
         List<Integer> integers = collectMapper.queryAllCollect2();
+
         AddOrDeleteVo addOrDeleteVo = new AddOrDeleteVo();
         for (Integer integer : integers) {
             if(integer.equals(valueId)){

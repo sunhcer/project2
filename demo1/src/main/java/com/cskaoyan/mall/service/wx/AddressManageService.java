@@ -16,7 +16,7 @@ public interface AddressManageService {
      //查询省 市  区
      List<Region>  queryByPid(Integer pid);
      //新建地址（插入地址）
-     int  insertAddress(Address address);
+     int  insertAddress(Address address,int userId);
      //编辑时显示地址信息
      Address queryById(Integer id);
      //删除地址

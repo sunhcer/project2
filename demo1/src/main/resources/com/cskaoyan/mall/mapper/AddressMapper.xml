@@ -38,7 +38,7 @@
   </delete>
   <!--插入地址-->
   <insert id="insert" parameterType="com.cskaoyan.mall.bean.Address">
-    insert into cskaoyan_mall_address ( id, name, user_id,province_id, city_id, area_id,address, mobile, is_default, add_time, update_time, deleted)
+    insert into cskaoyan_mall_address ( id, `name`, user_id,province_id, city_id, area_id,address, mobile, is_default, add_time, update_time, deleted)
     values (#{id}, #{name}, #{userId},
       #{provinceId}, #{cityId}, #{areaId},
       #{address}, #{mobile}, #{isDefault},

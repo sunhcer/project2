@@ -16,6 +16,8 @@ public class WxAddOrDeleteController {
 
     @RequestMapping("wx/collect/addordelete")
     public BaseRespVo addDelete(@RequestBody Collect2 collect2) {
+       //int userId = userMapper.queryUserIdByUsername(ShiroUtils.getCurrentUserName());
+
         AddOrDeleteVo addOrDeleteVo = wxAddOrDeleteService.addOrDelete(collect2.getType(),collect2.getValueId());
         BaseRespVo success = BaseRespVo.success(addOrDeleteVo);
         return success;

@@ -2,8 +2,10 @@ package com.cskaoyan.mall.service.wx;
 
 import com.cskaoyan.mall.bean.Address;
 import com.cskaoyan.mall.bean.Region;
+import com.cskaoyan.mall.bean.User;
 import com.cskaoyan.mall.mapper.AddressMapper;
 import com.cskaoyan.mall.mapper.RegionMapper;
+import com.cskaoyan.mall.mapper.UserMapper;
 import com.cskaoyan.mall.vo.DeleteAddVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class AddressManageServiceImpl implements AddressManageService {
 
     @Autowired
     RegionMapper regionMapper;
+
+    @Autowired
+    UserMapper userMapper;
     //查询所有地址
     @Override
     public List<Address> queryAllAddress(){
@@ -31,8 +36,14 @@ public class AddressManageServiceImpl implements AddressManageService {
     }
     //添加地址
     @Override
-    public int insertAddress(Address address) {
+    public int insertAddress(Address address,int userId) {
+        User user=userMapper.selectByPrimaryKey(userId);
+        String name=user.getUsername();//拿到名字
+        address.setName(name);
+        address.setUserId(userId);
         int insert = addressMapper.insert(address);
+
+
         return insert;
     }
     //编辑时显示地址信息
