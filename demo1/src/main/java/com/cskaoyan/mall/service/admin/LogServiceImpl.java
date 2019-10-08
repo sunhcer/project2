@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -38,4 +39,20 @@ public class LogServiceImpl implements LogService {
 
         return logListInfo;
     }
+
+    @Override
+    public void addLog(String ip, String username, int type, String action, boolean status, Date actionTime) {
+        Log log = new Log();
+        log.setAction(action);
+        log.setAddTime(actionTime);
+        log.setAdmin(username);
+        log.setDeleted(false);
+        log.setIp(ip);
+        log.setStatus(status);
+        log.setType(type);
+        log.setUpdateTime(actionTime);
+        logMapper.insert(log);
+    }
+
+
 }
